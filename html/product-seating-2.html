@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pos</title>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap">
+<link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css?ver=5.6">
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/table-date.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick-theme.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.js"></script>
+</head>
+<body>
+<header class="blog-header py-3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 search-top">
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+      <div class="col-lg-4 col-md-4 text-center logo-top"> <a class="link-secondary" href="#" aria-label="Search"> <img src="images/logo.png" alt="" /> </a> </div>
+      <div class="col-lg-4 col-md-4 right-menu"> 
+        <!-- Large button groups (default and split) -->
+        <div class="right-top">
+          <div class="dropdown category">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> Category </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">Category 1</a></li>
+              <li><a class="dropdown-item" href="#">Category 2</a></li>
+              <li><a class="dropdown-item" href="#">Category 3</a></li>
+            </ul>
+          </div>
+          <div class="dropdown language">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> Dropdown button </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">English</a></li>
+              <li><a class="dropdown-item" href="#">French</a></li>
+            </ul>
+          </div>
+          <div class="dropdown user">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> User </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="right-bottom"> <a href="#">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalXl">Lookup Transaction</button>
+          <div class="modal fade" id="exampleModalXl" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl lookup">
+              <div class="modal-content">
+                <div class="modal-header mb-4">
+                  <h5 class="modal-title h4" id="exampleModalXlLabel">Lookup Transaction</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-lg-6 text-left">
+                        <div class="form-group">
+                          <label for="">Transaction id</label>
+                          <select class="form-select mb-3" aria-label=".form-select-lg example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 text-left">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 text-center pt-4 pb-4">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </a> </div>
+      </div>
+    </div>
+  </div>
+</header>
+<section class="content-part pt-4 pb-4">
+<div class="banner-section">
+  <div class="container-fluid">
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active"> <img src="images/banner.jpg" alt="" /> </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="product-details bg-white">
+  <div class="container pt-5 pb-5">
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="ticket-details">
+          <h4>Purchase Tickets for
+          the 8:00 pm Show on
+          May 15, 2021</h4>
+          <div class="step1-ticket">
+          <h2>Step 1: Select A Section</h2>          
+          <div class="tsec mb-3">
+          <select name="car" id="" class="form-control">
+            <option value="left">Left</option>
+            <option value="center">Center</option>
+            <option value="right">Right</option>
+          </select>
+          </div>
+          <div class="tsec">
+          <span class="ds-grey"><h5>Left</h5></span>
+          <span class="ds-blue"><h5>Right</h5></span>
+          <span class="ds-green"><h5>Center</h5></span>
+          </div>
+          </div>
+          <div class="step2-ticket"> 
+         <table class="table mt-4" style="border:none;"> 
+       <tr>
+        <th><h4>Regular Seating</h4></th>
+        <th></th>
+        <th><h4>Quantity</h4></th>
+        </tr>
+        <tr>
+        <td><h6>Adult (ages 13 and up)</h6></td>
+        <td><strong>$30.00</strong></td>
+        <td>
+        <div class="qty-input">
+            <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
+            <input class="product-qty" type="number" name="product-qty" min="0" max="10" value="1">
+            <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
+        </div>
+        </td>
+      </tr>      
+        <tr>
+        <td><h6>Child (12 and under)</h6></td>
+        <td><strong>$0.00</strong></td>
+        <td>
+        <div class="qty-input">
+            <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
+            <input class="product-qty" type="number" name="product-qty" min="0" max="10" value="1">
+            <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
+        </div>
+        </td>
+      </tr>
+      </table>
+          
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="product-seats">
+        <h4>Stage Title Name</h4>
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          	 viewBox="0 0 589.99 466.03" style="enable-background:new 0 0 589.99 466.03;" xml:space="preserve">
+
+          <polygon id="sc-stage" class="sc sc-default" points="159.28,466.03 160.02,426.92 432.43,428.7 432.46,466.03 159.28,466.03 "/>
+<a class="venuesection" data-id="vip-center">
+          <polygon id="sc-vip-center" class="sc sc-default" points="365.26,310.8 351.04,367.52 238.32,366.61 226.67,310.8 "/>
+</a>
+<a class="venuesection" data-id="vip-right">
+          <polygon id="sc-vip-right" class="sc sc-default" points="117.12,368.84 205.18,316.64 218.22,371.06 161.02,407.05 117.12,368.84 "/>
+</a>
+<a class="venuesection" data-id="vip-left">
+          <polygon id="sc-vip-left" class="sc sc-default" points="473.64,369.53 430.75,408.35 371.38,373.34 385.96,317.56 473.64,369.53 "/>
+</a>
+<a class="venuesection" data-id="left">
+          <polygon id="sc-left" class="sc sc-default" points="476.04,362.25 387.47,310.32 431.87,103.05 589.99,110.3 589.85,231.02 "/>
+</a>
+<a class="venuesection" data-id="right">
+          <polygon id="sc-right" class="sc sc-default" points="157.51,103.81 201.74,310.5 113.34,362.84 110.75,362.4 0,232.24 -0.64,110.92 "/>
+</a>
+<a class="venuesection" data-id="center">
+          <polygon id="sc-center" class="sc sc-default" points="180.29,101.83 409.35,101.83 365.15,305.8 225.39,305.15 180.29,101.83 "/>
+</a>
+<a class="venuesection" data-id="balcony-center">
+          <polygon id="sc-balcony-center" class="sc sc-default" points="289.66,51.54 127.92,49.15 127.92,0 451.92,0 451.92,51.55 289.66,51.54 "/>
+</a>
+<a class="venuesection" data-id="balcony-vip">
+          <polygon id="sc-balcony-vip" class="sc sc-default" points="126.87,71.81 126.87,55.56 451.92,57.23 451.78,73.37 "/>
+</a>
+<a class="venuesection" data-id="balcony-right">
+          <polygon id="sc-balcony-right" class="sc sc-default" points="114.72,72.73 57.93,89.16 20.4,33.86 114.72,4.47 "/>
+</a>
+<a class="venuesection" data-id="balcony-left">
+          <polygon id="sc-balcony-left" class="sc sc-default" points="560.7,33.38 519.19,91.05 463.64,72.97 463.49,4.47 560.7,33.38 "/>
+</a>
+          <text x="265" y="455" font-family="\'Lato\', sans-serif" font-size="20" fill="white">Stage</text>
+          <text x="135" y="375" font-family="\'Lato\', sans-serif" font-size="20" fill="white">VIP Right</text>
+          <text x="380" y="375" font-family="\'Lato\', sans-serif" font-size="20" fill="white">VIP Left</text>
+          <text x="245" y="345" font-family="\'Lato\', sans-serif" font-size="20" fill="white">VIP Center</text>
+          <text x="60" y="200" font-family="\'Lato\', sans-serif" font-size="20" fill="white">Right</text>
+          <text x="480" y="200" font-family="\'Lato\', sans-serif" font-size="20" fill="white">Left</text>
+          <text x="265" y="200" font-family="\'Lato\', sans-serif" font-size="20" fill="white">Center</text>
+          <text x="240" y="70" font-family="\'Lato\', sans-serif" font-size="16" fill="white">Balcony VIP</text>
+          <text x="220" y="35" font-family="\'Lato\', sans-serif" font-size="20" fill="white">Balcony Center</text>
+          <text x="60" y="45" font-family="\'Lato\', sans-serif" font-size="16" fill="white">Right</text>
+          <text x="50" y="65" font-family="\'Lato\', sans-serif" font-size="16" fill="white">Balcony</text>
+          <text x="485" y="45" font-family="\'Lato\', sans-serif" font-size="16" fill="white">Left</text>
+          <text x="475" y="65" font-family="\'Lato\', sans-serif" font-size="16" fill="white">Balcony</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+<script type="text/javascript">
+ var QtyInput = (function () {
+	var $qtyInputs = $(".qty-input");
+
+	if (!$qtyInputs.length) {
+		return;
+	}
+
+	var $inputs = $qtyInputs.find(".product-qty");
+	var $countBtn = $qtyInputs.find(".qty-count");
+	var qtyMin = parseInt($inputs.attr("min"));
+	var qtyMax = parseInt($inputs.attr("max"));
+
+	$inputs.change(function () {
+		var $this = $(this);
+		var $minusBtn = $this.siblings(".qty-count--minus");
+		var $addBtn = $this.siblings(".qty-count--add");
+		var qty = parseInt($this.val());
+
+		if (isNaN(qty) || qty <= qtyMin) {
+			$this.val(qtyMin);
+			$minusBtn.attr("disabled", true);
+		} else {
+			$minusBtn.attr("disabled", false);
+			
+			if(qty >= qtyMax){
+				$this.val(qtyMax);
+				$addBtn.attr('disabled', true);
+			} else {
+				$this.val(qty);
+				$addBtn.attr('disabled', false);
+			}
+		}
+	});
+
+	$countBtn.click(function () {
+		var operator = this.dataset.action;
+		var $this = $(this);
+		var $input = $this.siblings(".product-qty");
+		var qty = parseInt($input.val());
+
+		if (operator == "add") {
+			qty += 1;
+			if (qty >= qtyMin + 1) {
+				$this.siblings(".qty-count--minus").attr("disabled", false);
+			}
+
+			if (qty >= qtyMax) {
+				$this.attr("disabled", true);
+			}
+		} else {
+			qty = qty <= qtyMin ? qtyMin : (qty -= 1);
+			
+			if (qty == qtyMin) {
+				$this.attr("disabled", true);
+			}
+
+			if (qty < qtyMax) {
+				$this.siblings(".qty-count--add").attr("disabled", false);
+			}
+		}
+
+		$input.val(qty);
+	});
+})();
+	
+</script>
+</html>
