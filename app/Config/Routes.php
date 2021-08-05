@@ -54,9 +54,13 @@ $routes->group('',['filter'=>'isLoggedIn'],function($routes){
 	$routes->add('/section', 'Shows::ticket_booking');
 	$routes->add('/sms', 'Transactions::send_sms');
 	//$routes->add('/print', 'Shows::print_tickets');
+	$routes->add('/transactions', 'Transactions::index');
 	$routes->post('/shows/lookup', 'Transactions::lookup_transaction');
-	$routes->add('/get_token','StripeController::index');
-	//$routes->add('/payment_success','Shows::pay_success');
+	$routes->add('/get_token','StripeController::connectionToken');
+	$routes->add('/create_intent','StripeController::createPaymentIntent');
+	$routes->add('/capture_pay','StripeController::capturePayment');
+	//$routes->add('/')
+	$routes->add('/payment_success','Transactions::pay_success');
     //$routes->add('/send_natty_sms','Shows::sendd');
 });
 /*

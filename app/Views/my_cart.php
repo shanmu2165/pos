@@ -70,7 +70,7 @@ if (session("msg")) {
                             </form>
                         </div>
                     </div>
-                    <form method="POST" id="pay_form" action="<?= base_url() . '/transactions/pay_old'; ?>">
+                    <form method="POST" id="pay_form" action="<?= base_url() . '/transactions/'; ?>">
                         <?= csrf_field() ?>
                         <table class="table table-xs">
 

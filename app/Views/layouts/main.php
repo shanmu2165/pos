@@ -26,7 +26,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="<?= base_url('js/owl.carousel.js'); ?>"></script>
-    <script type="text/javascript" src="<?= base_url('js/custom.js'); ?>"></script>
+    
 </head>
 
 <body>

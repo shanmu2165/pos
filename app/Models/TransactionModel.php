@@ -9,7 +9,7 @@ class TransactionModel extends Model {
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
-    protected $allowedFields = ['type', 'site','status','name','email','phone','amount','randid','notes','timestamp'];
+    protected $allowedFields = ['type', 'site','status','name','email','phone','amount','randid','notes','content','timestamp'];
 
     function verify_qrcode($data) {
         

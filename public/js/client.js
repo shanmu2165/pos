@@ -10,27 +10,33 @@ function unexpectedDisconnect() {
 }
 
 function fetchConnectionToken() {
+  //alert('good');
   // Do not cache or hardcode the ConnectionToken. The SDK manages the ConnectionToken's lifecycle.
-  return fetch('/token.php', { method: "POST" })
-    .then(function(response) {
+  return fetch('http://localhost/pos/public/get_token', { method: "POST" })
+    .then(function (response) {
+      console.log("data full", response)
       return response.json();
+
     })
-    .then(function(data) {
+    .then(function (data) {
+      console.log("data secret", data.secret)
+      console.log("data full", data)
       return data.secret;
     });
 }
 
 // Handler for a "Discover readers" button
 function discoverReaderHandler() {
-  var config = {simulated: true};
-  terminal.discoverReaders(config).then(function(discoverResult) {
+  alert('helo');
+  const config = { simulated: false, location: 'tml_EQW9HwMPA2Etmm' };
+  terminal.discoverReaders(config).then(function (discoverResult) {
     if (discoverResult.error) {
       console.log('Failed to discover: ', discoverResult.error);
     } else if (discoverResult.discoveredReaders.length === 0) {
-        console.log('No available readers.');
+      console.log('No available readers.');
     } else {
-        discoveredReaders = discoverResult.discoveredReaders;
-        log('terminal.discoverReaders', discoveredReaders);
+      discoveredReaders = discoverResult.discoveredReaders;
+      log('terminal.discoverReaders', discoveredReaders);
     }
   });
 }
@@ -39,12 +45,12 @@ function discoverReaderHandler() {
 function connectReaderHandler(discoveredReaders) {
   // Just select the first reader here.
   var selectedReader = discoveredReaders[0];
-  terminal.connectReader(selectedReader).then(function(connectResult) {
+  terminal.connectReader(selectedReader).then(function (connectResult) {
     if (connectResult.error) {
       console.log('Failed to connect: ', connectResult.error);
     } else {
-        console.log('Connected to reader: ', connectResult.reader.label);
-        log('terminal.connectReader', connectResult)
+      console.log('Connected to reader: ', connectResult.reader.label);
+      log('terminal.connectReader', connectResult)
     }
   });
 }
@@ -52,35 +58,35 @@ function connectReaderHandler(discoveredReaders) {
 function fetchPaymentIntentClientSecret(amount) {
   const bodyContent = JSON.stringify({ amount: amount });
 
-  return fetch('/create.php', {
+  return fetch('http://localhost/pos/public/create_intent', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: bodyContent
   })
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(data) {
-    return data.client_secret;
-  });
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      return data.client_secret;
+    });
 }
 
 function collectPayment(amount) {
-  fetchPaymentIntentClientSecret(amount).then(function(client_secret) {
-      terminal.setSimulatorConfiguration({testCardNumber: '4242424242424242'});
-      terminal.collectPaymentMethod(client_secret).then(function(result) {
+  fetchPaymentIntentClientSecret(amount).then(function (client_secret) {
+    terminal.setSimulatorConfiguration({ testCardNumber: '4242424242424242' });
+    terminal.collectPaymentMethod(client_secret).then(function (result) {
       if (result.error) {
         // Placeholder for handling result.error
       } else {
-          log('terminal.collectPaymentMethod', result.paymentIntent);
-          terminal.processPayment(result.paymentIntent).then(function(result) {
+        log('terminal.collectPaymentMethod', result.paymentIntent);
+        terminal.processPayment(result.paymentIntent).then(function (result) {
           if (result.error) {
             console.log(result.error)
           } else if (result.paymentIntent) {
-              paymentIntentId = result.paymentIntent.id;
-              log('terminal.processPayment', result.paymentIntent);
+            paymentIntentId = result.paymentIntent.id;
+            log('terminal.processPayment', result.paymentIntent);
           }
         });
       }
@@ -92,16 +98,16 @@ function capture(paymentIntentId) {
   return fetch('/capture.php', {
     method: "POST",
     headers: {
-        'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     },
-      body: JSON.stringify({"id": paymentIntentId})
+    body: JSON.stringify({ "id": paymentIntentId })
   })
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(data) {
-    log('server.capture', data);
-  });
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      log('server.capture', data);
+    });
 }
 
 var discoveredReaders;
@@ -128,7 +134,7 @@ captureButton.addEventListener('click', async (event) => {
   capture(paymentIntentId);
 });
 
-function log(method, message){
+function log(method, message) {
   var logs = document.getElementById("logs");
   var title = document.createElement("div");
   var log = document.createElement("div");
@@ -160,12 +166,12 @@ function padSpaces(lineNumber, fixedWidth) {
   return " ".repeat(2 + fixedWidth - stringLengthOfInt(lineNumber));
 }
 
-function formatJson(message){
+function formatJson(message) {
   var lines = message.split('\n');
   var json = "";
   var lineNumberFixedWidth = stringLengthOfInt(lines.length);
-  for(var i = 1; i <= lines.length; i += 1){
-    line = i + padSpaces(i, lineNumberFixedWidth) + lines[i-1];
+  for (var i = 1; i <= lines.length; i += 1) {
+    line = i + padSpaces(i, lineNumberFixedWidth) + lines[i - 1];
     json = json + line + '\n';
   }
   return json
