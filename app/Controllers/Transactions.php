@@ -92,10 +92,10 @@ class Transactions extends BaseController {
         $success = $this->transaction_model->insert($pos_data);
 
          //Qrcode Path
-         $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
+         $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
-         
+         //echo $filepath; die;
         if($success) 
         {   
             //Qrcode Creation for Ticket transaction
