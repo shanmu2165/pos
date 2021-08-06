@@ -88,11 +88,13 @@ class Transactions extends BaseController {
         $data1['pcount'] = count($data1['item']);
         $random = mt_rand(100000000, 999999999);
         $pos_data['randid'] = "BSTD".$random;
+        $pos_data['amount'] = number_format($data1['total'],2);
         $pos_data['timestamp'] = date('Y-m-d h:i:a');
         $success = $this->transaction_model->insert($pos_data);
 
          //Qrcode Path
          $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
+         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
          //echo $filepath; die;
