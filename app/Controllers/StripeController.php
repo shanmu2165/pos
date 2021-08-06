@@ -15,7 +15,7 @@ class StripeController extends BaseController {
 
     function createPaymentIntent() {
 
-        \Stripe\Stripe::setApiKey('sk_test_Xzsj5A6cVQL5haA83JeSlznZ');
+        \Stripe\Stripe::setApiKey(getenv('stripetestsecret'));
         //header('Content-Type: application/json');
 
         try {
@@ -42,7 +42,7 @@ class StripeController extends BaseController {
 
     function capturePayment() {
 
-        \Stripe\Stripe::setApiKey('sk_test_Xzsj5A6cVQL5haA83JeSlznZ');
+        \Stripe\Stripe::setApiKey(getenv('stripetestsecret'));
         //header('Content-Type: application/json');
 
         try {
@@ -62,7 +62,7 @@ class StripeController extends BaseController {
     }
 
     function connectionToken() {
-        \Stripe\Stripe::setApiKey('sk_test_Xzsj5A6cVQL5haA83JeSlznZ');
+        \Stripe\Stripe::setApiKey(getenv('stripetestsecret'));
         
 
         try {
@@ -85,13 +85,13 @@ class StripeController extends BaseController {
 
     function createLocation() {
         $location = \Stripe\Location::create([
-            'display_name' => 'My First Store',
+            'display_name' => getenv('stripeDisplayName'),
             'address' => [
-              'line1' => "521 Hummingbird Hills Lane",
-              'city' => "Branson",
-              'state' => "MO",
+              'line1' => getenv('stripeLineOne'),
+              'city' => getenv('stripeCity'),
+              'state' => getenv('stripeState'),
               'country' => null,
-              'postal_code' => "65616",
+              'postal_code' => getenv('stripePostalCode'),
             ]
         ]);
         

@@ -38,8 +38,6 @@ class Transactions extends BaseController {
         $data['categories'] = $this->model->get_categories();
         $data['current'] = 'pay_option';
 
-        
-        //echo "<pre>"; print_r($_SESSION); "</pre>"; die;
         return view('payment_options',$data);
     }
     
@@ -47,7 +45,8 @@ class Transactions extends BaseController {
 
     //Function for payment capture
     function pay_success() {
-        //echo "<pre>"; print_r($_SESSION); "</pre>"; die; 
+        
+        
         $data = [];
         $pos_data = [];
         $data1 = [];
@@ -62,21 +61,34 @@ class Transactions extends BaseController {
             $pos_data['name'] = $this->request->getVar('fname'). " ".@$this->request->getVar('lname');
             $pos_data['email'] = $this->request->getVar('email');
             $pos_data['phone'] = $this->request->getVar('phone');
-            //$pos_data['content'] = $this->request->getVar('capture_pay');
-            $cap_pay = @$this->request->getVar('capture_pay');
-            $pos_data['type'] =  $this->request->getVar('payment_type');
+            
+            if(!empty($this->request->getVar('capture_pay'))) {
+                $cap_pay = @$this->request->getVar('capture_pay');
+                $pay_det = json_decode(@$this->request->getVar('capture_pay'));
+                $card_data = [
+                    'method' => $pay_det->charges->data[0]->payment_method_details->card_present->brand."**".$pay_det->charges->data[0]->payment_method_details->card_present->last4,
+                    'status' => $pay_det->charges->data[0]->outcome->type,
+                    'message' =>$pay_det->charges->data[0]->outcome->seller_message
+                ];
+                $pos_data['content'] = $cap_pay;
+            }
+
+            
+            if(!empty($this->request->getVar('payment_type'))) {
+                $pos_data['type'] =  @$this->request->getVar('payment_type');
+            } else {
+                $pos_data['type'] = "Voucher";  
+            }
+            
         }
-        //
-        //echo "<pre>"; print_r($_SESSION['cart']); "</pre>"; die;
+       
         $pos_data['notes'] = json_encode($_SESSION['cart']);
         $data1 = $_SESSION['cart'];
-        //echo "<pre>"; print_r($data1['ptotal']); "</pre>"; die;
+        
         $data1['pcount'] = count($data1['item']);
-        //
         $random = mt_rand(100000000, 999999999);
         $pos_data['randid'] = "BSTD".$random;
         $pos_data['timestamp'] = date('Y-m-d h:i:a');
-        //echo "<pre>"; print_r($data); "</pre>"; die;
         $success = $this->transaction_model->insert($pos_data);
 
          //Qrcode Path
@@ -241,7 +253,7 @@ class Transactions extends BaseController {
                                           </td></tr> ";
                                       } } //}
                                           //$body .="";
-                                      if(@$data1['cc_type'] != 2) {    
+                                      if(@$_SESSION['ccodeinfo']->type != 2) {    
                                       $body .="<tr>
                                           <td
                                               style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
@@ -381,17 +393,15 @@ class Transactions extends BaseController {
                       </p>
                       <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'>Status:</p>
                       <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'>
-                          <b>authorized</b></p>
+                          <b>".$card_data['status']."</b></p>
                       <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'>Timestamp:</p>
                       <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'><b>".date('Y-m-d h:i:s')."</b></p>
                   </td>
                   <td width='50%' class='stack-column-center'>
                       <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'>Method:</p>
-                      <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'><b>amex
-                              **3002</b></p>
+                      <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'><b>".$card_data['method']."</b></p>
                       <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'>Message:</p>
-                      <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'><b>Payment
-                              complete.</b></p>
+                      <p style='font-size: 16px;line-height: 25px;text-align: left; margin:0;color: #000;'><b>".$card_data['message']."</b></p>
                   </td>
               </tr>
           </table>";

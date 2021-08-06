@@ -88,6 +88,7 @@
                                     <input type="hidden" name="capture_pay" id="capture_pay">
                                 </div>
                             </div>
+                            <?php if($_SESSION['cart']['total'] > 0) { ?>
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Payment Type<sup>*</sup></label>
@@ -113,10 +114,11 @@
                                     
                                 </div>
                                 <div id="Cash" class="desc row" style="display: none;">
-                                    3 Cars
+                                   
                                 </div>
                                 
                             </div>
+                            <?php } ?>
                             <div class="row">
                                 <div class="col-sm-12" id="logs" style="display: none;"></div>
                             </div>
