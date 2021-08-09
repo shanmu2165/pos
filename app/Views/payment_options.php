@@ -92,7 +92,7 @@
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Payment Type<sup>*</sup></label>
-                                    <input type="radio" placeholder="Stripe" name="payment_type" id="stripe" value="Stripe">
+                                    <input type="radio" placeholder="Stripe" name="payment_type" id="stripe" value="Stripe" required>
                                     <label>Stripe</label>
                                     <input type="radio" placeholder="Cash" name="payment_type" id="cash" value="Cash">
                                     <label>Cash</label>
