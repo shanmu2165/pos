@@ -365,14 +365,17 @@ $(document).ready(function() {
 
 <?php if($current == 'ticket') { ?>
 
-
+ var totalQty =0;
+ var family_seat = 0;
+ var totQty = 0;
+ var k=0;
 function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
     const qtyMin = $("#" + ticketQtyReferer).attr("min");
     const qtyMax = $("#" + ticketQtyReferer).attr("max");
 
-    console.log(ticketPrice, "ticketPrice");
-    console.log(ticketQtyReferer, "ticketQtyReferer");
-    console.log(type, "type");
+    //console.log(ticketPrice, "ticketPrice");
+   // console.log(ticketQtyReferer, "ticketQtyReferer");
+    //console.log(type, "type");
 
     const prevTotal = $("#total_price").val();
     const formattedPrevTotal = parseFloat(prevTotal);
@@ -380,25 +383,25 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
 
     const currentQty = $("#" + ticketQtyReferer).val();
     const formattedCurrentQty = parseFloat(currentQty);
-    console.log(currentQty, "currentQty");
+   // console.log(currentQty, "currentQty");
 
     let newQty = 0;
     let total = 0;
-
     if (type === "add") {
-        newQty = formattedCurrentQty + 1;
+        newQty = formattedCurrentQty + 1; k++;
         total = formattedPrevTotal + formattedTicketPrice;
+        totalQty = totalQty + 1; 
         console.log(newQty + "Max - " + qtyMax);
         //Check max limit
         if (newQty >= qtyMax) {
             $("#add" + id).attr("disabled", true);
         }
     }
-    if (type === "sub") {
+    if (type === "sub") { k--;
         if (currentQty <= 0) {
             return
         }
-
+        totalQty = totalQty - 1;
         if (currentQty <= qtyMax) {
             $("#add" + id).attr("disabled", false);
         }
@@ -406,11 +409,21 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
         newQty = formattedCurrentQty - 1;
         total = formattedPrevTotal - formattedTicketPrice;
     }
-
-    console.log(newQty, "newQty");
-
+    
+    
+    
     $("#" + ticketQtyReferer).val(newQty)
-
+    console.log("Total Seats1", totalQty);
+    $("#total_qty").val(totalQty);
+    if($("#seats").val() > 0) {
+        var seats_value = parseInt($("#seats").val());
+        var tot = parseInt(totalQty) + parseInt(seats_value);
+        $("#tot_qty").val(parseInt(tot));
+    } else {
+        $("#tot_qty").val(totalQty);
+    }
+    
+    
     $("#total_price").val(total.toFixed(2));
     $("#td_total").html(total.toFixed(2));
 }
@@ -419,14 +432,32 @@ $(document).ready(function() {
     $(".seat_val").on("keyup change", function(e) {
         const seat = $(this).val();
         const max = parseFloat($(this).attr('max'));
-
+        
+        if(isNaN($(this).val())) {
+            family_seat = 0; 
+        } else {
+            family_seat = $("#seats").val();
+        }
+        if(family_seat > 0) {
+            totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat) - 1);
+        } else {
+            totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat)); 
+        }
+       // totQty = (parseInt($("#total_qty").val());
+       
+        console.log("Total Seats2", parseInt(totQty));
+        
         $("#seats").val(seat);
         if (seat > max) {
             $(this).val('0');
             $("#seats").val('0');
         }
+        //console.log(family_seat, "Family");
+        $("#tot_qty").val(totQty);
+        
     });
 });
+
 <?php } ?>
 <?php if($current == 'cart') { ?>
 var QtyInput = (function() {

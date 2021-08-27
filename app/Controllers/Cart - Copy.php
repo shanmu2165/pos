@@ -21,9 +21,7 @@ class Cart extends BaseController {
 
     //Function for Cart Page
     function index($data = '')
-    {  
-      $quantity = array_slice($_SESSION['quantity_details'], 15);
-      
+    {  echo "<pre>"; print_r($_SESSION['cart_details']); "</pre>"; die;
       $data = [];
       //echo "<pre>"; print_r($this->request->getVar()); "</pre>"; die;
       $data['page_title'] = 'POS - Tickets';
@@ -32,94 +30,89 @@ class Cart extends BaseController {
       //$date['coupon_url'] = base_url().'/shows/apply_coupon';
       $data['categories'] = $this->model->get_categories();
       $data['current'] = 'cart';
-      $data['go_back'] = @$_SESSION['quantity_details']['referrer'];
-
-      if($_SESSION['cart_details']){ 
-          $cart = array();
+      $data['go_back'] = $this->request->getVar('referrer');
+      if($this->request->getVar()){ 
+      $cart = array();
           $total = 0;
-          $data['pcount'] = @$_SESSION['cart_details']['pcount'];
-          $data['priceset'] = $_SESSION['cart_details']['priceset'];
-          $data['location'] = ucwords(str_replace("-"," ",@$_SESSION['cart_details']['section']));
-          $data['time'] = @$_SESSION['cart_details']['time'];
-          $data['date'] = @$_SESSION['cart_details']['date'];
-          $data['venue'] = @$_SESSION['cart_details']['venue'];
-          $data['total_price'] = @$_SESSION['cart_details']['total_price'];
+      $data['pcount'] = $this->request->getVar('pcount');
+      $data['priceset'] = $this->request->getVar('priceset');
+      $data['location'] = ucwords(str_replace("-"," ",$this->request->getVar('location')));
+      $data['time'] = $this->request->getVar('time');
+      $data['date'] = $this->request->getVar('date');
+      $data['venue'] = $this->request->getVar('venue');
+      $data['total_price'] = $this->request->getVar('total_price');
 
-          $data['content'] = @$_SESSION['cart_details']['content'];
-          
-          $data['content_detail'] = $this->model->get_show($data['content']); 
-          $data['price_dtl'] = $this->model->get_price_data($data['priceset']);
-          $data['venue_detail'] = $this->model->get_venue($data['venue']);
-          $data['taxinclusive'] = @$_SESSION['quantity_details']['taxinclusive'];
-          $data['feesinclusive'] = @$_SESSION['quantity_details']['feesinclusive'];
+      $data['content'] = $this->request->getVar('content');
+      
+      $data['content_detail'] = $this->model->get_show($data['content']); 
+      $data['price_dtl'] = $this->model->get_price_data($data['priceset']);
+      $data['venue_detail'] = $this->model->get_venue($data['venue']);
+      $data['taxinclusive'] = $this->request->getVar('taxinclusive');
+      $data['feesinclusive'] = $this->request->getVar('feesinclusive');
 
       
-          $contenttax = 0;
-          $content = '';
-          $contentLogo = '';
-          $qty = NULL;
-          //$loc = ucwords(str_replace("-"," ",$data['item']['location']));
-          
-          //Get Site Tax from settings table
-          $tax = $this->model->getTax();
-          if(!empty($tax)) {
-            $contenttax = $tax[0]->value1;
-          }
-          
-          foreach($data['content_detail'] as $value) {
-            $content = $value->title;
-            $contentLogo = $value->image2;
-          }
-      }
-      if($quantity) {  
-        $cart = array(); $tc = 0;
-        for($x = 1; $x<= $data['pcount']; $x++) {
-          if($quantity["qty".$x.""] > 0) {
-            
-          $tc++;
-          }
-          $cart['item'][$x] =array(
-          'name' => $quantity["type".$x."_desc"],
-          'qty' => $quantity["qty".$x.""],
-          //'tcount' => $tc,
-          'price' => floatval($quantity["type".$x."_price"]),
-          'date'=>$data['date'],
-          'time'=>$data['time'],
-          'taxinclusive'=>$data['taxinclusive'],
-            'feesinclusive'=>$data['feesinclusive'],
-          'location' => $data['location'],
-          'contentTax' => $contenttax,
-          'logo'=>$contentLogo,
-          'venue' => $data['venue_detail'][0]->name
-        );
-        }
-
-        if(!empty($_SESSION['cart_details']['family_seats'])) {
-          $cart['family_seats'] = @$_SESSION['cart_details']['family_seats'];
-        }
-
-        $cart['content'] = $data["content_detail"];
-        $cart['venue'] = $data['venue_detail'][0]->name;
-        $cart['itotal'] = $data['total_price'];
-        $cart['total'] = $data['total_price'];
-        $cart['salestax'] = getenv('salestax');
-        $cart['processingfees'] = getenv('processingfees');
-      
-        if($cart['salestax'] > 0) {
-          $cart['total'] = $cart['total'] + $cart['salestax'];
-        }
-        if($cart['processingfees'] > 0) {
-          $cart['total'] = $cart['total'] + $cart['processingfees'];
-        }
-        $cart['tcount'] = $tc;
-        //$cart['tcount'] = $data['pcount'];
-        //unset($_SESSION['cart']); die;
-        //$jsoncart = json_encode($cart);
-        $cart['seats_selected'] = $_SESSION['cart_details']['seat_arr'];
-        $this->session->set('cart', $cart);
-      } 
+       $contenttax = 0;
+       $content = '';
+       $contentLogo = '';
+       $qty = NULL;
+       //$loc = ucwords(str_replace("-"," ",$data['item']['location']));
        
-      //print_r($_SESSION['cart']['seats_selected']); die;
+       //Get Site Tax from settings table
+       $tax = $this->model->getTax();
+       if(!empty($tax)) {
+         $contenttax = $tax[0]->value1;
+       }
+       
+       foreach($data['content_detail'] as $value) {
+         $content = $value->title;
+         $contentLogo = $value->image2;
+       }
+     }
+      if($this->request->getVar()) {  
+      $cart = array(); $tc = 0;
+     for($x = 1; $x<= $data['pcount']; $x++) {
+        if($this->request->getVar("qty".$x."") > 0) {
+         $tc++;
+        }
+        $cart['item'][$x] =array(
+         'name' => $this->request->getVar("type".$x."_desc"),
+         'qty' => $this->request->getVar("qty".$x.""),
+         //'tcount' => $tc,
+         'price' => floatval($this->request->getVar("type".$x."_price")),
+         'date'=>$data['date'],
+         'time'=>$data['time'],
+         'taxinclusive'=>$data['taxinclusive'],
+                 'feesinclusive'=>$data['feesinclusive'],
+         'location' => $data['location'],
+         'contentTax' => $contenttax,
+         'logo'=>$contentLogo,
+         'venue' => $data['venue_detail'][0]->name
+       );
+       }
+       if(!empty($this->request->getVar('family_seats'))) {
+         $cart['family_seats'] = @$this->request->getVar('family_seats');
+       }
+       $cart['content'] = $data["content_detail"];
+       $cart['venue'] = $data['venue_detail'][0]->name;
+       $cart['itotal'] = $data['total_price'];
+       $cart['total'] = $data['total_price'];
+       $cart['salestax'] = getenv('salestax');
+       $cart['processingfees'] = getenv('processingfees');
+      
+       if($cart['salestax'] > 0) {
+         $cart['total'] = $cart['total'] + $cart['salestax'];
+       }
+       if($cart['processingfees'] > 0) {
+         $cart['total'] = $cart['total'] + $cart['processingfees'];
+       }
+       $cart['tcount'] = $tc;
+       //$cart['tcount'] = $data['pcount'];
+       //unset($_SESSION['cart']); die;
+       //$jsoncart = json_encode($cart);
+       $this->session->set('cart', $cart);
+     } 
+       
+      //echo "<pre>"; print_r($_SESSION['cart']['item']); "</pre>"; die;
       return view('my_cart',$data);
     }
 

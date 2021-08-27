@@ -29,7 +29,7 @@ class Transactions extends BaseController {
     }
 
     function index() { 
-        
+        //print_r($_SESSION['cart_details']); die;
         $data = [];
         $data['page_title'] = 'POS - Select Payment Option';
         $data['search_url'] = base_url().'/shows/search';
@@ -92,6 +92,8 @@ class Transactions extends BaseController {
         $pos_data['timestamp'] = date('Y-m-d h:i:a');
         $success = $this->transaction_model->insert($pos_data);
 
+        $update_seats = $this->model->update_individual_seats_booked($_SESSION['cart_details']['content'],$_SESSION['cart_details']['venue'],$_SESSION['cart_details']['date'],$_SESSION['cart_details']['time'],$_SESSION['cart_details']['section'],$_SESSION['cart_details']['seat_arr'],$success);
+        //print_r($success); die;
          //Qrcode Path
          $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
          //$filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
@@ -514,14 +516,27 @@ class Transactions extends BaseController {
           $twilio_number = getenv('twiliono');
   
           $client = new Client($account_sid, $auth_token);
-          $client->messages->create(
-              // Where to send a text message (your cell phone?)
-              $no,
-              array(
-                  'from' => $twilio_number,
-                  'body' => $body
-              )
-          );
+            try {
+                $client->messages->create(
+                    // Where to send a text message (your cell phone?)
+                    $no,
+                    array(
+                        'from' => $twilio_number,
+                        'body' => $body
+                    )
+                );
+                // $client->messages
+                //   ->create($no, // to
+                //            ["body" => "Hi there", "from" => $twilio_number]
+                // );
+                $this->session->setFlashdata('msg', "SMS send successfully");
+                return redirect()->to('/shows');
+            } catch (TwilioException $e) {
+                Log::error(
+                    'Could not send SMS notification.' .
+                    ' Twilio replied with: ' . $e
+                );
+            }
           
     }
 }

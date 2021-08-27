@@ -150,6 +150,7 @@
                                     $otr .=  '</div>';   
                                 } ?>
                 </div>
+                <input type="hidden" name="venueid" value="<?= $listingoptions['venues'][0]->id; ?>">
             </form>
         </div>
     </div>

@@ -168,7 +168,14 @@ if (!empty($_SESSION['cart']['item'])) {
         }
     }
 }
+$seats = implode(",",$_SESSION['cart']['seats_selected']); 
 ?>
+                            <tr>
+                                <td colspan="5">
+                                Selected Seats : - <?= $seats; ?>
+                                </td>
+
+                            </tr>
 
                             <input type="hidden" name="tot_qty" value="<?= $tot_qty; ?>">
                             <input type="hidden" name="tot_amount"

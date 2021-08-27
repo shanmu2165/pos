@@ -1,119 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
+<?= $this->extend('layouts/main'); ?>
+<?= $this->section('content'); ?>
+    <style>
+        .blink_me {
+               animation: blinker 1s linear infinite;
+        }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pos</title>
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css"
-        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap">
-    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css?ver=5.6">
-    <link rel="stylesheet" type="text/css" href="<?= base_url('css/style.css'); ?>" />
-    <link rel="stylesheet" type="text/css" href="<?= base_url('css/table-date.css'); ?>" />
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.css" />
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick-theme.min.css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.js"></script>
-</head>
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
 
-<body>
-    <header class="blog-header py-3">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 search-top">
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
-                <div class="col-lg-4 col-md-4 text-center logo-top"> <a class="link-secondary" href="#"
-                        aria-label="Search"> <img src="images/logo.png" alt="" /> </a> </div>
-                <div class="col-lg-4 col-md-4 right-menu">
-                    <!-- Large button groups (default and split) -->
-                    <div class="right-top">
-                        <div class="dropdown category">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false"> Category </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Category 1</a></li>
-                                <li><a class="dropdown-item" href="#">Category 2</a></li>
-                                <li><a class="dropdown-item" href="#">Category 3</a></li>
-                            </ul>
-                        </div>
-                        <div class="dropdown language">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false"> Dropdown button </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">English</a></li>
-                                <li><a class="dropdown-item" href="#">French</a></li>
-                            </ul>
-                        </div>
-                        <div class="dropdown user">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false"> User </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="right-bottom"> <a href="#">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModalXl">Lookup Transaction</button>
-                            <div class="modal fade" id="exampleModalXl" tabindex="-1"
-                                aria-labelledby="exampleModalXlLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-xl lookup">
-                                    <div class="modal-content">
-                                        <div class="modal-header mb-4">
-                                            <h5 class="modal-title h4" id="exampleModalXlLabel">Lookup Transaction</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-left">
-                                                        <div class="form-group">
-                                                            <label for="">Transaction id</label>
-                                                            <select class="form-select mb-3"
-                                                                aria-label=".form-select-lg example">
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 text-left">
-                                                        <div class="form-group">
-                                                            <label for="exampleInputEmail1">Email address</label>
-                                                            <input type="email" class="form-control"
-                                                                id="exampleInputEmail1" aria-describedby="emailHelp"
-                                                                placeholder="Enter email">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12 text-center pt-4 pb-4">
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a> </div>
-                </div>
-            </div>
-        </div>
-    </header>
+        .seat {
+  background: url('../public/images/available.png') no-repeat;
+  background-size: 50px;
+  height: 50px;
+  width: 50px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 1px 1px 1px #333;
+  font-size: 18px;
+}
+
+.booked {
+  background: url('../public/images/booked.png') no-repeat; background-size: 50px;cursor: not-allowed !important;
+}
+.special {
+  background: url('../public/images/special.png') no-repeat; background-size: 50px;
+}
+.selected {
+  background: url('../public/images/selected.png') no-repeat; background-size: 50px;
+}
+.seat:nth-of-type(2) {
+  margin-right: 0px;
+}
+.seat:nth-last-of-type(2) {
+  margin-left: 0px;
+}
+.seat:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+.showcase .seat:not(.occupied):hover {
+  cursor: default;
+  transform: scale(1);
+}
+
+.showcase .seat:not(.occupied):hover {
+  cursor: default;
+  transform: scale(1);
+}
+.product-seats .showcase {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  background: rgba(0,0,0,0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #777;
+}
+.product-seats .showcase li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+.product-seats .showcase li small {
+  margin-left: 2px;
+}
+
+
+.overlay{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: rgba(255,255,255,0.8) url("../public/images/loader_img.gif") center no-repeat;
+}
+/* Turn off scrollbar when section element has the loading class */
+section.loading{
+    overflow: hidden;   
+}
+/* Make spinner image visible when section element has the loading class */
+section.loading .overlay{
+    display: block;
+}
+    </style>
+    <link rel="stylesheet" href="<?= base_url('css/H-confirm-alert.css'); ?>">
+    <script src="<?= base_url('js/H-confirm-alert.js'); ?>" ></script>
     <section class="content-part pt-4 pb-4">
         <div class="banner-section">
             <div class="container-fluid">
@@ -126,80 +109,12 @@
         </div>
         <div class="product-details bg-white">
             <div class="container pt-5 pb-5">
-                <div class="row">
-                    <div class="col-lg-6 col-md-12">
-                        <div class="ticket-details">
-                            <h4>Purchase Tickets for
-                                the 8:00 pm Show on
-                                May 15, 2021</h4>
-                            <div class="step1-ticket">
-                                <h2>Step 1: Select A Section</h2>
-                                <div class="tsec">
-                                    <span class="dgrey"><a href="#">Left</a></span>
-                                    <span class="dblue"><a href="#">Left</a></span>
-                                    <span class="dgreen"><a href="#">Left</a></span>
-                                </div>
-                                <div class="tsec">
-                                    <span class="dgrey"><a href="#">center</a></span>
-                                    <span class="dblue"><a href="#">center</a></span>
-                                    <span class="dgreen"><a href="#">center</a></span>
-                                </div>
-                                <div class="tsec">
-                                    <span class="dgrey"><a href="#">Right</a></span>
-                                    <span class="dblue"><a href="#">Right</a></span>
-                                    <span class="dgreen"><a href="#">Right</a></span>
-                                </div>
-                            </div>
-                            <div class="step2-ticket">
-                                <table class="table mt-4" style="border:none;">
-                                    <tr>
-                                        <th>
-                                            <h4>Regular Seating</h4>
-                                        </th>
-                                        <th></th>
-                                        <th>
-                                            <h4>Quantity</h4>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h6>Adult (ages 13 and up)</h6>
-                                        </td>
-                                        <td><strong>$30.00</strong></td>
-                                        <td>
-                                            <div class="qty-input">
-                                                <button class="qty-count qty-count--minus" data-action="minus"
-                                                    type="button">-</button>
-                                                <input class="product-qty" type="number" name="product-qty" min="0"
-                                                    max="10" value="1">
-                                                <button class="qty-count qty-count--add" data-action="add"
-                                                    type="button">+</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h6>Child (12 and under)</h6>
-                                        </td>
-                                        <td><strong>$0.00</strong></td>
-                                        <td>
-                                            <div class="qty-input">
-                                                <button class="qty-count qty-count--minus" data-action="minus"
-                                                    type="button">-</button>
-                                                <input class="product-qty" type="number" name="product-qty" min="0"
-                                                    max="10" value="1">
-                                                <button class="qty-count qty-count--add" data-action="add"
-                                                    type="button">+</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12">
+                  <div class="row">
+                    
+                    
+                    <div class="col-lg-12 col-md-12">
                         <div class="product-seats">
+                            <?php if(!empty($seats)) { ?>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 mb-3">
                                     <button type="button" class="btn btn-primary">Assign Best Available</button>
@@ -208,301 +123,216 @@
                                     <button type="button" class="btn btn-primary">Clear Set Selections</button>
                                 </div>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">A</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td class="dgrey">6</td>
-                                            <td>5</td>
-                                            <td>4</td>
-                                            <td class="dblue">3</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td class="dgreen">5</td>
-                                            <td>6</td>
-                                            <td>7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">A</th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">B</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td>6</td>
-                                            <td>5</td>
-                                            <td class="dgreen">4</td>
-                                            <td>3</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td class="dblue">2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>6</td>
-                                            <td class="dgrey">7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">B</th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">C</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td class="dgrey">6</td>
-                                            <td>5</td>
-                                            <td>4</td>
-                                            <td>3</td>
-                                            <td>2</td>
-                                            <td class="dblue">1</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>6</td>
-                                            <td>7</td>
-                                            <td class="dgreen">8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">C</th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">D</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td>6</td>
-                                            <td>5</td>
-                                            <td>4</td>
-                                            <td>3</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>6</td>
-                                            <td>7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">D</th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">E</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td class="dgrey">6</td>
-                                            <td>5</td>
-                                            <td>4</td>
-                                            <td class="dblue">3</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td class="dgreen">5</td>
-                                            <td>6</td>
-                                            <td>7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">E</th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">F</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td class="dgrey">6</td>
-                                            <td>5</td>
-                                            <td>4</td>
-                                            <td class="dblue">3</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td class="dgreen">5</td>
-                                            <td>6</td>
-                                            <td>7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">F</th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">G</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td>6</td>
-                                            <td>5</td>
-                                            <td class="dgreen">4</td>
-                                            <td>3</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td class="dblue">2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>6</td>
-                                            <td class="dgrey">7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">G</th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">H</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td class="dgrey">6</td>
-                                            <td>5</td>
-                                            <td>4</td>
-                                            <td class="dblue">3</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td class="dgreen">5</td>
-                                            <td>6</td>
-                                            <td>7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">H</th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">I</th>
-                                            <td>10</td>
-                                            <td>9</td>
-                                            <td>8</td>
-                                            <td>7</td>
-                                            <td class="dgrey">6</td>
-                                            <td>5</td>
-                                            <td>4</td>
-                                            <td class="dblue">3</td>
-                                            <td>2</td>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td class="dgreen">5</td>
-                                            <td>6</td>
-                                            <td>7</td>
-                                            <td>8</td>
-                                            <td>9</td>
-                                            <td>10</td>
-                                            <th scope="row">I</th>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <ul class="showcase">
+                                <li>
+                                  <div class="seat "></div>
+                                  <small>Available</small>
+                                </li>
+                                <li>
+                                  <div class="seat selected"></div>
+                                  <small>Selected</small>
+                                </li>    
+                                <li>
+                                  <div class="seat special"></div>
+                                  <small>Special</small>
+                                </li> 
+                                <li>
+                                  <div class="seat booked"></div>
+                                  <small>Booked</small>
+                                </li>    
+                            </ul>
+                            
+                            <div style="display:none;">
+                              <span id="content"><?= $content; ?></span>
+                              <span id="venue"><?= $venueid; ?></span>
+                              <span id="date"><?= $rdate; ?></span>
+                              <span id="time"><?= $time; ?></span>
+                              <span id="section"><?= $venue_sec[0]->name; ?></span>
+                              <span id="location"><?= $location; ?></span>
+                              <span id="priceset"><?= $priceset; ?></span>
+                              <span id="pcount"><?= $pcount; ?></span>
+                              <span id="total_price"><?= $total_price; ?></span>
+                              <span id="family_seats"><?= $family_seats; ?></span>
+                              <span id="total_seats_sel"><?= $total_seats_sel; ?></span>
+                              <!-- <span id="date"></span> -->
+                            </div>
+                            <?php } ?>
+                            <div class="seating">
+                              
+                            <?php if(!empty($seats)) {
+                                    for($i=1; $i<=$venue_sec[0]->total_rows; $i++) { ?>
+                                       <span>Row <?= $i ?></span>
+                                      <div class="row">    
+                                      <?php  foreach($seats as $seat) {  
+                                          if($seat->seatrow == $i) { 
+                                            $status = '';
+                                          if(!empty($already_booked) && in_array($i."-".$seat->seat, $already_booked)){ $status = "booked";} ?>
+                                        <div class="seat <?= $status; ?>" data-value="<?= $i."-".$seat->seat; ?>"><?= $seat->seat; ?>
+                                       
+                                      </div>
+                                        <?php } } ?> 
+                                      </div>
+                                     
+                            <?php   }  ?> 
+                                       <p class="text">
+                                       You have selected <span id="count">0</span>
+                                     </p>
+                                     
+                                     <?php  } else {?>
+                                       <div style="text-align:center;"><span style="color:red !important;" class="blink_me">No Seats Assigned Yet!</span></div>
+                            <?php } ?>
+
+                            <button type="button" id="tick_submit" class="btn btn-primary">Proceed</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="overlay"></div>
+    </section>
+    <script type="text/javascript">
+        const container = document.querySelector('.seating');
+        const seats = document.querySelectorAll('.row .seat:not(.booked)');
+        let count = document.getElementById('count');
+        let selectedSeatsArr = [];
 
-        </div>
-</body>
-<script type="text/javascript">
-var QtyInput = (function() {
-    var $qtyInputs = $(".qty-input");
-
-    if (!$qtyInputs.length) {
-        return;
-    }
-
-    var $inputs = $qtyInputs.find(".product-qty");
-    var $countBtn = $qtyInputs.find(".qty-count");
-    var qtyMin = parseInt($inputs.attr("min"));
-    var qtyMax = parseInt($inputs.attr("max"));
-
-    $inputs.change(function() {
-        var $this = $(this);
-        var $minusBtn = $this.siblings(".qty-count--minus");
-        var $addBtn = $this.siblings(".qty-count--add");
-        var qty = parseInt($this.val());
-
-        if (isNaN(qty) || qty <= qtyMin) {
-            $this.val(qtyMin);
-            $minusBtn.attr("disabled", true);
-        } else {
-            $minusBtn.attr("disabled", false);
-
-            if (qty >= qtyMax) {
-                $this.val(qtyMax);
-                $addBtn.attr('disabled', true);
-            } else {
-                $this.val(qty);
-                $addBtn.attr('disabled', false);
-            }
-        }
-    });
-
-    $countBtn.click(function() {
-        var operator = this.dataset.action;
-        var $this = $(this);
-        var $input = $this.siblings(".product-qty");
-        var qty = parseInt($input.val());
-
-        if (operator == "add") {
-            qty += 1;
-            if (qty >= qtyMin + 1) {
-                $this.siblings(".qty-count--minus").attr("disabled", false);
-            }
-
-            if (qty >= qtyMax) {
-                $this.attr("disabled", true);
-            }
-        } else {
-            qty = qty <= qtyMin ? qtyMin : (qty -= 1);
-
-            if (qty == qtyMin) {
-                $this.attr("disabled", true);
-            }
-
-            if (qty < qtyMax) {
-                $this.siblings(".qty-count--add").attr("disabled", false);
-            }
+        function updateSelectedCount(selectedCount) {
+          count.innerText = selectedCount;
+          console.log('countText:',count.innerText);
+          console.log("Final Array:",selectedSeatsArr)
         }
 
-        $input.val(qty);
-    });
-})();
-</script>
+        // Remove seat no without affecting index
+        function remove_array_element(array, n)
+        {
+          var index = array.indexOf(n);
+          if (index > -1) {
+            array.splice(index, 1);
+          }
+          return array;
+        }
 
-</html>
+        //test start
+        $(".seating .seat").on("click", function(){
+          const seatValue = $(this).data("value");
+            
+          if(selectedSeatsArr.includes(seatValue) == false) {
+            //Push seat value to global variable - for using in PHP
+             selectedSeatsArr.push(seatValue);
+          } else { 
+            //selectedSeatsArr.pop(seatValue);
+            selectedSeatsArr = remove_array_element(selectedSeatsArr,seatValue);
+          }
+        });
+        //test end
+
+//Seat click event
+container.addEventListener('click', e => {
+  console.log("seat clicked");
+  const selectedSeats = document.querySelectorAll('.row .seat.selected');
+  let selectedSeatsCount = selectedSeats.length;
+  var totalSelectedSeats = parseInt($("#total_seats_sel").text()) + 1;  
+
+  if (e.target.classList.contains('seat') &&
+     !e.target.classList.contains('booked') && e.target.classList['value']!= 'seat selected') {
+       
+      if(selectedSeatsCount < totalSelectedSeats) {
+        //console.log('here1')
+        e.target.classList.toggle('selected');
+        
+        updateSelectedCount(selectedSeatsCount);
+
+      } else {
+       //console.log(count);
+              $.confirm.show({
+                "message":"Seat selected by you exceeded your ticket limits.",
+                "hideNo":true,// hide cancel button
+                "yesText":"OK",
+                "yes":function (){
+                },
+              })
+      }
+  } else {
+    e.target.classList.toggle('selected');
+          selectedSeatsCount = selectedSeatsCount - 1;
+       
+        console.log(selectedSeatsCount)
+        updateSelectedCount(selectedSeatsCount);
+  }
+});
+
+$("#tick_submit").click(function(){
+ 
+          
+        $.ajax({
+            type: "POST",
+            url: '<?= base_url() . '/check_selectedseats_booked'; ?>',
+            data: {
+              content: $('#content').text(),
+              venue: $('#venue').text(), 
+              date: $('#date').text(),
+              time: $('#time').text(),
+              section: $('#section').text(),
+              seat_arr: selectedSeatsArr
+            },
+            beforeSend: function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+              $("section").addClass("loading");
+            },
+            success: function(data){
+              
+              $("section").removeClass("loading"); 
+              //console.log("Result",data);
+              if(data === 'false') {
+                
+                $.ajax({
+                      type: "POST",
+                      url: '<?= base_url() . '/lock_seats'; ?>',
+                      data: {
+                        content: $('#content').text(),
+                        venue: $('#venue').text(), 
+                        date: $('#date').text(),
+                        time: $('#time').text(),
+                        section: $('#section').text(),
+                        location: $('#location').text(),
+                        priceset: $('#priceset').text(),
+                        pcount: $('#pcount').text(),
+                        total_price: $('#total_price').text(),
+                        family_seats:$('#family_seats').text(),
+                        tot_seats_selected : $('#total_seats_sel').text(),
+                        seat_arr: selectedSeatsArr
+                      },
+                      success: function(data){
+                        $("#result").append(data);
+                        
+                       window.location.href = "<?= base_url() . '/cart/'; ?>" ;
+                      },
+                      error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                      } 
+                });
+
+              } else {
+               
+                $.confirm.show({
+                        "message":"Seat(s) selected by you is already booked. Please  select your seats again!",
+                        "hideNo":true,// hide cancel button
+                        "yesText":"OK",
+                        //"type":"danger",
+                        "yes":function (){
+                          $("section").addClass("loading");
+                          setTimeout(location.reload.bind(location), 2000);
+                        },
+                        
+                })
+                console.log(data);
+              }
+              
+            },
+            error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+            } 
+        });      
+});
+    </script>
+<?= $this->endSection(); ?>

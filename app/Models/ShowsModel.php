@@ -9,6 +9,7 @@ class ShowsModel extends Model {
     protected $returnType     = 'array';
 
     function get_all_shows($ids=NULL) {
+        //print_r($ids); die;
         $db      = \Config\Database::connect();
         if(!empty($ids)) { 
             $query = $db->query("SELECT id,title,image,summary FROM content WHERE type='listing' AND `id` IN ($ids) ORDER BY title ASC");
@@ -140,6 +141,64 @@ class ShowsModel extends Model {
         $query = $db->query("SELECT * FROM venues WHERE id='".$id."' LIMIT 1");
         $content = $query->getResult();
         return $content; 
+    }
+
+    function get_venue_section($venid,$sec) {
+        $secval = ucfirst($sec);
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT * FROM venue_sections WHERE venue='".$venid."' AND name='".$secval."' LIMIT 1");
+        $content = $query->getResult();
+        return $content; 
+    }
+
+    function get_seats($id,$sec) {
+
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT * FROM venue_seats WHERE venue='".$id."' AND section='".$sec."'");
+        $content = $query->getResult();
+        return $content; 
+    }
+
+    function get_already_booked($content,$venue,$date,$time,$sec) {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT seatrow,seat FROM seats WHERE content='".$content."' AND venue='".$venue."' AND date='".$date."' AND time='".$time."' AND section='".$sec."'");
+        $content = $query->getResult();
+        return $content; 
+    }
+
+    function check_individual_seat_booked($film,$venue,$date,$time,$sec,$seat) {
+        $db      = \Config\Database::connect();
+        $total_count = count($seat);
+        $content =array();
+        for($i = 0; $i < $total_count; $i++) {
+            $row = explode("-",$seat[$i]);
+            
+            $query = $db->query("SELECT seatrow,seat FROM seats WHERE content='".$film."' AND venue='".$venue."' AND date='".$date."' AND time='".$time."' AND section='".$sec."' AND seatrow='".$row[0]."' AND seat='".$row[1]."'");
+            $content[$i] = $query->getResult();
+          
+        }
+        $filter = array_filter($content);
+       
+            if(count($filter) > 0) {
+                return true; 
+            } else {
+                return false;
+            }
+            
+    }
+
+    function update_individual_seats_booked($film,$venue,$date,$time,$sec,$seat,$transid) {
+        $db      = \Config\Database::connect();
+        $total_count = count($seat);
+        $content =array();
+        for($i = 0; $i < $total_count; $i++) {
+            $row = explode("-",$seat[$i]);
+            
+            $query = $db->query("UPDATE seats SET status=1, transaction='".$transid."', end_time=0, lastmod='".date('Y-m-d h:i:a')."' WHERE content='".$film."' AND venue='".$venue."' AND date='".$date."' AND time='".$time."' AND section='".$sec."' AND seatrow='".$row[0]."' AND seat='".$row[1]."'");
+            //$content = $query->getResult();
+          
+        }
+        return $query;
     }
 
     function get_price_exception($content,$date) {

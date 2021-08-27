@@ -14,6 +14,7 @@ class Shows extends BaseController {
       $this->user = new \App\Models\UserModel();
       $this->transaction_model = new \App\Models\TransactionModel();
       $this->session = session();
+      $this->db = \Config\Database::connect();
       if(isset($_SESSION['user_id'])) { 
         $this->user_detail = $this->user->find($_SESSION['user_id']);
       }
@@ -377,7 +378,7 @@ class Shows extends BaseController {
         } 
         
       }
-       //echo "<pre>"; print_r($data['listingoptions']['opts']); "</pre>"; die;
+       //echo "<pre>"; print_r($data); "</pre>"; die;
       return view('product_layout',$data);
     }
 
@@ -399,8 +400,55 @@ class Shows extends BaseController {
         return $data;
     }
 
+    //Function for seatings
+    function seating() {
+      //echo "<pre>"; print_r($_POST); "</pre>"; die;
+
+      $data = [];
+      $this->session->set('quantity_details',$_POST);
+      
+      $data['time'] = $this->request->getVar('time');
+      $data['rdate'] = $this->request->getVar('date');
+      $data['content'] = $this->request->getVar('content');
+      $data['priceset'] = $this->request->getVar('priceset');
+      $data['location'] = $this->request->getVar('location');
+      $data['showid'] = $this->request->getVar('showid');
+      $data['pcount'] = $this->request->getVar('pcount');
+      $data['venueid'] = $this->request->getVar('venue');
+      $data['total_price'] = $this->request->getVar('total_price');
+      $data['family_seats'] = $this->request->getVar('family_seats');
+      $data['total_seats_sel'] = $this->request->getVar('tot_qty');
+      
+      $data['page_title'] = 'POS - Ticket Booking';
+      $data['search_url'] = base_url().'/shows/search';
+      $data['form_action'] = base_url().'/cart';
+      $data['current'] = 'seats';
+      $data['referrer'] = current_url();
+      $data['go_back'] = $this->request->getUserAgent()->getReferrer();
+      $data['categories'] = $this->model->get_categories();
+
+      $data['venue_sec'] = $this->model->get_venue_section($data['venueid'],$data['location']); 
+      //
+      if(!empty($data['venue_sec'])) {
+        $data['seats'] = $this->model->get_seats($data['venueid'],$data['venue_sec'][0]->id); 
+        $sec = ucfirst($data['location']);
+        @$data['already_booked_data'] = $this->model->get_already_booked($data['content'],$data['venueid'],$data['rdate'],$data['time'],$sec);
+        //
+        $already_count = count($data['already_booked_data']);
+        for($i = 0; $i < $already_count; $i++) {
+          $data['already_booked'][$i] = $data['already_booked_data'][$i]->seatrow."-".$data['already_booked_data'][$i]->seat;
+        }
+        //echo "<pre>"; print_r($data['already_booked']); "</pre>"; die;
+      } else {
+        $data['seats'] = [];
+
+      }
+      
+      return view('product_seating',$data);
+    }
     //Function for show ticket selection
     function ticket_booking() {
+      //print_r($_POST); die;
       $data = [];
       $data['time'] = $this->request->getVar('rtime');
       $data['rdate'] = $this->request->getVar('rdate');
@@ -409,9 +457,10 @@ class Shows extends BaseController {
       $data['location'] = $this->request->getVar('location');
       $data['showid'] = $this->request->getVar('showid');
       $data['pcount'] = $this->request->getVar('pcount');
+      $data['venueid'] = $this->request->getVar('venueid');
       $data['page_title'] = 'POS - Ticket Booking';
       $data['search_url'] = base_url().'/shows/search';
-      $data['form_action'] = base_url().'/cart';
+      $data['form_action'] = base_url().'/seatings';
       $data['current'] = 'ticket';
       $data['referrer'] = current_url();
       $data['go_back'] = $this->request->getUserAgent()->getReferrer();
@@ -496,5 +545,54 @@ class Shows extends BaseController {
       //  if($this->request->getVar('pay') == "Submit") {
       //   //$data['coupon_']
       //  }
+    }
+
+    function lock_tickets(){
+      //echo "<pre>"; print_r($_POST); "</pre>"; die;
+      $time = time();
+      //Locked for 10mins
+      $end_time = $time + 600;
+      $total_count = count($_POST['seat_arr']);
+      
+      if(!empty($_POST['seat_arr'])) {
+        for($i = 0; $i < $total_count; $i++) {
+          $row = explode("-",$_POST['seat_arr'][$i]);
+          $data = [
+            'status' => 2,
+            'content' => $_POST['content'],
+            'venue' => $_POST['venue'],
+            'date' => $_POST['date'],
+            'time' => $_POST['time'],
+            'section' => $_POST['section'],
+            'seatrow' => $row[0],
+            'seat' => $row[1],
+            'reservedat' => date('Y-m-d h:i:a'),
+            'created_time' => $time,
+            'end_time' => $end_time
+          ];
+          
+          $arr[] = $data;
+          $this->session->set('cart_details',$_POST);
+        }
+        //print_r($_SESSION['cart_details']); die;
+        $ins = $this->db->table('seats');
+		    $ins->insertBatch($arr);
+
+
+      } else {
+        return false;
+      }
+      
+
+    }
+
+    function check_selectedseats_booked() {
+      $data = [];
+      
+      if(!empty($_POST['section'])) {
+      $data['check_seats'] = $this->model->check_individual_seat_booked($_POST['content'],$_POST['venue'],$_POST['date'],$_POST['time'],$_POST['section'],$_POST['seat_arr']);
+      }
+      //print_r($data['check_seats']); die;
+      return json_encode($data['check_seats']);
     }
 }

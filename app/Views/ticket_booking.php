@@ -29,7 +29,7 @@
             <input type="hidden" name="taxinclusive" value="<?= $get_price_details[0]->taxinclusive; ?>">
             <input type="hidden" name="feesinclusive" value="<?= $get_price_details[0]->feesinclusive; ?>">
             <input type="hidden" name="content" value="<?= $showid; ?>">
-            <input type="hidden" name="venue" value="2563">
+            <input type="hidden" name="venue" value="<?= $venueid; ?>">
             <input type="hidden" name="pcount" id="pcount" value="<?= $pcount; ?>">
             <input type="hidden" name="referrer" value="<?= $go_back; ?>">
             <div class="row">
@@ -53,6 +53,11 @@
                                           <h5>Quantity</h5>
                                        </th>
                                     </tr>
+                                    <input type="hidden" id="total_price" name="total_price"
+                                          value="0.00">
+                                    <input type="hidden" id="seats" name="family_seats" value="0">
+                                    <input type="hidden" id="total_qty" name="total_qty" value="0">
+                                    <input type="hidden" id="tot_qty" name="tot_qty" value="0">
                                     <?php $regex = []; for($x = 1; $x <= $pcount; $x++) { ?>
                                     <tr>
                                        <td>
@@ -73,7 +78,7 @@
                                                 ;>+</button>
                                              <?php if(isset($no_of_seats[$x])) { ?>
                                              <input type="number" id="seats<?= $x; ?>" class="seat_val"
-                                                value="0" min="0" max="10" name="seats<?= $x; ?>" />
+                                                value="0" min="0" max="10" name="seats<?= $x; ?>"/>
                                              <?php } ?>
                                              <span id="errorMsg" style="display:none; color:red;">Select atleast one ticket</span>
                                           </div>
@@ -90,9 +95,7 @@
                                        </td>
                                        <td><strong>$<span id="td_total">0.00</span></strong></td>
                                        <td></td>
-                                       <input type="hidden" id="total_price" name="total_price"
-                                          value="0.00">
-                                       <input type="hidden" id="seats" name="family_seats" value="0">
+                                       
                                     </tr>
                                  </table>
                               </div>
