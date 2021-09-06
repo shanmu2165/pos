@@ -201,6 +201,18 @@ class ShowsModel extends Model {
         return $query;
     }
 
+    function unlock_free_seats() {  
+        $db      = \Config\Database::connect();
+        $time = time();
+        $query = $db->query("DELETE FROM seats WHERE end_time <'".$time."' AND status=2");
+        
+        return $query;
+    }
+
+    // function remove_selected_seats() {
+
+    // }
+
     function get_price_exception($content,$date) {
         $db      = \Config\Database::connect();
         $query = $db->query("SELECT * FROM priceoption_exceptions WHERE content='".$content."' AND date='".$date."' ORDER BY time ASC");
@@ -301,6 +313,7 @@ class ShowsModel extends Model {
         $lcode = strtolower($code);
         
         $query = $db->query("SELECT * FROM discounts WHERE lower(code)='".$lcode."' AND site='1' AND start_date <='".$today."' AND end_date >='".$today."' LIMIT 1");
+        $sql = $db->getLastQuery();
         $content = $query->getResult();
         return $content; 
     }

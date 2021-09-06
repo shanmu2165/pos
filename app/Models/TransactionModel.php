@@ -11,10 +11,15 @@ class TransactionModel extends Model {
     protected $useAutoIncrement = true;
     protected $allowedFields = ['type', 'site','status','name','email','phone','amount','randid','notes','content','timestamp'];
 
-    function verify_qrcode($data) {
+    function verify_qrcode($id,$email='') {
         
         $db      = \Config\Database::connect();
-        $query = $db->query("SELECT * FROM transactions WHERE randid='".$data['randid']."' AND email='".$data['email']."' LIMIT 1");  
+        if(!empty($id) && !empty($email)) {
+            $query = $db->query("SELECT * FROM transactions WHERE randid='".$id."' AND email='".$email."' LIMIT 1");  
+        } else {
+            $query = $db->query("SELECT * FROM transactions WHERE randid='".$id."' LIMIT 1");  
+        }
+        
         $content = $query->getResult();
         if($content) {
             return $content;
@@ -22,6 +27,13 @@ class TransactionModel extends Model {
             return false;
         }
         
+    }
+
+    function get_transaction_details($id) {
+        $db      = \Config\Database::connect(); 
+        $query = $db->query("SELECT * FROM transactions WHERE id='".$id."' LIMIT 1");  
+        $content = $query->getResult();
+        return $content;
     }
 
 }

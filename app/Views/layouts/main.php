@@ -89,7 +89,7 @@
 
                             </div>
                         </div>
-                        <div class="right-bottom"> <a href="#">
+                        <div class="right-bottom"> 
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#exampleModalXl">Lookup Transaction</button>
                                 <div class="modal fade" id="exampleModalXl" tabindex="-1"
@@ -103,7 +103,17 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="POST" action="<?= base_url()."/shows/lookup"; ?>">
+                                                <div class="row">
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-6">
+                                                    <div class="alert alert-warning alert-dismissible fade show" id="modal_alert_msg" role="alert" style="display:none; color:red; background-color:#000; font-weight:bold; text-align:center;">
+                                                        <span id="alert_modal"></span>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-3"></div> -->
+                                                </div>
+                                                <form method="POST" action="<?= base_url()."/shows/lookup"; ?>" id="lookup_form">
                                                     <?= csrf_field() ?>
                                                     <div class="container">
                                                         <div class="row">
@@ -128,11 +138,25 @@
                                                                         name="trans_email" required>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-lg-6 text-left pt-1">
+                                                                <div class="form-group lookup">
+                                                                    <p>Please follow any one of the step and input the transaction id<br/>
+                                    * Check email for transaction id<br/>
+                                    * Use the below button to scan the QR Code to view transaction id</p>
+                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6 pt-3 qrcode">
+                                                               <a href="<?= base_url().'/qrcode_reader'; ?>" target="_blank"> <i class="fa fa-qrcode" style="font-size:35px;" aria-hidden="true"></i></a>
+                                                            </div>
+                                                            <!-- <div class="col-lg-5 text-left pt-1">
+                                                            
+                                                            </div> -->
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-12 text-center pt-4 pb-4">
-                                                                <button type="submit"
-                                                                    class="btn btn-primary">Submit</button>
+                                                                <button type="button"
+                                                                    class="btn btn-primary" id="lookup_submit">Submit</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -198,6 +222,36 @@ $(document).ready(function() {
                 items: 5
             }
         }
+    })
+});
+
+$('#lookup_submit').click(function(){
+    $.ajax({
+      type:"POST",
+      url: '<?= base_url()."/shows/lookup"; ?>',
+      data: {
+       trans_id: $('#exampleInputTransaction').val(),
+       trans_email: $('#exampleInputEmail1').val()
+      },
+      success: function(data){
+        if(data == 'invalid') {
+          $("#alert_modal").text('Invalid Transaction Id or Email!');
+          $("#modal_alert_msg").css('display','block');
+          
+        } else {
+            $("#lookup_form").submit();
+        }
+      }, 
+        error: function( jqXhr, textStatus, errorThrown ) {
+                        console.log( errorThrown );
+        }  
+    });
+
+    $(".btn-close").click(function(){
+        $('#exampleInputTransaction').val('');
+        $('#exampleInputEmail1').val('');
+        $("#alert_modal").text('');
+        $("#modal_alert_msg").css('display','none');
     })
 });
 <?php } ?>

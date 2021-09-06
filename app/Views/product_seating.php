@@ -11,31 +11,34 @@
             }
         }
 
-        .seat {
-  background: url('../public/images/available.png') no-repeat;
-  background-size: 50px;
-  height: 50px;
-  width: 50px;
-  margin: 3px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #fff;
-  text-shadow: 1px 1px 1px #333;
-  font-size: 18px;
+.seat {
+    background: url('../public/images/available.png') no-repeat;
+    background-size: 20px;
+    height: 40px;
+    width: 20px;
+    margin: 3px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #000;
+    text-shadow: 0px 0px 0px #333;
+    font-size: 12px;
+    text-align: center;
+    background-position: center top;
+    padding-top: 15px;
 }
 
 .booked {
-  background: url('../public/images/booked.png') no-repeat; background-size: 50px;cursor: not-allowed !important;
+  background: url('../public/images/booked.png') no-repeat; background-size: 20px;cursor: not-allowed !important;background-position: center top;
 }
 .special {
-  background: url('../public/images/special.png') no-repeat; background-size: 50px;
+  background: url('../public/images/special.png') no-repeat; background-size: 20px;background-position: center top;
 }
 .selected {
-  background: url('../public/images/selected.png') no-repeat; background-size: 50px;
+  background: url('../public/images/selected.png') no-repeat; background-size: 20px;background-position: center top;
 }
 .seat:nth-of-type(2) {
   margin-right: 0px;
@@ -45,16 +48,18 @@
 }
 .seat:not(.occupied):hover {
   cursor: pointer;
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 .showcase .seat:not(.occupied):hover {
   cursor: default;
   transform: scale(1);
 }
-
 .showcase .seat:not(.occupied):hover {
   cursor: default;
   transform: scale(1);
+}
+.showcase .seat {
+    height: 20px;
 }
 .product-seats .showcase {
   display: flex;
@@ -64,6 +69,8 @@
   padding: 5px 10px;
   border-radius: 5px;
   color: #777;
+  width: 768px;
+  margin: 0 auto 15px;
 }
 .product-seats .showcase li {
   display: flex;
@@ -74,7 +81,13 @@
 .product-seats .showcase li small {
   margin-left: 2px;
 }
-
+.seat.empty {
+    background: transparent;
+    text-indent: -10000px;
+    width: 20px;
+    margin: 0!important;
+    height: a;
+}
 
 .overlay{
     display: none;
@@ -93,6 +106,16 @@ section.loading{
 /* Make spinner image visible when section element has the loading class */
 section.loading .overlay{
     display: block;
+}
+.seating button#tick_submit {
+    width: auto;
+    margin: 0  auto;
+}
+.seating{
+  pointer-events: none;
+}
+.seating .seat, .seating #tick_submit{
+  pointer-events: auto;
 }
     </style>
     <link rel="stylesheet" href="<?= base_url('css/H-confirm-alert.css'); ?>">
@@ -120,9 +143,9 @@ section.loading .overlay{
                                     <button type="button" class="btn btn-primary">Assign Best Available</button>
                                 </div>
                                 <div class="col-lg-6 col-md-6 mb-3">
-                                    <button type="button" class="btn btn-primary">Clear Set Selections</button>
+                                    <button type="button" class="btn btn-primary" id="clear_seat">Clear Seat Selections</button>
                                 </div>
-                            </div>
+                            </div> 
                             <ul class="showcase">
                                 <li>
                                   <div class="seat "></div>
@@ -161,20 +184,31 @@ section.loading .overlay{
                               
                             <?php if(!empty($seats)) {
                                     for($i=1; $i<=$venue_sec[0]->total_rows; $i++) { ?>
-                                       <span>Row <?= $i ?></span>
-                                      <div class="row">    
-                                      <?php  foreach($seats as $seat) {  
+                                       
+                                      <div class="row justify-content-center"> 
+                                      <span>Row <?= $i ?></span>   
+                                      <?php  foreach($seats as $seat) { //print_r($seat); die; 
                                           if($seat->seatrow == $i) { 
                                             $status = '';
-                                          if(!empty($already_booked) && in_array($i."-".$seat->seat, $already_booked)){ $status = "booked";} ?>
+                                          if(!empty($already_booked) && in_array($i."-".$seat->seat, $already_booked)){ 
+                                            $status = "booked";
+                                            } else if($seat->seattype == 'wheelchair' ) {?>
+                                            <?php $status = "special";
+                                             } ?>
+                                          <?php if($seat->space_left == 1) {?>
+                                            <div class="seat empty"></div>
+                                          <?php } ?>  
                                         <div class="seat <?= $status; ?>" data-value="<?= $i."-".$seat->seat; ?>"><?= $seat->seat; ?>
                                        
                                       </div>
+                                      <?php if($seat->space_right == 1) {?>
+                                            <div class="seat empty"></div>
+                                          <?php } ?>  
                                         <?php } } ?> 
                                       </div>
                                      
                             <?php   }  ?> 
-                                       <p class="text">
+                                       <p class="text" style="visibility:hidden;">
                                        You have selected <span id="count">0</span>
                                      </p>
                                      
@@ -196,6 +230,7 @@ section.loading .overlay{
         const seats = document.querySelectorAll('.row .seat:not(.booked)');
         let count = document.getElementById('count');
         let selectedSeatsArr = [];
+        var totalSelectedSeats = parseInt($("#total_seats_sel").text()) + 1;
 
         function updateSelectedCount(selectedCount) {
           count.innerText = selectedCount;
@@ -214,37 +249,54 @@ section.loading .overlay{
         }
 
         //test start
-        $(".seating .seat").on("click", function(){
+        //$(".seating .seat").on("click", function(){
+        $(".seating .seat:not(.booked)").on("click", function(){  
+          //alert('123');
           const seatValue = $(this).data("value");
             
           if(selectedSeatsArr.includes(seatValue) == false) {
+            // console.log("countbeforepush",count.innerText);
+            // console.log("before",totalSelectedSeats);
+            var usable = totalSelectedSeats - 1;
             //Push seat value to global variable - for using in PHP
-             selectedSeatsArr.push(seatValue);
+            if(count.innerText < usable) {
+              selectedSeatsArr.push(seatValue);
+            }
+             
           } else { 
             //selectedSeatsArr.pop(seatValue);
             selectedSeatsArr = remove_array_element(selectedSeatsArr,seatValue);
           }
+          
         });
         //test end
+
+        //Clear seats
+        $("#clear_seat").on("click", function(){  
+          console.log("woowww")
+          $('.seating div.seat').removeClass('selected');
+          selectedSeatsArr.length = 0;
+          console.log('ARR',selectedSeatsArr);
+        });
 
 //Seat click event
 container.addEventListener('click', e => {
   console.log("seat clicked");
   const selectedSeats = document.querySelectorAll('.row .seat.selected');
   let selectedSeatsCount = selectedSeats.length;
-  var totalSelectedSeats = parseInt($("#total_seats_sel").text()) + 1;  
-
+    
+  //alert('123');
   if (e.target.classList.contains('seat') &&
      !e.target.classList.contains('booked') && e.target.classList['value']!= 'seat selected') {
        
       if(selectedSeatsCount < totalSelectedSeats) {
-        //console.log('here1')
+       // console.log('toggClass',e.target.classList);
         e.target.classList.toggle('selected');
         
         updateSelectedCount(selectedSeatsCount);
 
       } else {
-       //console.log(count);
+       
               $.confirm.show({
                 "message":"Seat selected by you exceeded your ticket limits.",
                 "hideNo":true,// hide cancel button
@@ -253,7 +305,7 @@ container.addEventListener('click', e => {
                 },
               })
       }
-  } else {
+  } else if (!e.target.classList.contains('booked')){ 
     e.target.classList.toggle('selected');
           selectedSeatsCount = selectedSeatsCount - 1;
        
@@ -330,7 +382,18 @@ $("#tick_submit").click(function(){
               
             },
             error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
+                       // console.log( errorThrown );
+                       $.confirm.show({
+                        "message":"Please Select your seats to proceed further!",
+                        "hideNo":true,// hide cancel button
+                        "yesText":"OK",
+                        //"type":"danger",
+                        "yes":function (){
+                          $("section").addClass("loading");
+                          setTimeout(location.reload.bind(location), 2000);
+                        },
+                        
+                })
             } 
         });      
 });

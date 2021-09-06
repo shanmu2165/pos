@@ -52,37 +52,32 @@
                             <th class="text-right">Each</th>
                             <th class="text-right">Total</th>
                         </tr>
-                        <?php  for($i=1; $i <= $pcount; $i++) { 
-                            if($json_details["qty".$i] > 0) {?>
+                        <?php $total_amt = 0; for($i=1; $i <= $pcount; $i++) { 
+                            if($json_details["item"][$i]["qty"] > 0) { ?>
                         <tr class="item-row">
                             <td>
-                                <p><?= $json_details['ticket_title']; ?> - <?= $json_details['date']; ?>,
-                                    <?= $json_details['time']; ?><br/>
-                                <?= $json_details["ticket_type".$i]; ?> -
-                                    <?= $json_details['ticket_location']; ?> <?php if(strpos($json_details["ticket_type".$i],'Family') !== false) { ?>
+                                <p><?= $json_details['content'][0]['title']; ?> - <?= date('M d, Y',strtotime($json_details["item"][$i]['date'])); ?>,
+                                    <?= date('h:i a',strtotime($json_details['item'][$i]['time'])); ?><br/>
+                                <?= $json_details["item"][$i]['name']; ?> -
+                                    <?= $json_details["item"][$i]['location']; ?> <?php if(strpos($json_details["item"][$i]['name'],'Family') !== false) { ?>
                                        [<?= $json_details['family_seats']; ?> - Preferred]
                                 <?php } ?>    <br/>
                                 
-                                <?= $json_details['ticket_venue']; ?></p>
+                                <?= $json_details["item"][$i]['venue']; ?></p>
                                 
                             </td>
-                            <?php $total_val = $json_details["qty".$i] * $json_details["price".$i]; ?>
-                            <td class="text-right" title="Amount"><?= $json_details["qty".$i]; ?></td>
-                            <td class="text-right" title="Price">$<?= $json_details["price".$i]; ?></td>
+                            <?php $total_val = $json_details["item"][$i]["qty"] * $json_details["item"][$i]["price"]; 
+                               $total_amt += $total_val;
+                            ?>
+                            <td class="text-right" title="Amount"><?= $json_details["item"][$i]["qty"]; ?></td>
+                            <td class="text-right" title="Price">$<?= $json_details["item"][$i]["price"]; ?></td>
                             <td class="text-right" title="Total">$<?= number_format($total_val,2); ?></td>
                         </tr>
                         <?php } } ?>
-                        <!-- <tr class="item-row item-row-last">
-                            <td>
-                                <p>Re-Vibe - May 15, 2021, 8:00pm</p>
-                                <p>Adult(ages 13 and up)</p>
-                                <p>Center Hughes Brothers Theatre</p>
-                            </td>
-
-                            <td class="text-right" title="Amount">3</td>
-                            <td class="text-right" title="Price">4.00</td>
-                            <td class="text-right" title="Total">12.00</td>
-                        </tr> -->
+                         <tr class="item-row item-row-last">
+                          <?php $seats = implode(',',$json_details['seats_selected']); ?>
+                            <td class="text-right" title="Total">Seats Selected - <?= $seats; ?> </td>
+                        </tr> 
                         <tr class="total-row">
 
                             <td class="text-right" colspan="3"><strong>Tax</strong></td>
@@ -97,7 +92,8 @@
                                 <strong>$<?= getenv('processingfees') ?></strong>
                             </td>
                         </tr>
-                        <?php if(!empty($json_details["code_name"])) { ?>
+                        <?php $total_amt +=  getenv('salestax') + getenv('processingfees');
+                         if(!empty($json_details["code_name"])) { ?>
                         <tr class="total-row">
 
                             <td class="text-right" colspan="3"><strong>Discount - <?=  @$json_details["code_name"];?>
@@ -111,11 +107,154 @@
                         <tr class="total-row info">
 
                             <td class="text-right" colspan="3"><strong>Total</strong></td>
-                            <td class="text-right"><strong>$<?=  $json_details["tot_amount"];?></strong></td>
+                            <td class="text-right"><strong>$<?=  @$total_amt;?></strong></td>
                         </tr>
                     </table>
                    
                     
+                </div>
+                <div class="row" id="print_div" style="display:none;">
+                <center style="width: 100%; background-color: #ccc;">
+      <!--[if mso | IE]>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #fff;">
+    <tr>
+    <td>
+    <![endif]-->  
+      
+      <!-- Email Body : BEGIN -->
+      <?php foreach ($json_details['seats_selected'] as $key => $val) { 
+          $split = explode('-',$val);  ?>
+      <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="250" style="margin: auto;" class="email-container" style="background: #fff;">     
+     
+      
+      <!-- 1 Column Text + Button : BEGIN -->
+      <tr>
+        <td style="background-color: #ffffff;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tr>
+            <td style="padding:0 15px 15px 15px; font-family: 'Source Sans Pro', sans-serif; line-height: 20px; color: #555555;" class="thank">
+                <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 30px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;
+color: #000;"><?= $json_details['content'][0]['title']; ?></h2>
+<h4 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding:0 0 5px;
+color: #000;"><?= date('D',strtotime($json_details["item"][1]['date'])); ?>,<?= date('M d, Y',strtotime($json_details["item"][1]['date'])); ?> <?= date('h:i a',strtotime($json_details['item'][1]['time'])); ?></h4>
+<!-- <h5 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 16px; text-align:center; font-weight:500;padding:0 0 5px;
+color: #000;">modglin, Joe</h5> -->
+           </td>
+          </tr>
+          </table>
+      </td>
+      </tr>
+      <!-- 1 Column Text + Button : END --> 
+      
+      <!-- 2 Even Columns : BEGIN -->
+      <tr>
+        <td style="padding: 0;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: #fff;">
+            <tr> 
+            <!-- Column : BEGIN -->
+            <th valign="top" width="50%" class="stack-column-center">
+             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                <td style="font-family: 'Source Sans Pro', sans-serif; font-size: 14px; line-height: 23px; color: #000; padding: 0px 15px; text-align: left;" class="center-on-narrow">
+                    
+                    <table width="100%">
+                    <tr>
+                        <td width="40%" style="text-align:center; padding:5px;">
+                            <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                            Sec: <b style="float: right;"><?= $json_details["item"][1]['location']; ?></b>
+                           </p>
+                           <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                            Row: <b style="float: right;"><?= $split[0]; ?></b>
+                           </p>
+                           <p style="color: #333; font-size:16px !important; line-height:18px;text-align: left;width: 95%;">
+                            Seat: <b style="float: right;"><?= $split[1]; ?></b>
+                           </p>                        
+                       </td>
+                        <td width="60%" style="text-align:center; padding:5px;">
+                            <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                            Processing Fee<b style="float: right;"><?= getenv('processingfees') ?></b>
+                           </p>
+                           <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                            Tax <b style="float: right;"><?= getenv('salestax') ?></b>
+                           </p>
+                           <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                             Total  <b style="float: right;"><?= $total_amt; ?></b>
+                           </p>
+                       </td>
+                      </tr>
+                  </table>
+              </td>
+              </tr>
+              </table>
+              </th>
+            <!-- Column : END -->
+             
+          </tr>
+          </table>
+      </td>
+      </tr>  
+      <!-- 2 Even Columns : END --> 
+
+      <!-- 3 Column Text + Button : BEGIN -->
+      <tr>
+      <td style="background-color: #ffffff;">
+           <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+           <tr>
+           <td style="padding:0 15px 5px; font-family: 'Source Sans Pro', sans-serif; line-height: 20px; color: #555555;" class="thank">
+                <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;color: #000;">19179532</h2>
+           </td>
+          </tr>
+          </table>
+      </td>
+      </tr>
+      <!-- 3 Column Text + Button : END --> 
+
+      <!-- 4 Even Columns : BEGIN -->
+      <tr>
+        <td style="padding: 0;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: #fff; border-top: 2px dashed #333;">
+            <tr> 
+            <!-- Column : BEGIN -->
+            <th valign="top" width="50%" class="stack-column-center">
+             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                <td style="font-family: 'Source Sans Pro', sans-serif; font-size: 14px; line-height: 23px; color: #000; padding: 0px 15px; text-align: left;" class="center-on-narrow">
+                    
+                    <table width="100%">
+                    <tr>
+                        <td width="100%" style="text-align:center; padding:5px;">
+                            <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 30px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;color: #000;"><?= $json_details['content'][0]['title']; ?></h2>
+                            <h4 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding:0 0 5px;
+                                color: #000;"> <?= date('h:i a',strtotime($json_details['item'][1]['time'])); ?></h4>
+                            <h5 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 16px; text-align:center; font-weight:500;padding:0 0 5px;
+                                color: #000;"><?= date('D',strtotime($json_details["item"][1]['date'])); ?>, <?= date('M d, Y',strtotime($json_details["item"][1]['date'])); ?></h5>
+                           <table width="50%" style="margin:0 auto;">
+                               <tr>
+                                   <td style="margin:0 3px;"><b><?= $json_details["item"][1]['location']; ?></b></td>
+                                   <td style="margin:0 3px;"><b><?= $split[0]; ?></b></td>
+                                   <td style="margin:0 3px;"><b><?= $split[1]; ?></b></td>
+                               </tr>
+                           </table>
+                           <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;
+color: #000;">19179532</h2>
+                           </p>                        
+                       </td>
+                      </tr>
+                  </table>
+              </td>
+              </tr>
+              </table>
+              </th>
+            <!-- Column : END -->
+             
+          </tr>
+          </table>
+      </td>
+      </tr>  
+      <!-- 4 Even Columns : END --> 
+
+    </table>
+    <?php } ?>
+    </center>
                 </div>
                 <div class="row">
                     <div class="col-md-5"></div>
@@ -136,7 +275,7 @@
 </section>
 <script>
 function printDiv() {
-    var divContents = document.getElementById("GFG").innerHTML;
+    var divContents = document.getElementById("print_div").innerHTML;
     var a = window.open('', '', 'height=300, width=600');
     a.document.write('<html>');
     a.document.write('<body>');

@@ -1159,7 +1159,77 @@ header {
   height: 37px;
   background-repeat: no-repeat;
 }
-
+.seating span {
+  width: auto;
+  display: flex;
+  align-items: center;
+}
+.lookup p {
+  color: #fff;
+  text-align: left;
+  font-size: 14px;
+  padding: 10px 0;
+}
+.qrcode a {
+  text-align: left;
+  display: block;
+}
+div#qr-reader {
+  margin: 20px auto;
+  background: #333;
+}
+#qr-reader button {
+  background: #0497e5;
+  border: none;
+  color: #fff;
+  padding: 5px 20px;
+  margin-bottom: 10px;
+}
+span#qr-reader__status_span {
+  background: orange!important;
+  color: #fff!important;
+}
+input#qr-reader__filescan_input {
+  display: block;
+  margin: 0 auto;
+  color: #fff;
+  font-size: 14px;
+}
+#qr-reader__dashboard_section_fsr span {
+  color: #fff;
+  font-size: 12px;
+}
+div#qr-reader__scan_region {
+  margin: 0 auto;
+}
+#qr-reader__dashboard_section_csr span {
+  color: #fff;
+  font-size: 14px;
+}
+select#qr-reader__camera_selection {
+  margin-bottom: 15px;
+}
+.make-cart .btn-success {
+  width: auto;
+}
+span#qr-result.success {
+  background: url(../images/payment-success.png) no-repeat;
+  width: 300px;
+  height: 150px;
+  display: inline-block;
+}
+span#qr-result.failure {
+  background: url(../images/payment-failed.png) no-repeat;
+  width: 300px;
+  height: 150px;
+  display: inline-block;
+}
+.confirm {
+  text-align: center;
+}
+.confirmButtonContent {
+  text-align: center!important;
+}
 /**************media starts****************/
 @media only screen and (min-width: 320px) and (max-width: 767px) {
   .search-top {

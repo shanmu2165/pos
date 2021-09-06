@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 pt-3 pb-3 event-title">
-                <h2>My Shows</h2>
+                <h2>My Shows </h2>
             </div>
         </div>
         <div class="row">
@@ -98,7 +98,7 @@
         <div class="row">
             <div class="col-12 p-0">
                 <div class="wrapper">
-                    <?php if(!empty($my_shows)) { ?>
+                    <?php if(!empty($all_shows)) { ?>
                     <div class="owl-carousel owl-theme">
                         <?php foreach($all_shows as $my) { ?>
                         <div class="item">

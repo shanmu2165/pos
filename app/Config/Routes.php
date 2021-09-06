@@ -50,6 +50,8 @@ $routes->group('',['filter'=>'isLoggedIn'],function($routes){
 	$routes->add('/cart', 'Cart::index');
 	$routes->add('/remove_item/(:num)', 'Cart::remove_cart_item/$1');
     $routes->add('/shows/remove_coupon', 'Cart::remove_coupon');
+	$routes->add('/cart/apply_coupon', 'Cart::apply_coupon');
+	$routes->add('/cart/cancel_transaction', 'Cart::cancel_transaction');
 	$routes->add('/shows/pay', 'Transactions::index');
 	$routes->add('/seatings', 'Shows::seating');
 	$routes->add('/section', 'Shows::ticket_booking');
@@ -64,6 +66,8 @@ $routes->group('',['filter'=>'isLoggedIn'],function($routes){
 	$routes->add('/payment_success','Transactions::pay_success');
     //$routes->add('/send_natty_sms','Shows::sendd');
 	$routes->add('/lock_seats', 'Shows::lock_tickets');
+	$routes->add('/qrcode_reader', 'Shows::qrcode_reader');
+	$routes->add('/pdf', 'Shows::print_pdf');
 	$routes->add('/check_selectedseats_booked', 'Shows::check_selectedseats_booked');
 });
 /*

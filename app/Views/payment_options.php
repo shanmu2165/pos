@@ -67,7 +67,7 @@
                         <?= csrf_field() ?>
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6">
-                                    <label>First Name<sup>*</sup></label>
+                                    <label>First Name<sup style="color:red;">*</sup></label>
                                     <input class="form-control" type="text" placeholder="First Name" name="fname" required="">
                                 </div>
                                 <div class="col-lg-6 col-md-6">
@@ -77,11 +77,11 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6 pr-0">
-                                    <label>Contact Phone<sup>*</sup></label>
-                                    <input class="form-control" type="text" placeholder="Phone Number" name="phone" required="">
+                                    <label>Contact Phone<sup style="color:red;">*</sup></label>
+                                    <input class="form-control" type="number" placeholder="Phone Number" onKeyPress="if(this.value.length==12) return false;" name="phone" required="">
                                 </div>
                                 <div class="col-lg-6 col-md-6 pr-0">
-                                    <label>Email Address<sup>*</sup></label>
+                                    <label>Email Address<sup style="color:red;">*</sup></label>
                                     <input class="form-control" type="email" placeholder="Email Address" name="email" required="">
                                     <?php $amount = number_format(($_SESSION['cart']['total']*100) , 0, '', ''); ?>
                                     <input id="amount-input" type="hidden" value="<?= $amount; ?>">
@@ -91,7 +91,7 @@
                             <?php if($_SESSION['cart']['total'] > 0) { ?>
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6 pr-0">
-                                    <label>Payment Type<sup>*</sup></label>
+                                    <label>Payment Type<sup style="color:red;">*</sup></label>
                                     <input type="radio" placeholder="Stripe" name="payment_type" id="stripe" value="Stripe" required>
                                     <label>Stripe</label>
                                     <input type="radio" placeholder="Cash" name="payment_type" id="cash" value="Cash">

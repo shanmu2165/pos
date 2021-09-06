@@ -1,6 +1,8 @@
 <?= $this->extend('layouts/main'); ?>
-<?= $this->section('content'); ?>
-
+<?= $this->section('content'); 
+?>
+ <link rel="stylesheet" href="<?= base_url('css/H-confirm-alert.css'); ?>">
+    <script src="<?= base_url('js/H-confirm-alert.js'); ?>" ></script>
 <section class="content-part pb-4">
     <div class="banner-section">
         <div class="container-fluid">
@@ -31,11 +33,15 @@ if (!empty($content_detail[0])) {
                 <div class="col-lg-12">
                     <div class="row">
                         <!-- <div class="col-lg-4 col-md-6 pb-4">
-                            <a href="<?= $go_back; ?>" class="btn btn-primary">Go back</a>
+                            <a href="<?= @$go_back; ?>" class="btn btn-primary">Go back</a>
                         </div> -->
+                        <?php if(isset($_SESSION['ccancel_url'])) { ?>
+                            <p id="demo"></p>
+                        <?php } ?>
+                        
                         <div class="col-lg-8 col-md-6"></div>
                         <div class="col-lg-6 col-md-6">
-                            <h2>Step3: My Cart & Apply Coupon</h2>
+                            <h2>Step 3: My Cart & Apply Coupon</h2>
                         </div>
                         <!-- <div class="col-lg-4 col-md-6">
                            
@@ -79,7 +85,7 @@ if (session("msg")) {
                                 <th class="text-right">Qty</th>
                                 <th class="text-right">Each</th>
 
-                                <th class="text-right">Delete</th>
+                                <!-- <th class="text-right">Delete</th> -->
                                 <th class="text-right">Total</th>
                             </tr>
 
@@ -139,9 +145,9 @@ if (!empty($_SESSION['cart']['item'])) {
                                 <input type="hidden" name="price<?= $key; ?>"
                                     value="<?= number_format($val['price'], 2); ?>">
 
-                                <td class="text-right" title="Delete">
-                                    <a class="btn btn-danger" data-href="<?= base_url() . '/remove_item/' . $key; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal" id="a_del">Delete</a>
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <!--<td class="text-right" title="Delete">
+                                    <a class="btn btn-danger" data-href="<?= base_url() . '/remove_item/' . $key; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $key; ?>" id="a_del">Delete</a>
+                                    <div class="modal fade" id="exampleModal<?= $key; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
@@ -153,12 +159,13 @@ if (!empty($_SESSION['cart']['item'])) {
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-danger" id="del_item">Delete</button>
+                                                <?php $itm = '/remove_item/'; ?>
+                                                <button type="button" class="btn btn-danger del_item" onclick='myFunction(<?= $key ?>)'>Delete</button>
                                             </div>
                                             </div>
                                         </div>
                                     </div>
-                                </td>
+                                </td>-->
                                 <td class="text-right" title="Total" id="total_val">
                                     <strong>$<?= number_format($total, 2); ?></strong>
                                 </td>
@@ -168,21 +175,21 @@ if (!empty($_SESSION['cart']['item'])) {
         }
     }
 }
-$seats = implode(",",$_SESSION['cart']['seats_selected']); 
-?>
+@$seats = implode(",",@$_SESSION['cart']['seats_selected']); 
+if(!empty($seats)) {?>
                             <tr>
-                                <td colspan="5">
+                                <td colspan="4">
                                 Selected Seats : - <?= $seats; ?>
                                 </td>
 
                             </tr>
-
+<?php } ?>
                             <input type="hidden" name="tot_qty" value="<?= $tot_qty; ?>">
                             <input type="hidden" name="tot_amount"
                                 value="<?= number_format(@$_SESSION['cart']['total'], 2); ?>">
 
                             <tr>
-                                <td colspan="5">
+                                <td colspan="4">
                                     <div class="row mb-3">
                                         <div class="col-lg-6 col-md-6">
 
@@ -193,6 +200,8 @@ if (@$_SESSION['cart']['tcount'] > 0) {
 ?>
                                             <!-- <button class="btn btn-primary" type="submit" id="pay_btn">Proceed To Pay</button> -->
                                             <input type="submit" class="btn btn-primary" name="pay_btn" value="Proceed To Pay"/>
+                                            
+                                            <button type="button" class="btn btn-danger" onclick='myFunction1()'>Cancel</button>
                                             <?php
 } else {
 ?>
@@ -207,7 +216,7 @@ if (@$_SESSION['cart']['tcount'] > 0) {
                             </tr>
                     </form>
 
-                    <?php
+                    <?php 
 if (!empty($_SESSION['ccode'])) {
 ?>
                     <form method="POST" id="remove_coupon" action="<?= base_url() . '/shows/remove_coupon'; ?>">
@@ -216,7 +225,7 @@ if (!empty($_SESSION['ccode'])) {
                             <input type="hidden" name="ccode" id="ccode" value="<?= @$_SESSION['ccodeinfo']->code; ?>">
                             <input type="hidden" name="coupon_val" id="ccvalue"
                                 value="<?= number_format(@$_SESSION['cart']['ptotal'], 2); ?>">
-                            <td class="text-right" colspan="3"><strong>Coupon Code
+                            <td class="text-right" colspan="2"><strong>Coupon Code
                                     Applied: (<?= @$_SESSION['ccodeinfo']->code; ?>) -
                                     <?= @$_SESSION['ccodeinfo']->discount; ?> </strong></td>
                             <td class="text-right" title="Remove">
@@ -237,7 +246,7 @@ if (!empty($_SESSION['ccode'])) {
                         <?php
 if (!empty($_SESSION['cart']['salestax']) && $_SESSION['cart']['salestax'] > 0) {
 ?>
-                        <td class="text-right" colspan="4"><strong>Sales Tax</strong></td>
+                        <td class="text-right" colspan="3"><strong>Sales Tax</strong></td>
                         <td class="text-right" id="total">
                             <strong>$<?= $_SESSION['cart']['salestax']; ?></strong>
                         </td>
@@ -249,7 +258,7 @@ if (!empty($_SESSION['cart']['salestax']) && $_SESSION['cart']['salestax'] > 0) 
                         <?php
 if (!empty($_SESSION['cart']['processingfees']) && $_SESSION['cart']['processingfees'] > 0) {
 ?>
-                        <td class="text-right" colspan="4"><strong>Processing Fees</strong></td>
+                        <td class="text-right" colspan="3"><strong>Processing Fees</strong></td>
                         <td class="text-right" id="total">
                             <strong>$<?= $_SESSION['cart']['processingfees']; ?></strong>
                         </td>
@@ -260,7 +269,7 @@ if (!empty($_SESSION['cart']['processingfees']) && $_SESSION['cart']['processing
                     <tr class="total-row info">
 
 
-                        <td class="text-right" colspan="4"><strong>Total</strong></td>
+                        <td class="text-right" colspan="3"><strong>Total</strong></td>
                         <td class="text-right" id="total">
                             <strong>$<?= number_format(@$_SESSION['cart']['total'], 2); ?></strong>
                         </td>
@@ -361,12 +370,125 @@ if (!empty($_SESSION['cart']['processingfees']) && $_SESSION['cart']['processing
     </div>
 </section>
 <script>
+// Set the date we're counting down to
+var minutesToAdd=1;
+var currentDate = new Date();
+var countDownDate = new Date(currentDate.getTime() + minutesToAdd*60000);
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    myFunction2();
+  }
+}, 1000);
+</script>
+
+<script>
+    function myFunction(key) {
+        var baseurl = '<?= base_url(); ?>';
+        var link = '/remove_item/'+ key;
+        //alert(baseurl + link);
+        window.location.href = baseurl + link;
+    }
+
+    function myFunction1() {
+         var can_url = '<?= @$_SESSION['ccancel_url']; ?>';
+         $.confirm.show({
+                "message":"Are you sure you want to abort this transaction?",
+                //"hideNo":true,// hide cancel button
+                "yesText":"OK",
+                "noText":"CANCEL",
+                "yes":function (){
+                    $.ajax({
+                        url : '<?= base_url()."/cart/cancel_transaction"; ?>',
+                        type: "POST",
+                        data : {
+                            cancel : can_url
+                        },
+                        success: function(data, textStatus, jqXHR)
+                        {
+                          if(data == 'success') {
+                            window.location.href = can_url;
+                          } else {
+
+                          }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            
+                        }
+                    });
+                },
+                "no":function (){
+                    location.reload();
+                },
+              })  
+        // window.location.href = url;
+                    
+
+    }
+
+    function myFunction2() {
+         var can_url = '<?= @$_SESSION['ccancel_url']; ?>';
+         $.confirm.show({
+                "message":"Your Transaction time limit exceeded!",
+                "hideNo":true,// hide cancel button
+                "yesText":"OK",
+                //"noText":"CANCEL",
+                "yes":function (){
+                    $.ajax({
+                        url : '<?= base_url()."/cart/cancel_transaction"; ?>',
+                        type: "POST",
+                        data : {
+                            cancel : can_url
+                        },
+                        success: function(data, textStatus, jqXHR)
+                        {
+                          if(data == 'success') {
+                            window.location.href = can_url;
+                          } else {
+
+                          }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            
+                        }
+                    });
+                },
+                "no":function (){
+                    location.reload();
+                },
+              })  
+        // window.location.href = url;
+                    
+
+    }
+
     $(document).ready(function(){
 
-        $('#del_item').click(function(){
-        var url = $('#a_del').attr('data-href');
-        window.location.href = url;
-    });
+        // $('.del_item').click(function(){
+        // var url = $('#a_del').attr('data-href');
+        // window.location.href = url;
+        // });
+
         $("#pay_btn").click(function(){
             fetchConnectionToken()
 

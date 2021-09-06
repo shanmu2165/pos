@@ -15,7 +15,8 @@
 		"stripe/stripe-php": "^7.90",
 		"desttools/transmail": "^1.1",
 		"twilio/sdk": "^6.27",
-		"tatter/stripe": "^2.0"
+		"tatter/stripe": "^2.0",
+		"mpdf/mpdf": "^8.0"
 	},
 	
 	"require-dev": {

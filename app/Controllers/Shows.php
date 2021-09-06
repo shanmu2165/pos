@@ -22,6 +22,7 @@ class Shows extends BaseController {
 
     //Home Page
     function index() {
+      //echo "<pre>"; print_r($_SESSION);"</pre>"; die; 
         $data = []; 
         $data['page_title'] = 'POS - Showlist';
         $currentDate = '';
@@ -137,6 +138,7 @@ class Shows extends BaseController {
         $data['page_title'] = 'POS - Showlist';
         $data['my_shows'] = $this->model->get_searched_show($search_val,'',$this->user_detail['shows_id']);
         $data['all_shows'] = $this->model->get_searched_show($search_val);
+        //print_r($data['all_shows']); die;
         $data['categories'] = $this->model->get_categories();
         $data['buy_url'] = base_url().'/show/';
         $data['search_url'] = base_url().'/shows/search';
@@ -425,10 +427,12 @@ class Shows extends BaseController {
       $data['current'] = 'seats';
       $data['referrer'] = current_url();
       $data['go_back'] = $this->request->getUserAgent()->getReferrer();
+     
       $data['categories'] = $this->model->get_categories();
-
+      $unlock_seats = $this->model->unlock_free_seats();
+      
       $data['venue_sec'] = $this->model->get_venue_section($data['venueid'],$data['location']); 
-      //
+      
       if(!empty($data['venue_sec'])) {
         $data['seats'] = $this->model->get_seats($data['venueid'],$data['venue_sec'][0]->id); 
         $sec = ucfirst($data['location']);
@@ -448,8 +452,10 @@ class Shows extends BaseController {
     }
     //Function for show ticket selection
     function ticket_booking() {
-      //print_r($_POST); die;
+      //print_r($this->request->getUserAgent()->getReferrer()); die;
+      
       $data = [];
+      $_SESSION['ccancel_url'] = $this->request->getUserAgent()->getReferrer();
       $data['time'] = $this->request->getVar('rtime');
       $data['rdate'] = $this->request->getVar('rdate');
       $data['content'] = $this->request->getVar('content');
@@ -458,9 +464,17 @@ class Shows extends BaseController {
       $data['showid'] = $this->request->getVar('showid');
       $data['pcount'] = $this->request->getVar('pcount');
       $data['venueid'] = $this->request->getVar('venueid');
+      $data['venue_details'] = $this->model->get_venue($data['venueid']);
+      
       $data['page_title'] = 'POS - Ticket Booking';
       $data['search_url'] = base_url().'/shows/search';
-      $data['form_action'] = base_url().'/seatings';
+      $_SESSION['chart_type'] = @$data['venue_details'][0]->chart_type;
+      if($_SESSION['chart_type'] == 'seats') {
+        $data['form_action'] = base_url().'/seatings';
+      } else {
+        $data['form_action'] = base_url().'/cart';
+      }
+      
       $data['current'] = 'ticket';
       $data['referrer'] = current_url();
       $data['go_back'] = $this->request->getUserAgent()->getReferrer();
@@ -594,5 +608,27 @@ class Shows extends BaseController {
       }
       //print_r($data['check_seats']); die;
       return json_encode($data['check_seats']);
+    }
+
+    function qrcode_reader() {
+      $data = []; 
+      $data['page_title'] = 'POS - Qrcode Reader';
+      $data['categories'] = $this->model->get_categories();
+      $data['buy_url'] = base_url().'/show/';
+      $data['search_url'] = base_url().'/shows/search';
+      $data['current'] = 'qrcodereader';
+      $data['today'] = date("Y-m-d");
+
+      return view('qrcode_reader',$data);
+    }
+
+    function print_pdf(){
+      $mpdf = new \Mpdf\Mpdf();
+      $html = view('pdf_view',[]);
+      //echo $html; die;
+      $mpdf->WriteHTML($html);
+      $this->response->setHeader('Content-Type', 'application/pdf');
+      //$mpdf->Output('arjun.pdf','I'); // opens in browser
+      $mpdf->Output('test.pdf','D');
     }
 }

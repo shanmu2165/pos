@@ -37,7 +37,7 @@ class Transactions extends BaseController {
 
         $data['categories'] = $this->model->get_categories();
         $data['current'] = 'pay_option';
-
+        //echo "<pre>"; print_r($_SESSION);"</pre>"; die; 
         return view('payment_options',$data);
     }
     
@@ -90,13 +90,17 @@ class Transactions extends BaseController {
         $pos_data['randid'] = "BSTD".$random;
         $pos_data['amount'] = number_format($data1['total'],2);
         $pos_data['timestamp'] = date('Y-m-d h:i:a');
+       //echo "<pre>"; print_r($pos_data); "</pre>"; die;
         $success = $this->transaction_model->insert($pos_data);
-
-        $update_seats = $this->model->update_individual_seats_booked($_SESSION['cart_details']['content'],$_SESSION['cart_details']['venue'],$_SESSION['cart_details']['date'],$_SESSION['cart_details']['time'],$_SESSION['cart_details']['section'],$_SESSION['cart_details']['seat_arr'],$success);
+        //print_r($success); die;
+        if(!empty($_SESSION['cart_details']['seat_arr'])) {
+            $update_seats = $this->model->update_individual_seats_booked($_SESSION['cart_details']['content'],$_SESSION['cart_details']['venue'],$_SESSION['cart_details']['date'],$_SESSION['cart_details']['time'],$_SESSION['cart_details']['section'],$_SESSION['cart_details']['seat_arr'],$success);
+        }
+        
         //print_r($success); die;
          //Qrcode Path
-         $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
-         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
+         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
+         $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
          //echo $filepath; die;
@@ -256,7 +260,11 @@ class Transactions extends BaseController {
                                               </p>
                                           </td></tr> ";
                                       } } //}
-                                          //$body .="";
+                                        if(!empty($_SESSION['cart']['seats_selected'])) {
+                                            $seat_no = implode(",",@$_SESSION['cart']['seats_selected']); 
+                                            $body .="<tr><td
+                                            style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>Seats Selected:- ".$seat_no."</td></tr>";
+                                        }
                                       if(@$_SESSION['ccodeinfo']->type != 2) {    
                                       $body .="<tr>
                                           <td
@@ -306,36 +314,14 @@ class Transactions extends BaseController {
                                       </tr>";
                                       }
                                       $body .= " <tr>";
-                                      if(@$_SESSION['ccodeinfo']->type == 2) {
-                                      $body .= "<td
-                                              style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
-                                              <p
-                                                  style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
-                                                  <i>Voucher Applied - ".$_SESSION['ccodeinfo']->code."(".$_SESSION['ccodeinfo']->discount.")</i>
-                                              </p>
-                                              </td>";
-                                      $body .= "<td
-                                              style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
-                                              <p
-                                                  style='color: #333; font-size:16px !important; line-height:18px; margin:0;'>
-                                                  &nbsp
-                                              </p>
-                                          </td>
-                                          <td
-                                              style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
-                                              <p
-                                                  style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
-                                                  <i>$".number_format(@$data1['ptotal'],2)."</i>
-                                              </p>
-                                          </td>";        
-  
-                                      } else if(!empty($_SESSION['ccode']) && $_SESSION['ccodeinfo']->type == 1) {
+                                         if(isset($_SESSION['ccodeinfo']) && !empty($_SESSION['ccodeinfo'])) {
                                         $body .= "<td style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
                                                       <p
                                                           style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
                                                           <i>Coupon Applied - ".$_SESSION['ccodeinfo']->code."(".$_SESSION['ccodeinfo']->discount.")</i>
                                                       </p>
                                                   </td>";
+                                         }
                                         $body .= "<td
                                                   style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
                                                   <p
@@ -350,10 +336,7 @@ class Transactions extends BaseController {
                                                       <i>$".number_format(@$data1['ptotal'],2)."</i>
                                                   </p>
                                               </td>";          
-                                      } else {
-                                        
-                                      }
-                                          
+                                      
                                       $body .= " </tr>";
                                       $body .= " <tr>
                                           <td style='text-align:left; padding:10px;background-color: #fff;'>
@@ -433,11 +416,7 @@ class Transactions extends BaseController {
   </html>";
           //echo $body; die;
            //Unset Cart Items
-           if(!empty($_SESSION['cart'])) {
-            unset($_SESSION['cart']);
-            unset($_SESSION['ccodeinfo']);
-            unset($_SESSION['ccode']);
-            }
+           
           $msg->htmlbody = $body;
           $msg->to = array($pos_data['email'],$pos_data['name']); //TO
           $msg->from = array(getenv('fromaddress'),getenv('fromname')); //FROM
@@ -459,7 +438,41 @@ class Transactions extends BaseController {
   
           //send the message
           $response = $tmail->send();
-    
+          if(!empty($success)) {
+          $trans_data = $this->transaction_model->get_transaction_details($success);
+          }
+          //For Admin Mail 
+          $msg1 = new \stdClass();
+            //required settings
+          $msg1->subject = "Tickets Booked"; //SUBJECT
+          $mpdf = new \Mpdf\Mpdf();
+          $html_data = view('pdf_view',['trans_data' => $trans_data]);
+          //echo $html_data; die;
+          //$mpdf->WriteHTML($html);
+          $msg1->htmlbody = $html_data;
+          $msg1->to = array('letmetest95@gmail.com','Tester'); //TO
+          $msg1->from = array(getenv('fromaddress'),getenv('fromname')); //FROM
+          $msg1->track_clicks = TRUE; //TRACK CLICKS, TRUE by default
+          $msg1->track_opens = TRUE; //TRACK OPENS, TRUE by default
+          $msg1->client_reference = NULL; //CLIENT ID (string)
+          $msg1->mime_headers = NULL; //ADDITIONAL MIME HEADERS (array)
+          $msg1->attachments = NULL; //ATTACHMENTS (array)
+          $msg1->inline_images = NULL; //INLINE IMAGES (array)
+          $tmail1 = new \Transmail\TransmailClient($msg1,getenv('transmailkey'),
+          getenv('transbounceaddr'), TRUE);
+  
+          //send the message
+          $response1 = $tmail1->send();
+          //Admin Mail END
+
+          if(!empty($_SESSION['cart'])) {
+            unset($_SESSION['cart']);
+            unset($_SESSION['cart_details']); 
+            unset($_SESSION['quantity_details']); 
+            unset($_SESSION['ccodeinfo']);
+            unset($_SESSION['ccode']);
+            }
+
             $this->session->setFlashdata('msg', "Ticket Booked Successfully! you will receive a mail shortly.");
             return redirect()->to('/shows');
         }
@@ -473,34 +486,42 @@ class Transactions extends BaseController {
 
     //Functions for lookup transactions
     function lookup_transaction() {
+        //print_r($_POST); die;
         $data = [];
-  
+        
         $data['page_title'] = 'POS - Lookup Transaction';
         $data['search_url'] = base_url().'/shows/search';
         $date['delete_url'] = base_url().'/delete_cart';
   
         $data['categories'] = $this->model->get_categories();
         $data['current'] = 'lookup';
-        if(!empty($this->request->getVar())) {
-          $val_data = [
-          'randid' => $this->request->getVar('trans_id'),
-          'email' => $this->request->getVar('trans_email'),
-          ];
+        if(!empty($this->request->getVar('trans_email'))) { 
   
-          $validate_qr = $this->transaction_model->verify_qrcode($val_data);
+          $validate_qr = $this->transaction_model->verify_qrcode($this->request->getVar('trans_id'),$this->request->getVar('trans_email'));
   
           if($validate_qr) {
           $data['details'] = $validate_qr;
           $data['json_details'] = json_decode($validate_qr[0]->notes, true);
           $data['pcount'] = $data['json_details']['pcount'];
   
-          //echo "<pre>"; print_r($data); "</pre>"; die;
+          
           return view('lookup_transaction',$data);
-          } else {
-          $this->session->setFlashdata('msg', "Invalid Transaction Id or Email!");
-          return redirect()->to('/shows');
+          } else { 
+          //$this->session->setFlashdata('msg', "Invalid Transaction Id or Email!");
+          //return redirect()->to('/shows');
+          $return = "invalid";
+          return $return;
           }
-        } else {
+        } else if(!empty($_POST['randid'])) {   
+            $valid = 0;
+            $validate_qr = $this->transaction_model->verify_qrcode($_POST['randid']);
+            if(!empty($validate_qr)) {
+                $valid = 'success';
+            } else {
+                $valid = 'failure';
+            }
+            return $valid;
+        }else {  
         $this->session->setFlashdata('msg', "Please Enter Transaction Id & Email");
         return redirect()->to('/shows');
         }
