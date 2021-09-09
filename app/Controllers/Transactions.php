@@ -445,7 +445,7 @@ class Transactions extends BaseController {
           $msg1 = new \stdClass();
             //required settings
           $msg1->subject = "Tickets Booked"; //SUBJECT
-          $mpdf = new \Mpdf\Mpdf();
+          //$mpdf = new \Mpdf\Mpdf();
           $html_data = view('pdf_view',['trans_data' => $trans_data]);
           //echo $html_data; die;
           //$mpdf->WriteHTML($html);
