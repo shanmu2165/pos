@@ -237,9 +237,10 @@ section.loading .overlay{
         let count = document.getElementById('count');
         let selectedSeatsArr = [];
         var totalSelectedSeats = parseInt($("#total_seats_sel").text()) + 1;
+        var totSelSeats = parseInt($("#total_seats_sel").text());
         //var booked_arr = <?= json_encode(@$already_booked); ?>;
-        //var total_rows = <?= json_encode($total_rows); ?>;
-        //var total_seats_perrow = <?= json_encode($seats_prow); ?>;
+        //var total_rows = <?= json_encode(@$total_rows); ?>;
+        //var total_seats_perrow = <?= json_encode(@$seats_prow); ?>;
 
         //let formattedBookedTicket = formatArrayToObj(booked_arr);
         //let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
@@ -336,20 +337,17 @@ section.loading .overlay{
             console.log("Array: ",mvar);
         });
 
-
-
 //Seat click event
 container.addEventListener('click', e => {
   console.log("seat clicked");
   const selectedSeats = document.querySelectorAll('.row .seat.selected');
-  let selectedSeatsCount = selectedSeats.length;
-    
-  //alert('123');
+  var selectedSeatsCount = selectedSeats.length;
+  
   if (e.target.classList.contains('seat') &&
      !e.target.classList.contains('booked') && e.target.classList['value']!= 'seat selected') {
        
       if(selectedSeatsCount < totalSelectedSeats) {
-       // console.log('toggClass',e.target.classList);
+       
         e.target.classList.toggle('selected');
         
         updateSelectedCount(selectedSeatsCount);
@@ -371,90 +369,105 @@ container.addEventListener('click', e => {
         console.log(selectedSeatsCount)
         updateSelectedCount(selectedSeatsCount);
   }
+
+    
 });
 
 $("#tick_submit").click(function(){
- 
-          
-        $.ajax({
-            type: "POST",
-            url: '<?= base_url() . '/check_selectedseats_booked'; ?>',
-            data: {
-              content: $('#content').text(),
-              venue: $('#venue').text(), 
-              date: $('#date').text(),
-              time: $('#time').text(),
-              section: $('#section').text(),
-              seat_arr: selectedSeatsArr
-            },
-            beforeSend: function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
-              $("section").addClass("loading");
-            },
-            success: function(data){
-              
-              $("section").removeClass("loading"); 
-              //console.log("Result",data);
-              if(data === 'false') {
-                
-                $.ajax({
-                      type: "POST",
-                      url: '<?= base_url() . '/lock_seats'; ?>',
-                      data: {
-                        content: $('#content').text(),
-                        venue: $('#venue').text(), 
-                        date: $('#date').text(),
-                        time: $('#time').text(),
-                        section: $('#section').text(),
-                        location: $('#location').text(),
-                        priceset: $('#priceset').text(),
-                        pcount: $('#pcount').text(),
-                        total_price: $('#total_price').text(),
-                        family_seats:$('#family_seats').text(),
-                        tot_seats_selected : $('#total_seats_sel').text(),
-                        seat_arr: selectedSeatsArr
-                      },
-                      success: function(data){
-                        $("#result").append(data);
-                        
-                       window.location.href = "<?= base_url() . '/cart/'; ?>" ;
-                      },
-                      error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
-                      } 
-                });
+    const selectedSeats = document.querySelectorAll('.seating .seat.selected');
+    var selectedSeatsCount = selectedSeats.length;
 
-              } else {
-               
-                $.confirm.show({
-                        "message":"Seat(s) selected by you is already booked. Please  select your seats again!",
-                        "hideNo":true,// hide cancel button
-                        "yesText":"OK",
-                        //"type":"danger",
-                        "yes":function (){
-                          $("section").addClass("loading");
-                          setTimeout(location.reload.bind(location), 2000);
-                        },
-                        
-                })
-                console.log(data);
-              }
-              
+    if(totSelSeats > selectedSeatsCount ) {  
+      $.confirm.show({
+            "message":" Ticket(s) remaining to select!",
+            "hideNo":true,// hide cancel button
+            "yesText":"OK",
+            "yes":function (){
             },
-            error: function( jqXhr, textStatus, errorThrown ){
-                       // console.log( errorThrown );
-                       $.confirm.show({
-                        "message":"Please Select your seats to proceed further!",
-                        "hideNo":true,// hide cancel button
-                        "yesText":"OK",
-                        //"type":"danger",
-                        "yes":function (){
-                          $("section").addClass("loading");
-                          setTimeout(location.reload.bind(location), 2000);
-                        },
-                        
-                })
-            } 
-        });      
+          })
+
+
+    } else {     
+      $.ajax({
+        type: "POST",
+        url: '<?= base_url() . '/check_selectedseats_booked'; ?>',
+        data: {
+          content: $('#content').text(),
+          venue: $('#venue').text(), 
+          date: $('#date').text(),
+          time: $('#time').text(),
+          section: $('#section').text(),
+          seat_arr: selectedSeatsArr
+        },
+        beforeSend: function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+          $("section").addClass("loading");
+        },
+        success: function(data){
+          
+          $("section").removeClass("loading"); 
+          //console.log("Result",data);
+          if(data === 'false') {
+            
+            $.ajax({
+                  type: "POST",
+                  url: '<?= base_url() . '/lock_seats'; ?>',
+                  data: {
+                    content: $('#content').text(),
+                    venue: $('#venue').text(), 
+                    date: $('#date').text(),
+                    time: $('#time').text(),
+                    section: $('#section').text(),
+                    location: $('#location').text(),
+                    priceset: $('#priceset').text(),
+                    pcount: $('#pcount').text(),
+                    total_price: $('#total_price').text(),
+                    family_seats:$('#family_seats').text(),
+                    tot_seats_selected : $('#total_seats_sel').text(),
+                    seat_arr: selectedSeatsArr
+                  },
+                  success: function(data){
+                    $("#result").append(data);
+                    
+                    window.location.href = "<?= base_url() . '/cart/'; ?>" ;
+                  },
+                  error: function( jqXhr, textStatus, errorThrown ){
+                    console.log( errorThrown );
+                  } 
+            });
+
+          } else {
+            
+            $.confirm.show({
+                    "message":"Seat(s) selected by you is already booked. Please  select your seats again!",
+                    "hideNo":true,// hide cancel button
+                    "yesText":"OK",
+                    //"type":"danger",
+                    "yes":function (){
+                      $("section").addClass("loading");
+                      setTimeout(location.reload.bind(location), 2000);
+                    },
+                    
+            })
+            console.log(data);
+          }
+          
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+                    // console.log( errorThrown );
+                    $.confirm.show({
+                    "message":"Please Select your seats to proceed further!",
+                    "hideNo":true,// hide cancel button
+                    "yesText":"OK",
+                    //"type":"danger",
+                    "yes":function (){
+                      $("section").addClass("loading");
+                      setTimeout(location.reload.bind(location), 2000);
+                    },
+                    
+            })
+        } 
+      });  
+    }    
 });
     </script>
 <?= $this->endSection(); ?>

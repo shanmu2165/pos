@@ -30,22 +30,20 @@ if (!empty($content_detail[0])) {
     <div class="cart-details bg-white">
         <div class="container pt-4 pb-5">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12 relative">
                     <div class="row">
                         <!-- <div class="col-lg-4 col-md-6 pb-4">
                             <a href="<?= @$go_back; ?>" class="btn btn-primary">Go back</a>
                         </div> -->
-                        <?php if(isset($_SESSION['ccancel_url'])) { ?>
-                            <p id="demo"></p>
+                        <?php if (!empty($_SESSION['cart']['item'])) { ?>
+                            <div id="timer"><i class="far fa-clock" style="font-size: 25px;"></i><span id="demo"></span></div>
                         <?php } ?>
                         
-                        <div class="col-lg-8 col-md-6"></div>
+                        
                         <div class="col-lg-6 col-md-6">
                             <h2>Step 3: My Cart & Apply Coupon</h2>
                         </div>
-                        <!-- <div class="col-lg-4 col-md-6">
-                           
-                        </div> -->
+                        
                         <div class="col-lg-6 col-md-6">
                             <?php
 if (session("msg")) {
@@ -371,7 +369,7 @@ if (!empty($_SESSION['cart']['processingfees']) && $_SESSION['cart']['processing
 </section>
 <script>
 // Set the date we're counting down to
-var minutesToAdd=1;
+var minutesToAdd=10;
 var currentDate = new Date();
 var countDownDate = new Date(currentDate.getTime() + minutesToAdd*60000);
 // Update the count down every 1 second

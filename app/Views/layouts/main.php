@@ -142,7 +142,7 @@
                                                                 <div class="form-group lookup">
                                                                     <p>Please follow any one of the step and input the transaction id<br/>
                                     * Check email for transaction id<br/>
-                                    * Use the right side button to scan the QR Code to view transaction id</p>
+                                    * Use the right side Qrcode to scan the QR Code to view transaction id</p>
                                     
                                                                 </div>
                                                             </div>

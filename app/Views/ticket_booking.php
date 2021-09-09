@@ -80,7 +80,10 @@
                                              <?php if(isset($no_of_seats[$x])) { ?>
                                              <input type="number" id="seats<?= $x; ?>" class="seat_val"
                                                 value="" min="1" max="10" name="seats<?= $x; ?>"/>
-                                             <?php } ?>
+                                             <?php } else { ?>
+                                                <input type="number" id="seats25" class="seat_val"
+                                                value="0" min="0" max="10" name="seats25" style="display:none;"/>
+                                             <?php }   ?>
                                              <span id="errorMsg" style="display:none; color:red;">Select atleast one ticket</span>
                                           </div>
                                           <input type="hidden" id="type<?= $x; ?>-price"

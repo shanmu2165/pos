@@ -93,7 +93,7 @@
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Payment Type<sup style="color:red;">*</sup></label>
-                                    <input type="radio" placeholder="Stripe" name="payment_type" id="stripe" value="Stripe" required>
+                                    <input type="radio" placeholder="Stripe" name="payment_type" id="stripe" value="Stripe">
                                     <label>Stripe</label>
                                     <input type="radio" placeholder="Cash" name="payment_type" id="cash" value="Cash">
                                     <label>Cash</label>
@@ -151,7 +151,7 @@ $(function() {
       // of an input field. Validation rules are defined
       // on the right side
       fname: "required",
-      lname: "required",
+      payment_type: "required",
       email: {
         required: true,
         // Specify that email should be validated
@@ -165,12 +165,12 @@ $(function() {
     },
     // Specify validation error messages
     messages: {
-      fname: "Please enter your firstname",
-      lname: "Please enter your lastname",
+      fname: "Firstname is required",
+      payment_type: "Payment type is required",
       phone: {
-        required: "Please provide a phone number",
+        required: "Contact phone is required",
       },
-      email: "Please enter a valid email address"
+      email: "Email address is required"
     },
     // Make sure the form is submitted to the destination defined
     // in the "action" attribute of the form when valid
