@@ -232,6 +232,7 @@ class ShowsModel extends Model {
     function unlock_free_seats() {  
         $db      = \Config\Database::connect();
         $time = time();
+        //print_r($time); die;
         $query = $db->query("DELETE FROM seats WHERE end_time <'".$time."' AND status=2");
         
         return $query;

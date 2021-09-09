@@ -547,6 +547,17 @@ header {
   color: #fff;
   text-align: center;
 }
+.step1-ticket button {
+  background: #0488d0;
+  border: navajowhite;
+  color: #fff;
+  padding: 5px 15px;
+}
+.step1-ticket .btn-success {
+	color: #fff;
+	background-color: #198754;
+	border-color: #198754;
+}
 .qty-input button {
   background: #0d6efd;
   border: none;
@@ -898,7 +909,7 @@ header {
 }
 .cart-details h2 {
   color: #0497e5;
-  font-size: 25px;
+  font-size: 20px;
   margin-bottom: 15px;
 }
 
@@ -1233,9 +1244,45 @@ span#qr-result.failure {
 #tick_submit a {
   color: #fff;
 }
+
+#qr-reader__status_span {
+	display: none;
+}
+#timer {
+	background: #0497e5;
+	width: auto;
+	padding: 5px 20px;
+	color: #fff;
+	border-radius: 5px;
+	margin: 0 auto;
+	display: flex;
+	position: absolute;
+	right: 15px;
+	top: -75px;
+}
+#timer i {
+	margin-right: 5px;
+}
+.error {
+  color: red;
+  font-size: 12px;
+}
 /**************media starts****************/
 @media only screen and (min-width: 320px) and (max-width: 767px) {
-  .search-top {
+  #timer {
+    background: #0497e5;
+    width: 135px;
+    padding: 5px 20px;
+    color: #fff;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: flex;
+    position: absolute;
+    right: 0px;
+    left: 0px;
+    top: -75px;
+  }
+   .search-top {
     display: flex;
     align-items: center;
     justify-content: center;

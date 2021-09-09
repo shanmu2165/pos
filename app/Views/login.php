@@ -19,6 +19,7 @@
     <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
 </head>
 
 <body>
@@ -35,17 +36,17 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <?php } ?>
-                        <form action="<?= $form_action; ?>" method="POST">
+                        <form action="<?= $form_action; ?>" method="POST" name="login_form">
                             <?= csrf_field() ?>
                             <p class="email">
                                 <label>Email:</label>
                                 <input class="form-control" type="email" placeholder="johnsmith@mail.com" name="email"
-                                    required="" />
+                                    />
                             </p>
                             <p class="pass">
                                 <label>Password:</label>
                                 <input class="form-control" type="password" placeholder="********" name="password"
-                                    required="" />
+                                    />
                             </p>
                             <!-- <p class="forgot">
                             <input type="checkbox" id="" name="" value="">
@@ -60,6 +61,33 @@
             </div>
         </div>
     </div>
+    <script>
+        //Form Validation Part 
+$(function() {
+  
+  $("form[name='login_form']").validate({
+    // Specify validation rules
+    rules: {
+      
+      
+      password: "required",
+      email: {
+        required: true,
+        email: true
+      },
+    },
+    messages: {
+        password: "Password is required",
+      
+      email: "Email address is required"
+    },
+    
+    submitHandler: function(form) {
+      form.submit();
+    }
+  });
+});
+    </script>
 </body>
 
 </html>
