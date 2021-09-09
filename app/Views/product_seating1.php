@@ -182,15 +182,28 @@ section.loading .overlay{
                             <?php } ?>
                             <div class="seating">
                               
-                            <?php if(!empty($seats)  && count($row_names) == $venue_sec[0]->total_rows) {
-                                    for($i=0; $i< $venue_sec[0]->total_rows; $i++) { ?>
-                                       
+                            <?php if(!empty($seats)) { ?>
                                       <div class="row justify-content-center"> 
-                                      <span> <?= $row_names[$i]; ?></span>   
-                                      <?php  foreach($seats as $seat) { //print_r($seat); die; 
-                                          if($seat->seatrow == $row_names[$i]) { 
+                                      
+                                      <?php  foreach($seats as $key => $seat) { //print_r($key); die;
+                                            if($key > 0) {
+                                            $prevKey = $key - 1;
+                                            } else {
+                                              $prevKey = 0; 
+                                            }
+                                           
+                                        if($seats[$key]->seatrow != $seats[$prevKey]->seatrow && $key > 0) {?> 
+                                            
+                                          </div><div class="row justify-content-center">
+                                           <span>Row <?= $seat->seatrow ?></span>
+
+                                        <?php }  else if($key == 0) {?>
+
+                                          <span>Row <?= $seat->seatrow ?></span>
+
+                                        <?php } 
                                             $status = '';
-                                          if(!empty($already_booked) && in_array($row_names[$i]."-".$seat->seat, $already_booked)){ 
+                                          if(!empty($already_booked) && in_array($seat->seatrow."-".$seat->seat, $already_booked)){ 
                                             $status = "booked";
                                             } else if($seat->seattype == 'wheelchair' ) {?>
                                             <?php $status = "special";
@@ -201,29 +214,26 @@ section.loading .overlay{
                                           if( $seat->seattype == 'blocked')  {?>  
                                             <div class="seat empty">
                                         <?php } else { ?>
-                                          <div class="seat <?= $status; ?>" data-value="<?= $row_names[$i]."-".$seat->seat; ?>"><?= $seat->seat; ?>
+                                          <div class="seat <?= $status; ?>" data-value="<?= $seat->seatrow."-".$seat->seat; ?>"><?= $seat->seat; ?>
                                         <?php }  ?>
                                       </div>
                                       <?php if($seat->space_right == 1) {?>
                                             <div class="seat empty"></div>
                                           <?php } ?>  
-                                        <?php } } ?> 
+                                        <?php  } ?> 
                                       </div>
                                      
-                            <?php   }  ?> 
+                            <?php  // }  ?> 
                                        <p class="text" style="visibility:hidden;">
                                        You have selected <span id="count">0</span>
                                      </p>
                                      
                                      <?php  } else {?>
-                                       <div style="text-align:center;"><p style="color:red !important;" class="blink_me">No Seats Assigned Yet!</p></div>
+                                       <div style="text-align:center;"><span style="color:red !important;" class="blink_me">No Seats Assigned Yet!</span></div>
                             <?php } ?>
-                             <?php if(empty($seats) || count($row_names) != $venue_sec[0]->total_rows) { ?>
-                              <button type="button" id="tick_submit" class="btn btn-primary"><a href="<?= $_SESSION['ccancel_url']; ?>">Go back</a></button>
-                              <?php } else { ?>
+
                             <button type="button" id="tick_submit" class="btn btn-primary">Proceed</button>
-                            <?php } ?>  
-                          </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -237,21 +247,21 @@ section.loading .overlay{
         let count = document.getElementById('count');
         let selectedSeatsArr = [];
         var totalSelectedSeats = parseInt($("#total_seats_sel").text()) + 1;
-        //var booked_arr = <?= json_encode(@$already_booked); ?>;
-        //var total_rows = <?= json_encode($total_rows); ?>;
-        //var total_seats_perrow = <?= json_encode($seats_prow); ?>;
+        var booked_arr = <?= json_encode($already_booked); ?>;
+        var total_rows = <?= json_encode($total_rows); ?>;
+        var total_seats_perrow = <?= json_encode($seats_prow); ?>;
 
-        //let formattedBookedTicket = formatArrayToObj(booked_arr);
-        //let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
-        //console.log('total_rows', total_rows);
-        //console.log('BookedTicket',formattedBookedTicket);
-        //console.log('Seats Per',formattedSeatsPerRow);
-        // var reqData = {};
-        // let req = total_seats_perrow.map((arr) => {
-        //   const totalSeats = arr.split("-")[1];
-        //   const rowname = arr.split("-")[0];
+        let formattedBookedTicket = formatArrayToObj(booked_arr);
+        let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
+        console.log('total_rows', total_rows);
+        console.log('BookedTicket',formattedBookedTicket);
+        console.log('Seats Per',formattedSeatsPerRow);
+        var reqData = {};
+        let req = total_seats_perrow.map((arr) => {
+          const totalSeats = arr.split("-")[1];
+          const rowname = arr.split("-")[0];
          
-        // });
+        });
         function formatArrayToObj(array){
 	        //IP: ["1-1", "1-3", "4-1", "4-2", "4-4"]
 	        //OP: {"1": ["1", "3"], "4": ["1", "2", "4"] }

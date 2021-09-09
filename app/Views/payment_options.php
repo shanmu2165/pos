@@ -1,6 +1,7 @@
 <?= $this->extend('layouts/main'); ?>
 <?= $this->section('content'); ?>
 <!-- <script src="<?= base_url('js/client.js'); ?>" defer></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
 <style>
 .alert{
     display: none;
@@ -63,12 +64,12 @@
                     <div class="col-lg-12">
                     <div class="make-cart">
                         <!--<h4>Make Card Payment</h4> -->
-                        <form class="pt-5" action="<?= base_url().'/payment_success'; ?>" method="POST">
+                        <form class="pt-5" action="<?= base_url().'/payment_success'; ?>" method="POST" name="pay_form">
                         <?= csrf_field() ?>
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6">
                                     <label>First Name<sup style="color:red;">*</sup></label>
-                                    <input class="form-control" type="text" placeholder="First Name" name="fname" required="">
+                                    <input class="form-control" type="text" placeholder="First Name" name="fname">
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <label>Last Name</label>
@@ -78,7 +79,7 @@
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Contact Phone<sup style="color:red;">*</sup></label>
-                                    <input class="form-control" type="number" placeholder="Phone Number" onKeyPress="if(this.value.length==12) return false;" name="phone" required="">
+                                    <input class="form-control" type="text" placeholder="Phone Number" onKeyPress="if(this.value.length==12) return false;" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"; name="phone" required="">
                                 </div>
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Email Address<sup style="color:red;">*</sup></label>
@@ -138,6 +139,48 @@
     </div>
 </section>
 <script>
+
+//Form Validation Part 
+$(function() {
+  // Initialize form validation on the registration form.
+  // It has the name attribute "registration"
+  $("form[name='pay_form']").validate({
+    // Specify validation rules
+    rules: {
+      // The key name on the left side is the name attribute
+      // of an input field. Validation rules are defined
+      // on the right side
+      fname: "required",
+      lname: "required",
+      email: {
+        required: true,
+        // Specify that email should be validated
+        // by the built-in "email" rule
+        email: true
+      },
+      phone: {
+        required: true,
+        minlength: 12
+      }
+    },
+    // Specify validation error messages
+    messages: {
+      fname: "Please enter your firstname",
+      lname: "Please enter your lastname",
+      phone: {
+        required: "Please provide a phone number",
+      },
+      email: "Please enter a valid email address"
+    },
+    // Make sure the form is submitted to the destination defined
+    // in the "action" attribute of the form when valid
+    submitHandler: function(form) {
+      form.submit();
+    }
+  });
+});
+
+//Payment type radio option hide/show
 $(document).ready(function() {
     $("div.desc").hide();
     $("input[name$='payment_type']").click(function() {

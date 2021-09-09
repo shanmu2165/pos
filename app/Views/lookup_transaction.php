@@ -132,9 +132,10 @@
         <td style="background-color: #ffffff;"><table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
             <tr>
             <td style="padding:0 15px 15px 15px; font-family: 'Source Sans Pro', sans-serif; line-height: 20px; color: #555555;" class="thank">
-                <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 30px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;
+                <h2 style="word-break: break-word;
+    line-height: 30px;margin: 0 0 10px; text-align:left;margin-bottom:0px;font-size: 25px; text-align:center; font-weight:600;padding: 15px 0;text-transform: uppercase;
 color: #000;"><?= $json_details['content'][0]['title']; ?></h2>
-<h4 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding:0 0 5px;
+<h4 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 14px; text-align:center; font-weight:600;padding:0 0 5px;
 color: #000;"><?= date('D',strtotime($json_details["item"][1]['date'])); ?>,<?= date('M d, Y',strtotime($json_details["item"][1]['date'])); ?> <?= date('h:i a',strtotime($json_details['item'][1]['time'])); ?></h4>
 <!-- <h5 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 16px; text-align:center; font-weight:500;padding:0 0 5px;
 color: #000;">modglin, Joe</h5> -->
@@ -158,25 +159,25 @@ color: #000;">modglin, Joe</h5> -->
                     
                     <table width="100%">
                     <tr>
-                        <td width="40%" style="text-align:center; padding:5px;">
-                            <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                        <td width="38%" style="text-align:center; padding:5px;">
+                            <p style="color: #333; font-size:12px !important; line-height:18px;text-align: left;width: 100%;">
                             Sec: <b style="float: right;"><?= $json_details["item"][1]['location']; ?></b>
                            </p>
-                           <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                           <p style="color: #333; font-size:12px !important; line-height:18px;text-align: left;width: 100%;">
                             Row: <b style="float: right;"><?= $split[0]; ?></b>
                            </p>
-                           <p style="color: #333; font-size:16px !important; line-height:18px;text-align: left;width: 95%;">
+                           <p style="color: #333; font-size:12px !important; line-height:18px;text-align: left;width: 100%;">
                             Seat: <b style="float: right;"><?= $split[1]; ?></b>
                            </p>                        
                        </td>
-                        <td width="60%" style="text-align:center; padding:5px;">
-                            <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                        <td width="62%" style="text-align:center; padding:5px;">
+                            <p style="color: #333; font-size:12px !important; line-height:18px;text-align: left;width: 100%;">
                             Processing Fee<b style="float: right;"><?= getenv('processingfees') ?></b>
                            </p>
-                           <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                           <p style="color: #333; font-size:12px !important; line-height:18px;text-align: left;width: 100%;">
                             Tax <b style="float: right;"><?= getenv('salestax') ?></b>
                            </p>
-                           <p style="color: #333; font-size:14px !important; line-height:18px;text-align: left;width: 95%;">
+                           <p style="color: #333; font-size:12px !important; line-height:18px;text-align: left;width: 100%;">
                              Total  <b style="float: right;"><?= $total_amt; ?></b>
                            </p>
                        </td>
@@ -199,8 +200,8 @@ color: #000;">modglin, Joe</h5> -->
       <td style="background-color: #ffffff;">
            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
            <tr>
-           <td style="padding:0 15px 5px; font-family: 'Source Sans Pro', sans-serif; line-height: 20px; color: #555555;" class="thank">
-                <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;color: #000;">19179532</h2>
+           <td style="padding:0 10px 5px; font-family: 'Source Sans Pro', sans-serif; line-height: 20px; color: #555555;" class="thank">
+                <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;color: #000;"><?= $details[0]->randid ?></h2>
            </td>
           </tr>
           </table>
@@ -222,7 +223,7 @@ color: #000;">modglin, Joe</h5> -->
                     <table width="100%">
                     <tr>
                         <td width="100%" style="text-align:center; padding:5px;">
-                            <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 30px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;color: #000;"><?= $json_details['content'][0]['title']; ?></h2>
+                            <h2 style="word-break: break-word;line-height: 30px;margin: 0 0 10px;font-size: 25px;text-align: center;font-weight: 600;padding: 15px 0;text-transform: uppercase; color: #000;"><?= $json_details['content'][0]['title']; ?></h2>
                             <h4 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding:0 0 5px;
                                 color: #000;"> <?= date('h:i a',strtotime($json_details['item'][1]['time'])); ?></h4>
                             <h5 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 16px; text-align:center; font-weight:500;padding:0 0 5px;
@@ -235,7 +236,7 @@ color: #000;">modglin, Joe</h5> -->
                                </tr>
                            </table>
                            <h2 style="margin: 0 0 10px; text-align:left;word-break: break-all; margin-bottom:0px;font-size: 20px; text-align:center; font-weight:500;padding: 15px 0;text-transform: uppercase;
-color: #000;">19179532</h2>
+color: #000;"><?= $details[0]->randid ?></h2>
                            </p>                        
                        </td>
                       </tr>

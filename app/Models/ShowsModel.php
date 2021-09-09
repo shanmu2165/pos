@@ -159,6 +159,34 @@ class ShowsModel extends Model {
         return $content; 
     }
 
+    function get_row_names($sec) {
+        $row_arr = [];
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT DISTINCT seatrow FROM venue_seats WHERE section='".$sec."'");
+        $content = $query->getResult('array');
+        
+        foreach($content as $key => $val) {
+            $row_arr[$key]  = $val['seatrow'];
+        }
+        //print_r($row_arr); die;
+        return $row_arr; 
+    }
+
+    function get_row_count($sec,$rowid) {
+        //
+        $row_count = 0;
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT * FROM venue_seats WHERE section='".$sec."' AND seatrow='".$rowid."'");
+        $content = $query->getResult('array');
+        $row_count = count($content);
+        //print_r($row_count); die;
+        // foreach($content as $key => $val) {
+        //     $row_arr[$key]  = $val['seatrow'];
+        // }
+        
+        return $row_count; 
+    }
+
     function get_already_booked($content,$venue,$date,$time,$sec) {
         $db      = \Config\Database::connect();
         $query = $db->query("SELECT seatrow,seat FROM seats WHERE content='".$content."' AND venue='".$venue."' AND date='".$date."' AND time='".$time."' AND section='".$sec."'");
