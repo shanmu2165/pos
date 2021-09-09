@@ -411,7 +411,7 @@ var x = setInterval(function() {
     function myFunction1() {
          var can_url = '<?= @$_SESSION['ccancel_url']; ?>';
          $.confirm.show({
-                "message":"Are you sure you want to abort this transaction?",
+                "message":"Are you sure you want to cancel this transaction?",
                 //"hideNo":true,// hide cancel button
                 "yesText":"OK",
                 "noText":"CANCEL",
@@ -488,7 +488,7 @@ var x = setInterval(function() {
         // var url = $('#a_del').attr('data-href');
         // window.location.href = url;
         // });
-
+        $('.confirm h4.title').text('Timeout Alert');
         $("#pay_btn").click(function(){
             fetchConnectionToken()
 

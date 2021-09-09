@@ -84,7 +84,7 @@ class Transactions extends BaseController {
        
         $pos_data['notes'] = json_encode($_SESSION['cart']);
         $data1 = $_SESSION['cart'];
-        
+        //echo "<pre>"; print_r($data1); "</pre>"; die;
         $data1['pcount'] = count($data1['item']);
         $random = mt_rand(100000000, 999999999);
         $pos_data['randid'] = "BSTD".$random;
@@ -99,8 +99,8 @@ class Transactions extends BaseController {
         
         //print_r($success); die;
          //Qrcode Path
-         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
-         $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
+         $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
+         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
          //echo $filepath; die;
@@ -235,6 +235,9 @@ class Transactions extends BaseController {
                                               <p
                                                   style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
                                                   ".strtoupper(@$data1['content'][0]->title)." - ".date('M d, Y',strtotime($data1['item'][$i]['date'])).", ".date('h:i a',strtotime($data1['item'][$i]['time']))."";
+                                                  $body .= "  <p
+                                                  style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>".$data1['item'][$i]['venue']." -  ".$data1['item'][$i]['location']."</p>
+                                              </p>";
                                            if(strpos($data1['item'][$i]['name'], 'Family') !== false) {
                                             $body .= "  <p
                                                   style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>".$data1['item'][$i]['name']." [".@$data1['family_seats']."] - Preferred </p>
@@ -244,6 +247,7 @@ class Transactions extends BaseController {
                                                   style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>".$data1['item'][$i]['name']." - Preferred </p>
                                               </p>";
                                            }
+                                           
                                           $body .= "</td>
                                           <td
                                               style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>
@@ -263,9 +267,9 @@ class Transactions extends BaseController {
                                         if(!empty($_SESSION['cart']['seats_selected'])) {
                                             $seat_no = implode(",",@$_SESSION['cart']['seats_selected']); 
                                             $body .="<tr><td
-                                            style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>Seats Selected:- ".$seat_no."</td></tr>";
+                                            style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>Seats Selected:- ".$seat_no."</td><td style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'></td><td style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'></td></tr>";
                                         }
-                                      if(@$_SESSION['ccodeinfo']->type != 2) {    
+                                      //if(@$_SESSION['ccodeinfo']->type != 2) {    
                                       $body .="<tr>
                                           <td
                                               style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
@@ -312,7 +316,7 @@ class Transactions extends BaseController {
                                               </p>
                                           </td>
                                       </tr>";
-                                      }
+                                      //}
                                       $body .= " <tr>";
                                          if(isset($_SESSION['ccodeinfo']) && !empty($_SESSION['ccodeinfo'])) {
                                         $body .= "<td style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
@@ -322,20 +326,20 @@ class Transactions extends BaseController {
                                                       </p>
                                                   </td>";
                                          }
-                                        $body .= "<td
-                                                  style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
-                                                  <p
-                                                      style='color: #333; font-size:16px !important; line-height:18px; margin:0;'>
-                                                      &nbsp
-                                                  </p>
-                                              </td>
-                                              <td
-                                                  style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
-                                                  <p
-                                                      style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
-                                                      <i>$".number_format(@$data1['ptotal'],2)."</i>
-                                                  </p>
-                                              </td>";          
+                                        // $body .= "<td
+                                        //           style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
+                                        //           <p
+                                        //               style='color: #333; font-size:16px !important; line-height:18px; margin:0;'>
+                                        //               &nbsp
+                                        //           </p>
+                                        //       </td>
+                                        //       <td
+                                        //           style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
+                                        //           <p
+                                        //               style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
+                                        //               <i>$".number_format(@$data1['ptotal'],2)."</i>
+                                        //           </p>
+                                        //       </td>";          
                                       
                                       $body .= " </tr>";
                                       $body .= " <tr>

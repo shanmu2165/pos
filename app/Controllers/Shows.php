@@ -432,7 +432,7 @@ class Shows extends BaseController {
       $unlock_seats = $this->model->unlock_free_seats();
       
       $data['venue_sec'] = $this->model->get_venue_section($data['venueid'],$data['location']); 
-      
+      //print_r($data['venue_sec'][0]->total_rows); die;
       if(!empty($data['venue_sec'])) {
         $data['seats'] = $this->model->get_seats($data['venueid'],$data['venue_sec'][0]->id); 
         $sec = ucfirst($data['location']);
@@ -448,6 +448,15 @@ class Shows extends BaseController {
 
       }
       
+      $data['total_rows'] = $data['venue_sec'][0]->total_rows;
+      $data['avail'] = [];
+      $data['row_names'] = $this->model->get_row_names($data['venue_sec'][0]->id);
+      $pr = 0;
+      foreach($data['row_names'] as $key => $val) {
+        $data['seats_prow'][$pr] = $val."-".$this->model->get_row_count($data['venue_sec'][0]->id,$val);
+        $pr++;
+      }
+      //echo "<pre>"; print_r($data['row_names']); "</pre>"; die;
       return view('product_seating',$data);
     }
     //Function for show ticket selection

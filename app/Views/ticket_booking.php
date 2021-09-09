@@ -67,18 +67,19 @@
                                           if($regex[$x] > 0) { echo $regex[$x] ;} else { echo "0.00"; }  ?></strong>
                                        </td>
                                        <td>
-                                          <div class="qty-input">
+                                          <div class="qty-input" id="<?= $x; ?>">
+                                             
                                              <button type="button" id="sub<?= $x; ?>" class="sub"
-                                                onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "sub", <?= $x; ?>)'
+                                                onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "sub")'
                                                 ;>-</button>
                                              <input type="number" id="qty<?= $x; ?>" readonly value="0"
                                                 min="1" max="10" name="qty<?= $x; ?>" />
                                              <button type="button" id="add<?= $x; ?>" class="add"
-                                                onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "add", <?= $x; ?>)'
+                                                onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "add")'
                                                 ;>+</button>
                                              <?php if(isset($no_of_seats[$x])) { ?>
                                              <input type="number" id="seats<?= $x; ?>" class="seat_val"
-                                                value="0" min="0" max="10" name="seats<?= $x; ?>"/>
+                                                value="" min="1" max="10" name="seats<?= $x; ?>"/>
                                              <?php } ?>
                                              <span id="errorMsg" style="display:none; color:red;">Select atleast one ticket</span>
                                           </div>
@@ -127,14 +128,14 @@
 </section>
 <script>
 
-$(document).on('submit','#ticketForm',function(){
-    if(($('#qty1').val()) <= 0){
-        $('#errorMsg').show();
-        return false;
-    } else{
-        $('#errorMsg').hide();
-        form.submit();
-    }
-});
+// $(document).on('submit','#ticketForm',function(){
+//     if(($('#qty1').val()) <= 0){
+//         $('#errorMsg').show();
+//         return false;
+//     } else{
+//         $('#errorMsg').hide();
+//         form.submit();
+//     }
+// });
 </script>
 <?= $this->endSection(); ?>
