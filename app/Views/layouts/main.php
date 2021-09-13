@@ -30,6 +30,12 @@
         #tickets {
             display:none;
         }
+        #qr-reader__status_span {
+            display:none;
+        }
+        #qr-reader span a{
+            display:none;
+        }
         </style>
 </head>
 
