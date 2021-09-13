@@ -486,7 +486,7 @@ var x = setInterval(function() {
         // var url = $('#a_del').attr('data-href');
         // window.location.href = url;
         // });
-        $('.confirm h4.title').text('Timeout Alert');
+        $('.confirm h4.title').text('Cancel Alert');
         $("#pay_btn").click(function(){
             fetchConnectionToken()
 
