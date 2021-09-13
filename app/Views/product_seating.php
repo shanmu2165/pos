@@ -379,7 +379,7 @@ $("#tick_submit").click(function(){
 
     if(totSelSeats > selectedSeatsCount ) {  
       $.confirm.show({
-            "message":" Ticket(s) remaining to select!",
+            "message":" Tickets quantity and seats selected count must be same!",
             "hideNo":true,// hide cancel button
             "yesText":"OK",
             "yes":function (){
