@@ -26,7 +26,11 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="<?= base_url('js/owl.carousel.js'); ?>"></script>
-    
+    <style>
+        #tickets {
+            display:none;
+        }
+        </style>
 </head>
 
 <body>
@@ -142,7 +146,7 @@
                                                                 <div class="form-group lookup">
                                                                     <p>Please follow any one of the step and input the transaction id<br/>
                                     * Check email for transaction id<br/>
-                                    * Use the right side Qrcode to scan the QR Code to view transaction id</p>
+                                    * Use the below button to scan the QR Code to view transaction id</p>
                                     
                                                                 </div>
                                                             </div>
@@ -437,12 +441,8 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
 
     const currentQty = $("#" + ticketQtyReferer).val();
     const formattedCurrentQty = parseFloat(currentQty);
-    var parent = $(".seat_val").closest();
-   console.log(currentQty, "currentQty");
-   //console.log(parent.prevObject[0].id, "Parent");
-   var parent_id = parent.prevObject[0].id.charAt(parent.prevObject[0].id.length - 1);
-   //console.log(parent_id, "Id No");
-   
+   // console.log(currentQty, "currentQty");
+
     let newQty = 0;
     let total = 0;
     if (type === "add") {
@@ -450,18 +450,9 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
         total = formattedPrevTotal + formattedTicketPrice;
         totalQty = totalQty + 1; 
         console.log(newQty + "Max - " + qtyMax);
-        //console.log("REF",ticketQtyReferer);
-        if(ticketQtyReferer == "qty"+ parent_id && newQty > 0 ) {
-            $(".seat_val").prop('required', true);
-        }
         //Check max limit
         if (newQty >= qtyMax) {
             $("#add" + id).attr("disabled", true);
-        }
-        // alert($("#qty"+ parent_id).val());
-        if($("#qty"+ parent_id).val() > 0) {
-            $(".seat_val").prop('required', true);
-            
         }
     }
     if (type === "sub") { k--;
@@ -475,11 +466,6 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
 
         newQty = formattedCurrentQty - 1;
         total = formattedPrevTotal - formattedTicketPrice;
-        //Family Seat Validation
-        if(ticketQtyReferer == "qty"+ parent_id && newQty < 1 ) {
-           $(".seat_val").prop('required', false);
-       }
-       
     }
     
     

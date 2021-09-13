@@ -6,6 +6,9 @@
 .alert{
     display: none;
 }
+.error{
+  color:red;
+}
 </style>
 <section class="content-part pb-4">
     <div class="booking-details pay-options min-normal bg-white">
@@ -165,7 +168,7 @@ $(function() {
     },
     // Specify validation error messages
     messages: {
-      fname: "Firstname is required",
+      fname: "First name is required",
       payment_type: "Payment type is required",
       phone: {
         required: "Contact phone is required",
