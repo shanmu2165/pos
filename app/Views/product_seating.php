@@ -363,7 +363,7 @@ container.addEventListener('click', e => {
               })
       }
   } else if (!e.target.classList.contains('booked')){ 
-    e.target.classList.toggle('selected');
+    e.target.classList.toggle('select');
           selectedSeatsCount = selectedSeatsCount - 1;
        
         console.log(selectedSeatsCount)
