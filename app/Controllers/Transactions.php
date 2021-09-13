@@ -162,7 +162,7 @@ class Transactions extends BaseController {
                               <td style='font-family: ' Source Sans Pro', sans-serif;' class='center-on-narrow'>
                                   <h2
                                       style='font-size: 25px;font-style: normal;font-weight: normal;line-height: 35px;letter-spacing: normal;text-align: left; margin:0 0 5px;color: #000;'>
-                                      Transaction #BSTD".$random." Details
+                                      Transaction Id #BSTD".$random." Details
                                   </h2>";
                                   $body .="<h4
                                       style='font-size: 20px;font-style: normal;font-weight: normal;line-height: 35px;letter-spacing: normal;text-align: left; margin:0 0 5px;color: #000;'>
@@ -267,7 +267,7 @@ class Transactions extends BaseController {
                                         if(!empty($_SESSION['cart']['seats_selected'])) {
                                             $seat_no = implode(",",@$_SESSION['cart']['seats_selected']); 
                                             $body .="<tr><td
-                                            style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>Seats Selected:- ".$seat_no."</td><td style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'></td><td style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'></td></tr>";
+                                            style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc; font-size:16px;'>Seats Selected:- ".$seat_no."</td><td style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'></td><td style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'></td></tr>";
                                         }
                                       //if(@$_SESSION['ccodeinfo']->type != 2) {    
                                       $body .="<tr>
