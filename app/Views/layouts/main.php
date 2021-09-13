@@ -156,7 +156,8 @@
                                     
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-6 pt-3 qrcode">
+                                                            <div class="col-lg-6"></div>
+                                                            <div class="col-lg-6 pt-3 qrcode" style="margin-top:-30px;">
                                                                <a href="<?= base_url().'/qrcode_reader'; ?>" target="_blank"> <i class="fa fa-qrcode" style="font-size:35px;" aria-hidden="true"></i></a>
                                                             </div>
                                                             <!-- <div class="col-lg-5 text-left pt-1">
