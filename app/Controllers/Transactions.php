@@ -33,8 +33,8 @@ class Transactions extends BaseController {
         $data = [];
         $data['page_title'] = 'POS - Select Payment Option';
         $data['search_url'] = base_url().'/shows/search';
-        $date['delete_url'] = base_url().'/delete_cart';
-
+        $data['delete_url'] = base_url().'/delete_cart';
+        $data['cart_url'] = $this->request->getUserAgent()->getReferrer();
         $data['categories'] = $this->model->get_categories();
         $data['current'] = 'pay_option';
         //echo "<pre>"; print_r($_SESSION);"</pre>"; die; 

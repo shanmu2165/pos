@@ -11,7 +11,7 @@
 }
 </style>
 <section class="content-part pb-4">
-    <div class="booking-details pay-options min-normal bg-white">
+    <div class="booking-details pay-option min-normal bg-white">
         <div class="cart-title pt-4 pb-4">
             <div class="container">
                 <div class="row">
@@ -69,6 +69,9 @@
                         <!--<h4>Make Card Payment</h4> -->
                         <form class="pt-5" action="<?= base_url().'/payment_success'; ?>" method="POST" name="pay_form">
                         <?= csrf_field() ?>
+                        <div class="col-lg-4 col-md-6 pb-4">
+                          <a href="<?= $cart_url; ?>" class="btn btn-primary">Go back</a>
+                        </div>
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6">
                                     <label>First Name<sup style="color:red;">*</sup></label>
