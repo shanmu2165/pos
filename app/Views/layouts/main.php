@@ -117,7 +117,6 @@
                                                 <div class="col-md-3"></div>
                                                 <div class="col-md-6">
                                                     <div class="alert alert-warning alert-dismissible fade show" id="modal_alert_msg" role="alert" style="display:none; color:red; background-color:#000; font-weight:bold; text-align:center;">
-                                                        <span id="alert_modal"></span>
                                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                                     </div>
                                                 </div>

@@ -9,6 +9,7 @@
                         <h2>Transaction Details</h2>
                     </div>
                 </div>
+                <span id="alert_modal"></span>
             </div>
             <div class="container pt-2 pb-2">
                 
