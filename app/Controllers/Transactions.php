@@ -98,9 +98,11 @@ class Transactions extends BaseController {
         }
         
         //print_r($success); die;
-         //Qrcode Path
-         $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
-         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
+         //Qrcode Path For Server
+         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
+
+         //Qrcode Path For Local
+         $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
          //echo $filepath; die;

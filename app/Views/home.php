@@ -52,7 +52,7 @@
                                             <h4><?= $my->title ?></h4>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-12 text-center">
                                             <div class="price-details ">
                                                 <?php if(!empty($my->summary)) { ?>
@@ -61,16 +61,16 @@
                                             </div>
                                             <?php } ?>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="row">
                                         <div class="col-12 text-center">
                                             <?php if(!empty($cal_data[$my->id][$today])) { ?>
                                             <a href="<?= $buy_url.$my->id."/".$end_time; ?>" tabindex="-1">
-                                                <button tabindex="-1">Buy Tickets</button>
+                                                <button tabindex="-1">Tickets</button>
                                             </a>
                                             <?php } else { ?>
                                             <a href="<?= $buy_url.$my->id; ?>" tabindex="-1">
-                                                <button tabindex="-1">Buy Tickets</button>
+                                                <button tabindex="-1">Tickets</button>
                                             </a>
                                             <?php } ?>
                                         </div>

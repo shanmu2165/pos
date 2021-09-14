@@ -85,7 +85,7 @@
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Contact Phone<sup style="color:red;">*</sup></label>
-                                    <input class="form-control" type="text" placeholder="Phone Number" onKeyPress="if(this.value.length==12) return false;" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"; name="phone" required="">
+                                    <input class="form-control" type="text" placeholder="Phone Number" id="phone" onKeyPress="if(this.value.length==13) return false;" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"; name="phone" required="" />
                                 </div>
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Email Address<sup style="color:red;">*</sup></label>
@@ -166,7 +166,7 @@ $(function() {
       },
       phone: {
         required: true,
-        minlength: 12
+        minlength: 13
       }
     },
     // Specify validation error messages
@@ -175,6 +175,7 @@ $(function() {
       payment_type: "Payment type is required",
       phone: {
         required: "Contact phone is required",
+        minlength: "Contact number should be atleast 10 characters"
       },
       email: "Email address is required"
     },
@@ -409,6 +410,11 @@ function formatJson(message) {
 }
 
 });
+
+$("input[name='phone']").keyup(function() {
+    $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d+)$/, "($1)$2-$3"));
+});
+
 </script>
 <script src="https://js.stripe.com/terminal/v1/"></script>
 <?= $this->endSection(); ?>
