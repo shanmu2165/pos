@@ -12,25 +12,6 @@
             </div>
         </div>
     </div>
-    <div class="product-details">
-        <div class="container pt-5 pb-5">
-            <div class="row">
-                <div class="col-lg-5 col-md-5">
-                    <div class="product-logo">
-                        <p><img src="<?= base_url() . '/images/' . $show_details[0]->image2; ?>" alt="" /></p>
-                        <!-- <h5>Adult (ages 13 and up) <?= $price_detail[0]->adult_price; ?></h5>
-                        <h5>Child (12 and under) <?= $price_detail[0]->child_price; ?></h5> -->
-                    </div>
-                </div>
-                <div class="col-lg-7 col-md-7">
-                    <div class="product-text">
-                        <p> <?= strip_tags($show_details[0]->body); ?></p>
-                        <p><?= strip_tags($show_details[0]->summary); ?></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="table-section dark-grey">
         <div class="container-fluid p-0 pt-5 pb-4">
             <div class="container table-head">
@@ -262,6 +243,25 @@ while ($cmonth <= $endmonth) {
 }
 ?>
 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product-details">
+        <div class="container pt-5 pb-5">
+            <div class="row">
+                <div class="col-lg-5 col-md-5">
+                    <div class="product-logo">
+                        <p><img src="<?= base_url() . '/images/' . $show_details[0]->image2; ?>" alt="" /></p>
+                        <!-- <h5>Adult (ages 13 and up) <?= $price_detail[0]->adult_price; ?></h5>
+                        <h5>Child (12 and under) <?= $price_detail[0]->child_price; ?></h5> -->
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-7">
+                    <div class="product-text">
+                        <p> <?= strip_tags($show_details[0]->body); ?></p>
+                        <p><?= strip_tags($show_details[0]->summary); ?></p>
+                    </div>
                 </div>
             </div>
         </div>

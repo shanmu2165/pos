@@ -66,11 +66,11 @@
                                         <div class="col-12 text-center">
                                             <?php if(!empty($cal_data[$my->id][$today])) { ?>
                                             <a href="<?= $buy_url.$my->id."/".$end_time; ?>" tabindex="-1">
-                                                <button tabindex="-1">Buy Tickets</button>
+                                                <button tabindex="-1">Tickets</button>
                                             </a>
                                             <?php } else { ?>
                                             <a href="<?= $buy_url.$my->id; ?>" tabindex="-1">
-                                                <button tabindex="-1">Buy Tickets</button>
+                                                <button tabindex="-1">Tickets</button>
                                             </a>
                                             <?php } ?>
                                         </div>

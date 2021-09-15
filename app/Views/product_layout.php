@@ -82,7 +82,7 @@
                                 if($key == 0 || ($key % 3) == 0) {
                                 $otr .=  '<div class="tsec">'; 
                                 }
-                                $otr .='<span class=""><button type="button" class="button'.str_replace(':','',$instances[0]->start_time).'" data-id="sc-'.$scr.'" data-ps="'.$actualps.'" value="'.$scr.'"'.$dis.'>'.$value->optionname.$dist.'</button></span>';
+                                $otr .='<span class=""><button type="button" onclick="myFunction();" class="button'.str_replace(':','',$instances[0]->start_time).'" data-id="sc-'.$scr.'" data-ps="'.$actualps.'" value="'.$scr.'"'.$dis.'>'.$value->optionname.$dist.'</button></span>';
                                 $btn++;
                                 
                                 
@@ -110,7 +110,7 @@
                                 </div>
 
                             </div>
-                            <button type="submit" class="btn btn-success">Select Tickets</button>
+                            <button type="submit" class="btn btn-success" id="tickets">Select Tickets</button>
                             <div class="step2-ticket">
                                 <table class="table mt-4" style="border:none;">
                                     <tr>
@@ -154,5 +154,10 @@
             </form>
         </div>
     </div>
+    <script>
+function myFunction() {
+  document.getElementById("tickets").style.display = "block";
+}
+</script>
 </section>
 <?= $this->endSection(); ?>

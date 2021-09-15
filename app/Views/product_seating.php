@@ -48,7 +48,7 @@
 }
 .seat:not(.occupied):hover {
   cursor: pointer;
-  transform: scale(1.1);
+  transform: scale(1.02);
 }
 .showcase .seat:not(.occupied):hover {
   cursor: default;
@@ -363,7 +363,7 @@ container.addEventListener('click', e => {
               })
       }
   } else if (!e.target.classList.contains('booked')){ 
-    e.target.classList.toggle('selected');
+    e.target.classList.toggle('select');
           selectedSeatsCount = selectedSeatsCount - 1;
        
         console.log(selectedSeatsCount)
@@ -379,7 +379,7 @@ $("#tick_submit").click(function(){
 
     if(totSelSeats > selectedSeatsCount ) {  
       $.confirm.show({
-            "message":" Ticket(s) remaining to select!",
+            "message":" Tickets quantity and seats selected count must be same!",
             "hideNo":true,// hide cancel button
             "yesText":"OK",
             "yes":function (){

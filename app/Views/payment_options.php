@@ -6,9 +6,12 @@
 .alert{
     display: none;
 }
+.error{
+  color:red;
+}
 </style>
 <section class="content-part pb-4">
-    <div class="booking-details pay-options min-normal bg-white">
+    <div class="booking-details pay-option min-normal bg-white">
         <div class="cart-title pt-4 pb-4">
             <div class="container">
                 <div class="row">
@@ -66,6 +69,9 @@
                         <!--<h4>Make Card Payment</h4> -->
                         <form class="pt-5" action="<?= base_url().'/payment_success'; ?>" method="POST" name="pay_form">
                         <?= csrf_field() ?>
+                        <div class="col-lg-4 col-md-6 pb-4">
+                          <a href="<?= $cart_url; ?>" class="btn btn-primary">Go back</a>
+                        </div>
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6">
                                     <label>First Name<sup style="color:red;">*</sup></label>
@@ -79,7 +85,7 @@
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Contact Phone<sup style="color:red;">*</sup></label>
-                                    <input class="form-control" type="text" placeholder="Phone Number" onKeyPress="if(this.value.length==12) return false;" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"; name="phone" required="">
+                                    <input class="form-control" type="text" placeholder="Phone Number" id="phone" onKeyPress="if(this.value.length==13) return false;" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"; name="phone" required="" />
                                 </div>
                                 <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Email Address<sup style="color:red;">*</sup></label>
@@ -97,6 +103,8 @@
                                     <label>Stripe</label>
                                     <input type="radio" placeholder="Cash" name="payment_type" id="cash" value="Cash">
                                     <label>Cash</label>
+                                    <input type="radio" placeholder="Free" name="payment_type" id="free" value="Free">
+                                    <label>Free</label>
                                 </div>
                                 <!-- <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Email Address<sup>*</sup></label>
@@ -107,10 +115,10 @@
                                 <div id="Stripe" class="desc row">
                                   
                                     <div class="col-lg-3 col-md-6 col-sm-12">
-                                    <button type="button" class="btn btn-success" id="collect-button">Collect Payment</button>
+                                    <button type="button" class="btn btn-success" id="collect-button" style="display:none;">Collect Payment</button>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-12">
-                                    <button type="button" class="btn btn-info" id="capture-button">Capture Payment</button>
+                                    <button type="button" class="btn btn-info" id="capture-button" style="display:none;">Capture Payment</button>
                                     </div>
                                     
                                 </div>
@@ -126,7 +134,7 @@
                             <div class="row mb-3">
                                 <div class="col-lg-12 col-md-12 text-center">
                                     <!-- <a href="#"><button>Pay $66.00 Now</button></a> -->
-                                    <input type="submit" class="btn btn-success" value="Submit"/>
+                                    <input type="submit" class="btn btn-success" id="submit_btn" value="Submit"/>
                                 </div>
                             </div>
                         </form>
@@ -160,15 +168,16 @@ $(function() {
       },
       phone: {
         required: true,
-        minlength: 12
+        minlength: 13
       }
     },
     // Specify validation error messages
     messages: {
-      fname: "Firstname is required",
+      fname: "First name is required",
       payment_type: "Payment type is required",
       phone: {
         required: "Contact phone is required",
+        minlength: "Contact number should be atleast 10 characters"
       },
       email: "Email address is required"
     },
@@ -185,6 +194,12 @@ $(document).ready(function() {
     $("div.desc").hide();
     $("input[name$='payment_type']").click(function() {
         var test = $(this).val();
+        if(test == 'Stripe'){
+          $('#submit_btn').prop('disabled', true);
+        }
+        if(test == 'Cash' || test == 'Free'){
+          $('#submit_btn').prop('disabled', false);
+        }
         $("div.desc").hide();
         $("#" + test).show();
        
@@ -241,17 +256,21 @@ function discoverReaderHandler() {
   });
 }
 
+var connectTerminal = null;
 // Handler for a "Connect Reader" button
 function connectReaderHandler(discoveredReaders) {
   // Just select the first reader here.
   var selectedReader = discoveredReaders[0];
   terminal.connectReader(selectedReader).then(function (connectResult) {
+    connectTerminal = connectResult;
+    console.log('terminal-confirm', connectTerminal);
     if (connectResult.error) {
       console.log('Failed to connect: ', connectResult.error);
       $('#connectFailToast').toast('show');
     } else {
       console.log('Connected to reader: ', connectResult.reader.label);
       $('#connectToast').toast('show');
+      $('#collect-button').css('display', 'block');
       log('terminal.connectReader', connectResult)
     }
   });
@@ -289,6 +308,7 @@ function collectPayment(amount) {
             console.log(result.error)
           } else if (result.paymentIntent) {
             paymentIntentId = result.paymentIntent.id;
+            $('#capture-button').css('display', 'block');
             log('terminal.processPayment', result.paymentIntent);
           }
         });
@@ -297,7 +317,10 @@ function collectPayment(amount) {
   });
 }
 
+
+
 function capture(paymentIntentId) {
+  $('#submit_btn').prop('disabled', false);
   return fetch('<?= base_url('/capture_pay'); ?>', {
     method: "POST",
     headers: {
@@ -403,6 +426,11 @@ function formatJson(message) {
 }
 
 });
+
+$("input[name='phone']").keyup(function() {
+    $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d+)$/, "($1)$2-$3"));
+});
+
 </script>
 <script src="https://js.stripe.com/terminal/v1/"></script>
 <?= $this->endSection(); ?>
