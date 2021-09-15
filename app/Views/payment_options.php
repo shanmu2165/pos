@@ -103,6 +103,8 @@
                                     <label>Stripe</label>
                                     <input type="radio" placeholder="Cash" name="payment_type" id="cash" value="Cash">
                                     <label>Cash</label>
+                                    <input type="radio" placeholder="Free" name="payment_type" id="free" value="Free">
+                                    <label>Free</label>
                                 </div>
                                 <!-- <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Email Address<sup>*</sup></label>
@@ -195,10 +197,9 @@ $(document).ready(function() {
         if(test == 'Stripe'){
           $('#submit_btn').prop('disabled', true);
         }
-        if(test == 'Cash'){
+        if(test == 'Cash' || test == 'Free'){
           $('#submit_btn').prop('disabled', false);
         }
-        // $('#submit_btn').prop('disabled', true);
         $("div.desc").hide();
         $("#" + test).show();
        

@@ -82,13 +82,24 @@ class Transactions extends BaseController {
             
         }
        
+        
+        if($this->request->getVar('payment_type') == 'Free'){
+            $_SESSION['cart']['itotal'] = number_format(0,2);
+            $_SESSION['cart']['total'] = number_format(0,2);
+            $_SESSION['cart']['salestax'] = number_format(0,2);
+            $_SESSION['cart']['processingfees'] = number_format(0,2);
+        }
         $pos_data['notes'] = json_encode($_SESSION['cart']);
         $data1 = $_SESSION['cart'];
         //echo "<pre>"; print_r($data1); "</pre>"; die;
         $data1['pcount'] = count($data1['item']);
         $random = mt_rand(100000000, 999999999);
         $pos_data['randid'] = "BSTD".$random;
-        $pos_data['amount'] = number_format($data1['total'],2);
+        if($this->request->getVar('payment_type') == 'Free'){
+            $pos_data['amount'] = number_format(0,2);
+        }else{
+            $pos_data['amount'] = number_format($data1['total'],2);
+        }
         $pos_data['timestamp'] = date('Y-m-d h:i:a');
        //echo "<pre>"; print_r($pos_data); "</pre>"; die;
         $success = $this->transaction_model->insert($pos_data);
@@ -249,7 +260,7 @@ class Transactions extends BaseController {
                                                   style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>".$data1['item'][$i]['name']." - Preferred </p>
                                               </p>";
                                            }
-                                           
+                                           if($this->request->getVar('payment_type') != 'Free'){
                                           $body .= "</td>
                                           <td
                                               style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>
@@ -265,6 +276,23 @@ class Transactions extends BaseController {
                                                   $".number_format($data1['item'][$i]['price'],2)."
                                               </p>
                                           </td></tr> ";
+                                           }else{
+                                            $body .= "</td>
+                                            <td
+                                                style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>
+                                                <p
+                                                    style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
+                                                    ".$data1['item'][$i]['qty']."
+                                                </p>
+                                            </td>
+                                            <td
+                                                style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>
+                                                <p
+                                                    style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
+                                                    $".number_format(0,2)."
+                                                </p>
+                                            </td></tr> ";
+                                           }
                                       } } //}
                                         if(!empty($_SESSION['cart']['seats_selected'])) {
                                             $seat_no = implode(",",@$_SESSION['cart']['seats_selected']); 
@@ -272,6 +300,7 @@ class Transactions extends BaseController {
                                             style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc; font-size:16px;'>Seats Selected:- ".$seat_no."</td><td style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'></td><td style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'></td></tr>";
                                         }
                                       //if(@$_SESSION['ccodeinfo']->type != 2) {    
+                                        if($this->request->getVar('payment_type') != 'Free'){
                                       $body .="<tr>
                                           <td
                                               style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
@@ -346,6 +375,8 @@ class Transactions extends BaseController {
                                       
                                       $body .= " </tr>";
                                        }
+                                    }
+                                    if($this->request->getVar('payment_type') != 'Free'){
                                       $body .= " <tr>
                                           <td style='text-align:left; padding:10px;background-color: #fff;'>
                                               <p
@@ -366,6 +397,28 @@ class Transactions extends BaseController {
                                               </p>
                                           </td>
                                       </tr>";
+                                    }else{
+                                        $body .= " <tr>
+                                        <td style='text-align:left; padding:10px;background-color: #fff;'>
+                                            <p
+                                                style='color: #333; font-size:16px !important; line-height:18px; margin:0;'>
+                                                <b>Total</b>
+                                            </p>
+                                        </td>
+                                        <td style='text-align:left; padding:10px;background-color: #fff;'>
+                                            <p
+                                                style='color: #333; font-size:16px !important; line-height:18px; margin:0;'>
+                                                &nbsp
+                                            </p>
+                                        </td>
+                                        <td style='text-align:left; padding:10px;background-color: #fff;'>
+                                            <p
+                                                style='color: #333; font-size:16px !important; line-height:18px; margin:0;'>
+                                                <b>$".number_format(0,2)."</b>
+                                            </p>
+                                        </td>
+                                    </tr>";
+                                    }
                                       $body .= "
                                   </table>
                               </td>
