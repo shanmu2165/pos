@@ -113,10 +113,10 @@
                                 <div id="Stripe" class="desc row">
                                   
                                     <div class="col-lg-3 col-md-6 col-sm-12">
-                                    <button type="button" class="btn btn-success" id="collect-button">Collect Payment</button>
+                                    <button type="button" class="btn btn-success" id="collect-button" style="display:none;">Collect Payment</button>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-12">
-                                    <button type="button" class="btn btn-info" id="capture-button">Capture Payment</button>
+                                    <button type="button" class="btn btn-info" id="capture-button" style="display:none;">Capture Payment</button>
                                     </div>
                                     
                                 </div>
@@ -132,7 +132,7 @@
                             <div class="row mb-3">
                                 <div class="col-lg-12 col-md-12 text-center">
                                     <!-- <a href="#"><button>Pay $66.00 Now</button></a> -->
-                                    <input type="submit" class="btn btn-success" value="Submit"/>
+                                    <input type="submit" class="btn btn-success" id="submit_btn" value="Submit"/>
                                 </div>
                             </div>
                         </form>
@@ -192,6 +192,13 @@ $(document).ready(function() {
     $("div.desc").hide();
     $("input[name$='payment_type']").click(function() {
         var test = $(this).val();
+        if(test == 'Stripe'){
+          $('#submit_btn').prop('disabled', true);
+        }
+        if(test == 'Cash'){
+          $('#submit_btn').prop('disabled', false);
+        }
+        // $('#submit_btn').prop('disabled', true);
         $("div.desc").hide();
         $("#" + test).show();
        
@@ -248,17 +255,21 @@ function discoverReaderHandler() {
   });
 }
 
+var connectTerminal = null;
 // Handler for a "Connect Reader" button
 function connectReaderHandler(discoveredReaders) {
   // Just select the first reader here.
   var selectedReader = discoveredReaders[0];
   terminal.connectReader(selectedReader).then(function (connectResult) {
+    connectTerminal = connectResult;
+    console.log('terminal-confirm', connectTerminal);
     if (connectResult.error) {
       console.log('Failed to connect: ', connectResult.error);
       $('#connectFailToast').toast('show');
     } else {
       console.log('Connected to reader: ', connectResult.reader.label);
       $('#connectToast').toast('show');
+      $('#collect-button').css('display', 'block');
       log('terminal.connectReader', connectResult)
     }
   });
@@ -296,6 +307,7 @@ function collectPayment(amount) {
             console.log(result.error)
           } else if (result.paymentIntent) {
             paymentIntentId = result.paymentIntent.id;
+            $('#capture-button').css('display', 'block');
             log('terminal.processPayment', result.paymentIntent);
           }
         });
@@ -304,7 +316,10 @@ function collectPayment(amount) {
   });
 }
 
+
+
 function capture(paymentIntentId) {
+  $('#submit_btn').prop('disabled', false);
   return fetch('<?= base_url('/capture_pay'); ?>', {
     method: "POST",
     headers: {

@@ -46,7 +46,6 @@ class Transactions extends BaseController {
     //Function for payment capture
     function pay_success() {
         
-        
         $data = [];
         $pos_data = [];
         $data1 = [];
