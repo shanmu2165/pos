@@ -1101,11 +1101,11 @@ header {
 .owl-carousel .item {
   text-align: left;
   position: relative;
-  min-height: 150px;
+  min-height: 350px;
   padding: 10px;
 }
 .owl-carousel .item:hover {
-  transform: scale(1.1);
+  transform: scale(1.03);
   position: relative;
   z-index: 500;
   -webkit-transition-duration: 0.3s;
@@ -1113,6 +1113,7 @@ header {
   transition-duration: 0.3s;
   padding-top: 30px;
   padding-bottom: 30px;
+  min-height: 350px;
 }
 .owl-carousel .item h2 {
   font-size: 18px;
@@ -1266,6 +1267,9 @@ span#qr-result.failure {
 .error {
   color: red;
   font-size: 12px;
+}
+.cal-leginst {
+  font-size: 18px;
 }
 /**************media starts****************/
 @media only screen and (min-width: 320px) and (max-width: 767px) {

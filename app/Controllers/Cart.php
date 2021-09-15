@@ -150,13 +150,16 @@ class Cart extends BaseController {
             $data['venue'] = @$_SESSION['quantity_details']['venue'];
             $data['total_price'] = @$_SESSION['quantity_details']['total_price'];
 
-            $data['content'] = @$_SESSION['quantity_details']['content'];
+            @$data['content'] = @$_SESSION['quantity_details']['content'];
             //print_r($data['content']); die;
-            $data['content_detail'] = $this->model->get_show($data['content']); 
+            if(!empty($data['content'])) {
+              $data['content_detail'] = $this->model->get_show($data['content']); 
+            }
+            
             $data['price_dtl'] = $this->model->get_price_data($data['priceset']);
             $data['venue_detail'] = $this->model->get_venue($data['venue']);
             $data['taxinclusive'] = @$_SESSION['quantity_details']['taxinclusive'];
-            $data['feesinclusive'] = $_SESSION['quantity_details']['feesinclusive'];
+            $data['feesinclusive'] = @$_SESSION['quantity_details']['feesinclusive'];
 
         
             $contenttax = 0;
@@ -170,12 +173,12 @@ class Cart extends BaseController {
             if(!empty($tax)) {
               $contenttax = $tax[0]->value1;
             }
-            
+            if(!empty($data['content_detail'])) {
             foreach($data['content_detail'] as $value) {
               $content = $value->title;
               $contentLogo = $value->image2;
             }
-
+          }
             $cart = array(); $tc = 0;
           for($x = 1; $x<= $data['pcount']; $x++) {
             if($_SESSION['quantity_details']["qty".$x.""] > 0) {
@@ -201,14 +204,14 @@ class Cart extends BaseController {
           if(!empty($_SESSION['quantity_details']['family_seats'])) {
             $cart['family_seats'] = $_SESSION['quantity_details']['family_seats'];
           }
-
-          $cart['content'] = $data["content_detail"];
-          $cart['venue'] = $data['venue_detail'][0]->name;
-          $cart['itotal'] = $data['total_price'];
-          $cart['total'] = $data['total_price'];
+          if(!empty($_SESSION['quantity_details'])) {
+          $cart['content'] = @$data["content_detail"];
+          $cart['venue'] = @$data['venue_detail'][0]->name;
+          $cart['itotal'] = @$data['total_price'];
+          $cart['total'] = @$data['total_price'];
           $cart['salestax'] = getenv('salestax');
           $cart['processingfees'] = getenv('processingfees');
-          $cart['pcount'] = $data['pcount'];
+          $cart['pcount'] = @$data['pcount'];
         
           if($cart['salestax'] > 0) {
             $cart['total'] = $cart['total'] + $cart['salestax'];
@@ -221,7 +224,7 @@ class Cart extends BaseController {
           if(empty($_SESSION['cart'])) {
             $this->session->set('cart', $cart);
           }
-          
+        }
       }
       //print_r($_SESSION['cart']['ptotal']); die;
       return view('my_cart',$data);
