@@ -200,7 +200,6 @@ class Cart extends BaseController {
             'venue' => $data['venue_detail'][0]->name
           );
           }
-
           if(!empty($_SESSION['quantity_details']['family_seats'])) {
             $cart['family_seats'] = $_SESSION['quantity_details']['family_seats'];
           }

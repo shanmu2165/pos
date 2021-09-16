@@ -70,26 +70,44 @@
                                $total_amt += $total_val;
                             ?>
                             <td class="text-right" title="Amount"><?= $json_details["item"][$i]["qty"]; ?></td>
-                            <td class="text-right" title="Price">$<?= $json_details["item"][$i]["price"]; ?></td>
-                            <td class="text-right" title="Total">$<?= number_format($total_val,2); ?></td>
+                            <?php if($json_details['itotal'] != number_format(0,2)){ ?>
+                                <td class="text-right" title="Price">$<?= $json_details["item"][$i]["price"]; ?></td>
+                            <?php }else{ ?>
+                                <td class="text-right" title="Price">$0.00</td>
+                            <?php } ?>
+                            <?php if($json_details['itotal'] != number_format(0,2)){ ?>
+                                <td class="text-right" title="Total">$<?= number_format($total_val,2); ?></td>
+                            <?php }else{ ?>
+                                <td class="text-right" title="Total">$0.00</td>
+                            <?php } ?>
                         </tr>
                         <?php } } ?>
+                        <?php if(isset($json_details['seats_selected'])){ ?>
                          <tr class="item-row item-row-last">
                           <?php $seats = implode(',',$json_details['seats_selected']); ?>
                             <td class="text-right" title="Total">Seats Selected - <?= $seats; ?> </td>
                         </tr> 
+                        <?php } ?>
                         <tr class="total-row">
 
                             <td class="text-right" colspan="3"><strong>Tax</strong></td>
                             <td class="text-right">
+                            <?php if($json_details['itotal'] != number_format(0,2)){ ?>
                                 <strong>$<?= getenv('salestax') ?></strong>
+                                <?php }else{ ?>
+                                    <strong>$0.00</strong>
+                            <?php } ?>
                             </td>
                           
                         </tr>
                         <tr class="total-row">
                             <td class="text-right" colspan="3"><strong>Processing Fees</strong></td>
                             <td class="text-right">
+                            <?php if($json_details['itotal'] != number_format(0,2)){ ?>
                                 <strong>$<?= getenv('processingfees') ?></strong>
+                                <?php }else{ ?>
+                                    <strong>$0.00</strong>
+                            <?php } ?>
                             </td>
                         </tr>
                         <?php $total_amt +=  getenv('salestax') + getenv('processingfees');
@@ -107,7 +125,11 @@
                         <tr class="total-row info">
 
                             <td class="text-right" colspan="3"><strong>Total</strong></td>
+                            <?php if($json_details['itotal'] != number_format(0,2)){ ?>
                             <td class="text-right"><strong>$<?=  @$total_amt;?></strong></td>
+                            <?php }else{ ?>
+                                <td class="text-right"><strong>$0.00</strong></td>
+                            <?php } ?>
                         </tr>
                     </table>
                    
@@ -122,6 +144,7 @@
     <![endif]-->  
       
       <!-- Email Body : BEGIN -->
+      <?php if(isset($json_details['seats_selected'])){ ?>
       <?php foreach ($json_details['seats_selected'] as $key => $val) { 
           $split = explode('-',$val);  ?>
       <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="250" style="margin: auto;" class="email-container" style="background: #fff;">     
@@ -254,6 +277,7 @@ color: #000;"><?= $details[0]->randid ?></h2>
       <!-- 4 Even Columns : END --> 
 
     </table>
+    <?php } ?>
     <?php } ?>
     </center>
                 </div>
