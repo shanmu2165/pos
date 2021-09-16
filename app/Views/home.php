@@ -19,8 +19,8 @@
                 <?php } ?>
             </div>
             <div class="col-lg-3 col-md-6"></div>
-            <div class="col-12 p-0">
-                <div class="wrapper">
+            <div class="col-12">
+                <div class="wrapper p-2">
 
                     <?php if(!empty($my_shows)) { ?>
                     <div class="owl-carousel owl-theme">
@@ -41,9 +41,9 @@
                                     <span class="now">Now Showing</span>
                                     <?php } else  { ?>
                                     <span class="past">Past Show</span>
-                                    <?php } } else { ?>
-                                    <span class="no">Not Showing</span>
-                                    <?php } ?>
+                                    <?php } } ?>
+                                    
+                                    
                                 </div>
                                 <img src="<?= base_url().'/images/'.$my->image; ?>" />
                                 <div class="events-inner">
@@ -96,8 +96,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 p-0">
-                <div class="wrapper">
+            <div class="col-12">
+                <div class="wrapper p-2">
                     <?php if(!empty($all_shows)) { ?>
                     <div class="owl-carousel owl-theme">
                         <?php foreach($all_shows as $my) { ?>
