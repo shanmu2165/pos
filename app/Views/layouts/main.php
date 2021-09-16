@@ -244,12 +244,37 @@ $('#lookup_submit').click(function(){
        trans_email: $('#exampleInputEmail1').val()
       },
       success: function(data){
+          //console.log('Data', data);
         if(data == 'invalid') {
           $("#alert_modal").text('Invalid Transaction Id or Email');
           $("#modal_alert_msg").css('display','block');
           
         } else {
-            $("#lookup_form").submit();
+            var focusSet = false;
+            if (!$('#exampleInputTransaction').val()) {
+                if ($("#exampleInputTransaction").parent().next(".validation").length == 0) // only add if not added
+                {
+                    $("#exampleInputTransaction").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Transaction Id is required</div>");
+                    if (!$('#exampleInputEmail1').val()) {
+                        if ($("#exampleInputEmail1").parent().next(".validation").length == 0) // only add if not added
+                        {
+                            $("#exampleInputEmail1").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Email address is required</div>");
+                        }
+                        e.preventDefault(); // prevent form from POST to server
+                        if (!focusSet) {
+                            $("#exampleInputEmail1").focus();
+                        }
+                    } else {
+                        $("#exampleInputEmail1").parent().next(".validation").remove(); // remove it
+                    }
+                }
+                e.preventDefault(); // prevent form from POST to server
+                $('#exampleInputTransaction').focus();
+                focusSet = true;
+            } else {
+                $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
+            }
+            // $("#lookup_form").submit();
         }
       }, 
         error: function( jqXhr, textStatus, errorThrown ) {
