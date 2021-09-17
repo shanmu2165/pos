@@ -105,6 +105,8 @@
                                     <label>Cash</label>
                                     <input type="radio" placeholder="Free" name="payment_type" id="free" value="Free">
                                     <label>Free</label>
+                                    <br>
+                                    <label id="payment_type-error" class="error" for="payment_type"></label>
                                 </div>
                                 <!-- <div class="col-lg-6 col-md-6 pr-0">
                                     <label>Email Address<sup>*</sup></label>
