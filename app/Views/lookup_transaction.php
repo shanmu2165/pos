@@ -69,7 +69,7 @@
                             <?php $total_val = $json_details["item"][$i]["qty"] * $json_details["item"][$i]["price"]; 
                                $total_amt += $total_val;
                             ?>
-                            <td class="text-right" title="Amount"><?= $json_details["item"][$i]["qty"]; ?></td>
+                            <td class="text-right" title="Quantity"><?= $json_details["item"][$i]["qty"]; ?></td>
                             <?php if($json_details['itotal'] != number_format(0,2)){ ?>
                                 <td class="text-right" title="Price">$<?= $json_details["item"][$i]["price"]; ?></td>
                             <?php }else{ ?>
