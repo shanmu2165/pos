@@ -376,7 +376,6 @@ container.addEventListener('click', e => {
 $("#tick_submit").click(function(){
     const selectedSeats = document.querySelectorAll('.seating .seat.selected');
     var selectedSeatsCount = selectedSeats.length;
-
     if(totSelSeats > selectedSeatsCount ) {  
       $.confirm.show({
             "message":" Tickets quantity and seats selected count must be same!",
@@ -387,7 +386,12 @@ $("#tick_submit").click(function(){
           })
 
 
-    } else {     
+    } else { 
+      if(selectedSeatsArr.length > selectedSeatsCount){
+        selectedSeatsArr = selectedSeatsArr.splice(0, selectedSeatsArr.length-1);
+      }else{
+        selectedSeatsArr = selectedSeatsArr;
+      }    
       $.ajax({
         type: "POST",
         url: '<?= base_url() . '/check_selectedseats_booked'; ?>',
