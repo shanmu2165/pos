@@ -279,13 +279,14 @@ $('#lookup_submit').click(function(){
                     $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
                     $("#exampleInputEmail1").parent().next(".validation").remove(); // remove it
                 } else if($('#exampleInputTransaction').val() != '') {
-                    alert('rtrt123');
+                    //alert('rtrt123');
                     $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
                     $("#exampleInputEmail1").parent().next(".validation").remove();
                     $("#exampleInputEmail1").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Email address is required</div>");
                     e.preventDefault();
                 } else {
                     if($('#exampleInputEmail1').val() != '') {
+                    $("#exampleInputEmail1").parent().next(".validation").remove();
                     $("#exampleInputEmail1").parent().next(".validation").remove();
                     $("#exampleInputTransaction").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Transaction Id is required</div>");
                     e.preventDefault();
