@@ -238,21 +238,24 @@ section.loading .overlay{
         let selectedSeatsArr = [];
         var totalSelectedSeats = parseInt($("#total_seats_sel").text()) + 1;
         var totSelSeats = parseInt($("#total_seats_sel").text());
-        //var booked_arr = <?= json_encode(@$already_booked); ?>;
-        //var total_rows = <?= json_encode(@$total_rows); ?>;
-        //var total_seats_perrow = <?= json_encode(@$seats_prow); ?>;
+        var booked_arr = <?= json_encode(@$already_booked); ?>;
+        var total_rows = <?= json_encode(@$total_rows); ?>;
+        var total_seats_perrow = <?= json_encode(@$seats_prow); ?>;
 
-        //let formattedBookedTicket = formatArrayToObj(booked_arr);
+        let formattedBookedTicket = formatArrayToObj(booked_arr);
         //let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
-        //console.log('total_rows', total_rows);
-        //console.log('BookedTicket',formattedBookedTicket);
-        //console.log('Seats Per',formattedSeatsPerRow);
-        // var reqData = {};
-        // let req = total_seats_perrow.map((arr) => {
-        //   const totalSeats = arr.split("-")[1];
-        //   const rowname = arr.split("-")[0];
-         
+        let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
+        console.log('total_rows', total_rows);
+        console.log('BookedTicket',formattedBookedTicket);
+        console.log('Seats Per',formattedSeatsPerRow);
+        // Merge them recursively.
+        var newJson = $.extend(true, {}, booked_arr, total_seats_perrow);
+        //var reqData = {};
+        // var reqData = formattedBookedTicket.keys(data).map(key => {
+        //     return formattedSeatsPerRow[key];
         // });
+        console.log('REQ DATA',newJson);
+        
         function formatArrayToObj(array){
 	        //IP: ["1-1", "1-3", "4-1", "4-2", "4-4"]
 	        //OP: {"1": ["1", "3"], "4": ["1", "2", "4"] }
@@ -387,7 +390,13 @@ $("#tick_submit").click(function(){
           })
 
 
-    } else {     
+    
+    } else { 
+      if(selectedSeatsArr.length > selectedSeatsCount){
+        selectedSeatsArr = selectedSeatsArr.splice(0, selectedSeatsArr.length-1);
+      }else{
+        selectedSeatsArr = selectedSeatsArr;
+      }        
       $.ajax({
         type: "POST",
         url: '<?= base_url() . '/check_selectedseats_booked'; ?>',
