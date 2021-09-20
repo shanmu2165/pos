@@ -570,7 +570,7 @@ class Transactions extends BaseController {
           } else { 
           //$this->session->setFlashdata('msg', "Invalid Transaction Id or Email!");
           //return redirect()->to('/shows');
-         echo "invalid";
+         echo "failure";
           }
         } else if(!empty($_POST['randid'])) {   
             $valid = 0;
