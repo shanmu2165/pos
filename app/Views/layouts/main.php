@@ -101,11 +101,10 @@
                         </div>
                         <div class="right-bottom"> 
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModalXl">Lookup Transaction</button>
-                                <div class="modal fade" id="exampleModalXl" tabindex="-1"
-                                    aria-labelledby="exampleModalXlLabel" aria-hidden="true">
+                                    data-bs-target="#exampleModalXl"  data-backdrop="static" data-keyboard="false">Lookup Transaction</button>
+                                <div class="modal fade" id="exampleModalXl">
                                     <div class="modal-dialog modal-dialog-centered modal-xl lookup">
-                                        <div class="modal-content">
+                                        <div class="modal-content" >
                                             <div class="modal-header mb-4">
                                                 <h5 class="modal-title h4" id="exampleModalXlLabel">Lookup Transaction
                                                 </h5>
@@ -234,7 +233,10 @@ $(document).ready(function() {
         }
     })
 });
-
+// $('#lookup_submit').modal({
+//     backdrop: 'static',
+//     keyboard: false
+// })
 $('#lookup_submit').click(function(){
     $.ajax({
       type:"POST",
@@ -682,6 +684,18 @@ function removeItem(aId) {
 //     });
 // });
 <?php } ?>
+$(document).ready(function() {
+    $('#exampleModalXl').modal({
+        
+        backdrop: 'static',
+        keyboard: false
+    });
+    $(".btn-close").click(function(){
+        $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
+        $("#exampleInputEmail1").parent().next(".validation").remove(); // remove it
+    }); 
+    
+});
 </script>
 
 </html>
