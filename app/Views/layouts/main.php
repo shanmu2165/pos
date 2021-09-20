@@ -166,7 +166,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-12 text-center pt-4 pb-4">
-                                                                <button type="submit"
+                                                                <button type="button"
                                                                     class="btn btn-primary" id="lookup_submit">Submit</button>
                                                             </div>
                                                         </div>
@@ -253,9 +253,10 @@ $('#lookup_submit').click(function(){
             var focusSet = false;
             if (!$('#exampleInputTransaction').val()) {
                 if ($("#exampleInputTransaction").parent().next(".validation").length == 0) // only add if not added
-                {
+                {   //alert('1');
                     $("#exampleInputTransaction").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Transaction Id is required</div>");
                     if (!$('#exampleInputEmail1').val()) {
+                        //alert('2');
                         if ($("#exampleInputEmail1").parent().next(".validation").length == 0) // only add if not added
                         {
                             $("#exampleInputEmail1").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Email address is required</div>");
@@ -264,17 +265,21 @@ $('#lookup_submit').click(function(){
                         if (!focusSet) {
                             $("#exampleInputEmail1").focus();
                         }
-                    } else {
+                    } else { //alert('3');
                         $("#exampleInputEmail1").parent().next(".validation").remove(); // remove it
                     }
                 }
+                
                 e.preventDefault(); // prevent form from POST to server
                 $('#exampleInputTransaction').focus();
                 focusSet = true;
             } else {
+                //alert('there');
                 $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
+               // return false;
             }
-            // $("#lookup_form").submit();
+            //alert('where');
+             $("#lookup_form").submit();
         }
       }, 
         error: function( jqXhr, textStatus, errorThrown ) {

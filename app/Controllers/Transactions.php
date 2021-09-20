@@ -570,8 +570,7 @@ class Transactions extends BaseController {
           } else { 
           //$this->session->setFlashdata('msg', "Invalid Transaction Id or Email!");
           //return redirect()->to('/shows');
-          $return = "invalid";
-          return $return;
+         echo "invalid";
           }
         } else if(!empty($_POST['randid'])) {   
             $valid = 0;
@@ -583,10 +582,44 @@ class Transactions extends BaseController {
             }
             return $valid;
         }else {  
-        $this->session->setFlashdata('msg', "Please Enter Transaction Id & Email");
-        return redirect()->to('/shows');
+        //$this->session->setFlashdata('msg', "Please Enter Transaction Id & Email");
+        //return redirect()->to('/shows');
         }
     }
+
+    // function lookup_transaction() {
+    //         //echo "123"; die;
+    //     //if ($this->request->isAJAX()) {
+    //             $data = [];
+    //             //echo "123345"; die;
+    //             $data['page_title'] = 'POS - Lookup Transaction';
+    //             $data['search_url'] = base_url().'/shows/search';
+    //             $date['delete_url'] = base_url().'/delete_cart';
+          
+    //             $data['categories'] = $this->model->get_categories();
+    //             $data['current'] = 'lookup'; 
+
+    //             $id = service('request')->getVar('trans_id');
+    //             $email = service('request')->getVar('trans_email');
+                
+    //             if(!empty($id) && !empty($email)) {
+    //                 $validate_qr = $this->transaction_model->verify_qrcode($this->request->getVar('trans_id'),$this->request->getVar('trans_email'));
+  
+    //                 if($validate_qr) {
+    //                     $data['details'] = $validate_qr;
+    //                     $data['json_details'] = json_decode($validate_qr[0]->notes, true);
+    //                     $data['pcount'] = $data['json_details']['pcount'];
+                
+    //                     return view('lookup_transaction',$data);
+    //                 } else { 
+                 
+    //                     return json_encode(['success'=> 'Invalid Transaction Id or Email!']);
+    //                     die;
+    //                 }   
+    //             }
+
+    //     //}
+    // }
 
 
     //Twilio Sms Function 
