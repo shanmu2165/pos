@@ -452,11 +452,18 @@ class Shows extends BaseController {
       $data['avail'] = [];
       $data['row_names'] = $this->model->get_row_names($data['venue_sec'][0]->id);
       $pr = 0;
+      $data['row_seat_count'] = [];
       foreach($data['row_names'] as $key => $val) {
         $data['seats_prow'][$pr] = $val."-".$this->model->get_row_count($data['venue_sec'][0]->id,$val);
+        $data['seat_count_row'] = $this->model->get_row_count($data['venue_sec'][0]->id,$val);
+        array_push($data['row_seat_count'],$data['seat_count_row']);
+        $data['rowSeatCount']=array_combine(range(1, count($data['row_seat_count'])), $data['row_seat_count']);
+        $data['rowNames']=array_combine(range(1, count($data['row_names'])), $data['row_names']);
+
         $pr++;
       }
-      //echo "<pre>"; print_r($data['row_names']); "</pre>"; die;
+      //for($())
+      //echo "<pre>"; print_r($data['rowNames']); "</pre>"; die;
       return view('product_seating',$data);
     }
     //Function for show ticket selection
