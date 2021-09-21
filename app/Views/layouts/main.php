@@ -117,7 +117,7 @@
                                                 <div class="col-md-6">
                                                     <div class="alert alert-warning alert-dismissible fade show" id="modal_alert_msg" role="alert" style="display:none; color:red; background-color:#000; font-weight:bold; text-align:center;">
                                                         <span id="alert_modal"></span>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" aria-label="Close"></button>
                                                     </div>
                                                 </div>
                                                 <!-- <div class="col-md-3"></div> -->
@@ -247,12 +247,7 @@ $('#lookup_submit').click(function(){
       },
       success: function(data){
           //console.log('Data', data);
-        if(data == 'invalid') {
-          $("#alert_modal").text('Invalid Transaction Id or Email');
-          $("#modal_alert_msg").css('display','block');
-          
-        } else {
-            var focusSet = false;
+          var focusSet = false;
             if (!$('#exampleInputTransaction').val()) {
                 if ($("#exampleInputTransaction").parent().next(".validation").length == 0) // only add if not added
                 {   //alert('1');
@@ -277,28 +272,27 @@ $('#lookup_submit').click(function(){
                 focusSet = true;
             } else {
                 //alert('there');
-                if ($('#exampleInputTransaction').val() != '' && $('#exampleInputEmail1').val() != '' ){
-                    $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
-                    $("#exampleInputEmail1").parent().next(".validation").remove(); // remove it
-                } else if($('#exampleInputTransaction').val() != '') {
-                    //alert('rtrt123');
-                    $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
-                    $("#exampleInputEmail1").parent().next(".validation").remove();
-                    $("#exampleInputEmail1").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Email address is required</div>");
-                    e.preventDefault();
-                } else {
-                    if($('#exampleInputEmail1').val() != '') {
-                    $("#exampleInputEmail1").parent().next(".validation").remove();
-                    $("#exampleInputEmail1").parent().next(".validation").remove();
-                    $("#exampleInputTransaction").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Transaction Id is required</div>");
-                    e.preventDefault();
-                    }
-                }
-               
-              
+                $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
+               // return false;
             }
-            
-             $("#lookup_form").submit();
+            if ($('#exampleInputTransaction').val() && !$('#exampleInputEmail1').val()) {
+                        if ($("#exampleInputEmail1").parent().next(".validation").length == 0) // only add if not added
+                        {
+                            $("#exampleInputEmail1").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Email address is required</div>");
+                        }
+                        e.preventDefault(); // prevent form from POST to server
+                        if (!focusSet) {
+                            $("#exampleInputEmail1").focus();
+                        }
+                    } else { //alert('3');
+                        $("#exampleInputEmail1").parent().next(".validation").remove(); // remove it
+                    }
+        if(data == 'invalid') {
+          $("#alert_modal").text('Invalid Transaction Id or Email');
+          $("#modal_alert_msg").css('display','block');
+          
+        } else {    
+            $("#lookup_form").submit();
         }
       }, 
         error: function( jqXhr, textStatus, errorThrown ) {
