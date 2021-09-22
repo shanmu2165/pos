@@ -1,5 +1,7 @@
 <?= $this->extend('layouts/main'); ?>
 <?= $this->section('content'); ?>
+<link rel="stylesheet" href="<?= base_url('css/H-confirm-alert.css'); ?>">
+    <script src="<?= base_url('js/H-confirm-alert.js'); ?>" ></script>
 <section class="content-part pb-4">
    <div class="banner-section">
       <div class="container-fluid">
@@ -72,8 +74,8 @@
                                              <button type="button" id="sub<?= $x; ?>" class="sub"
                                                 onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "sub")'
                                                 ;>-</button>
-                                             <input type="number" id="qty<?= $x; ?>" readonly value="0"
-                                                min="1" max="10" name="qty<?= $x; ?>" />
+                                             <input type="number" id="qty<?= $x; ?>" 
+                                                min="1" max="10" name="qty<?= $x; ?>" value="0" readonly />
                                              <button type="button" id="add<?= $x; ?>" class="add"
                                                 onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "add")'
                                                 ;>+</button>
@@ -116,7 +118,7 @@
                         <div class="row">
                            <div class="col-lg-3 col-md-6 text-center black-btn"></div>
                            <div class="col-lg-6 col-md-6 text-center">
-                              <button type="submit" class="btn btn-primary" id="cart_btn">Add to Cart</button>
+                              <button type="button" class="btn btn-primary" id="cart_btn">Add to Cart</button>
                            </div>
                            <div class="col-lg-3 col-md-6 text-center black-btn"></div>
                         </div>
@@ -131,14 +133,115 @@
 </section>
 <script>
 
-// $(document).on('submit','#ticketForm',function(){
-//     if(($('#qty1').val()) <= 0){
-//         $('#errorMsg').show();
-//         return false;
-//     } else{
-//         $('#errorMsg').hide();
-//         form.submit();
-//     }
-// });
+
+var totalQty =0;
+ var family_seat = 0;
+ var totQty = 0;
+ var k=0;
+function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
+    const qtyMin = $("#" + ticketQtyReferer).attr("min");
+    const qtyMax = $("#" + ticketQtyReferer).attr("max");
+    //alert('helo');
+    //console.log(qtyMax, "qtyMax");
+    //console.log(ticketPrice, "ticketPrice");
+   // console.log(ticketQtyReferer, "ticketQtyReferer");
+    //console.log(type, "type");
+
+    const prevTotal = $("#total_price").val();
+    const formattedPrevTotal = parseFloat(prevTotal);
+    const formattedTicketPrice = parseFloat(ticketPrice);
+
+    const currentQty = $("#" + ticketQtyReferer).val();
+    const formattedCurrentQty = parseFloat(currentQty);
+   // console.log(currentQty, "currentQty");
+
+    let newQty = 0;
+    let total = 0;
+    if (type === "add") {
+        newQty = formattedCurrentQty + 1; k++;
+        total = formattedPrevTotal + formattedTicketPrice;
+        totalQty = totalQty + 1; 
+        console.log(newQty + "Max - " + qtyMax);
+        //Check max limit
+        if (newQty > qtyMax) { 
+            $("#add{id}").attr("disabled", true);
+        }
+    }
+    if (type === "sub") { k--;
+        if (currentQty <= 0) {
+            return
+        }
+        totalQty = totalQty - 1;
+        if (currentQty <= qtyMax) {
+            $("#add" + id).attr("disabled", false);
+        }
+
+        newQty = formattedCurrentQty - 1;
+        total = formattedPrevTotal - formattedTicketPrice;
+    }
+    
+    
+    
+    $("#" + ticketQtyReferer).val(newQty)
+    console.log("Total Seats1", totalQty);
+    $("#total_qty").val(totalQty);
+    if($("#seats").val() > 0) {
+        var seats_value = parseInt($("#seats").val());
+        var tot = parseInt(totalQty) + parseInt(seats_value);
+        $("#tot_qty").val(parseInt(tot));
+    } else {
+        $("#tot_qty").val(totalQty);
+    }
+    
+    
+    $("#total_price").val(total.toFixed(2));
+    $("#td_total").html(total.toFixed(2));
+}
+
+$(document).ready(function() {
+    $(".seat_val").on("keyup change", function(e) {
+        const seat = $(this).val();
+        const max = parseFloat($(this).attr('max'));
+        
+        if(isNaN($(this).val())) {
+            family_seat = 0; 
+        } else {
+            family_seat = $("#seats").val();
+        }
+        if(family_seat > 0) {
+            totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat) - 1);
+        } else {
+            totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat)); 
+        }
+       // totQty = (parseInt($("#total_qty").val());
+       
+        console.log("Total Seats2", parseInt(totQty));
+        
+        $("#seats").val(seat);
+        if (seat > max) {
+            $(this).val('0');
+            $("#seats").val('0');
+        }
+        //console.log(family_seat, "Family");
+        $("#tot_qty").val(totQty);
+        
+    });
+
+   $('#cart_btn').on('click', function(){
+     
+      if($('#tot_qty').val() >= 1) {
+          $("#ticketForm").submit();
+
+      } else {
+         $.confirm.show({
+            "message":"Select Some Ticket Option to proceed!",
+            "hideNo":true,// hide cancel button
+            "yesText":"OK",
+            "noText":"CANCEL",
+         })  
+      }
+   });
+});
+
 </script>
 <?= $this->endSection(); ?>

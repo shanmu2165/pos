@@ -411,8 +411,8 @@ var x = setInterval(function() {
          $.confirm.show({
                 "message":"Are you sure you want to cancel this transaction?",
                 //"hideNo":true,// hide cancel button
-                "yesText":"Yes",
-                "noText":"No",
+                "yesText":"YES",
+                "noText":"NO",
                 "yes":function (){
                     $.ajax({
                         url : '<?= base_url()."/cart/cancel_transaction"; ?>',

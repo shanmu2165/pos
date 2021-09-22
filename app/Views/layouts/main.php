@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css?ver=5.6">
     <link rel="stylesheet" type="text/css" href="<?= base_url('css/style.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?= base_url('css/table-date.css'); ?>">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.css" />
     <link rel="stylesheet" type="text/css"
@@ -26,6 +26,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="<?= base_url('js/owl.carousel.js'); ?>"></script>
+    
     <style>
         #tickets {
             display:none;
@@ -117,7 +118,7 @@
                                                 <div class="col-md-6">
                                                     <div class="alert alert-warning alert-dismissible fade show" id="modal_alert_msg" role="alert" style="display:none; color:red; background-color:#000; font-weight:bold; text-align:center;">
                                                         <span id="alert_modal"></span>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" aria-label="Close"></button>
                                                     </div>
                                                 </div>
                                                 <!-- <div class="col-md-3"></div> -->
@@ -247,12 +248,7 @@ $('#lookup_submit').click(function(){
       },
       success: function(data){
           //console.log('Data', data);
-        if(data == 'invalid') {
-          $("#alert_modal").text('Invalid Transaction Id or Email');
-          $("#modal_alert_msg").css('display','block');
-          
-        } else {
-            var focusSet = false;
+          var focusSet = false;
             if (!$('#exampleInputTransaction').val()) {
                 if ($("#exampleInputTransaction").parent().next(".validation").length == 0) // only add if not added
                 {   //alert('1');
@@ -277,28 +273,27 @@ $('#lookup_submit').click(function(){
                 focusSet = true;
             } else {
                 //alert('there');
-                if ($('#exampleInputTransaction').val() != '' && $('#exampleInputEmail1').val() != '' ){
-                    $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
-                    $("#exampleInputEmail1").parent().next(".validation").remove(); // remove it
-                } else if($('#exampleInputTransaction').val() != '') {
-                    //alert('rtrt123');
-                    $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
-                    $("#exampleInputEmail1").parent().next(".validation").remove();
-                    $("#exampleInputEmail1").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Email address is required</div>");
-                    e.preventDefault();
-                } else {
-                    if($('#exampleInputEmail1').val() != '') {
-                    $("#exampleInputEmail1").parent().next(".validation").remove();
-                    $("#exampleInputEmail1").parent().next(".validation").remove();
-                    $("#exampleInputTransaction").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Transaction Id is required</div>");
-                    e.preventDefault();
-                    }
-                }
-               
-              
+                $("#exampleInputTransaction").parent().next(".validation").remove(); // remove it
+               // return false;
             }
-            
-             $("#lookup_form").submit();
+            if ($('#exampleInputTransaction').val() && !$('#exampleInputEmail1').val()) {
+                        if ($("#exampleInputEmail1").parent().next(".validation").length == 0) // only add if not added
+                        {
+                            $("#exampleInputEmail1").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;margin-right:300px;'>Email address is required</div>");
+                        }
+                        e.preventDefault(); // prevent form from POST to server
+                        if (!focusSet) {
+                            $("#exampleInputEmail1").focus();
+                        }
+                    } else { //alert('3');
+                        $("#exampleInputEmail1").parent().next(".validation").remove(); // remove it
+                    }
+        if(data == 'invalid') {
+          $("#alert_modal").text('Invalid Transaction Id or Email');
+          $("#modal_alert_msg").css('display','block');
+          
+        } else {    
+            $("#lookup_form").submit();
         }
       }, 
         error: function( jqXhr, textStatus, errorThrown ) {
@@ -471,103 +466,6 @@ $(document).ready(function() {
         });
         price = price.toFixed(2);
         $('#displaytotal').text(price);
-    });
-});
-
-<?php } ?>
-
-<?php if($current == 'ticket') { ?>
-
- var totalQty =0;
- var family_seat = 0;
- var totQty = 0;
- var k=0;
-function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
-    const qtyMin = $("#" + ticketQtyReferer).attr("min");
-    const qtyMax = $("#" + ticketQtyReferer).attr("max");
-
-    //console.log(ticketPrice, "ticketPrice");
-   // console.log(ticketQtyReferer, "ticketQtyReferer");
-    //console.log(type, "type");
-
-    const prevTotal = $("#total_price").val();
-    const formattedPrevTotal = parseFloat(prevTotal);
-    const formattedTicketPrice = parseFloat(ticketPrice);
-
-    const currentQty = $("#" + ticketQtyReferer).val();
-    const formattedCurrentQty = parseFloat(currentQty);
-   // console.log(currentQty, "currentQty");
-
-    let newQty = 0;
-    let total = 0;
-    if (type === "add") {
-        newQty = formattedCurrentQty + 1; k++;
-        total = formattedPrevTotal + formattedTicketPrice;
-        totalQty = totalQty + 1; 
-        console.log(newQty + "Max - " + qtyMax);
-        //Check max limit
-        if (newQty >= qtyMax) {
-            $("#add" + id).attr("disabled", true);
-        }
-    }
-    if (type === "sub") { k--;
-        if (currentQty <= 0) {
-            return
-        }
-        totalQty = totalQty - 1;
-        if (currentQty <= qtyMax) {
-            $("#add" + id).attr("disabled", false);
-        }
-
-        newQty = formattedCurrentQty - 1;
-        total = formattedPrevTotal - formattedTicketPrice;
-    }
-    
-    
-    
-    $("#" + ticketQtyReferer).val(newQty)
-    console.log("Total Seats1", totalQty);
-    $("#total_qty").val(totalQty);
-    if($("#seats").val() > 0) {
-        var seats_value = parseInt($("#seats").val());
-        var tot = parseInt(totalQty) + parseInt(seats_value);
-        $("#tot_qty").val(parseInt(tot));
-    } else {
-        $("#tot_qty").val(totalQty);
-    }
-    
-    
-    $("#total_price").val(total.toFixed(2));
-    $("#td_total").html(total.toFixed(2));
-}
-
-$(document).ready(function() {
-    $(".seat_val").on("keyup change", function(e) {
-        const seat = $(this).val();
-        const max = parseFloat($(this).attr('max'));
-        
-        if(isNaN($(this).val())) {
-            family_seat = 0; 
-        } else {
-            family_seat = $("#seats").val();
-        }
-        if(family_seat > 0) {
-            totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat) - 1);
-        } else {
-            totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat)); 
-        }
-       // totQty = (parseInt($("#total_qty").val());
-       
-        console.log("Total Seats2", parseInt(totQty));
-        
-        $("#seats").val(seat);
-        if (seat > max) {
-            $(this).val('0');
-            $("#seats").val('0');
-        }
-        //console.log(family_seat, "Family");
-        $("#tot_qty").val(totQty);
-        
     });
 });
 
