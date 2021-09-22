@@ -27,7 +27,6 @@
                         <?php foreach($my_shows as $my) {  ?>
                         <div class="item">
                             <div class="events-details">
-                                <div class="ribbon ribbon-top-left">
                                     <?php if(!empty($cal_data[$my->id][$today])) { 
                                             $show_time = date($cal_data[$my->id][$today]->start_time); 
                                             
@@ -36,15 +35,21 @@
                                             $time = date('H:i:s');  $time = strtotime($time); 
 
                                          if($time < $show_time && $time < $end_time) { ?>
-                                    <span class="up">Upcoming Show</span>
+                                    <div class="ribbon ribbon-top-left">
+                                        <span class="up">Upcoming Show</span>
+                                    </div>
                                     <?php } else if($time > $show_time && $time < $end_time) { ?>
-                                    <span class="now">Now Showing</span>
+                                    <div class="ribbon ribbon-top-left">
+                                        <span class="now">Now Showing</span>
+                                    </div>
                                     <?php } else  { ?>
-                                    <span class="past">Past Show</span>
+                                    <div class="ribbon ribbon-top-left">
+                                        <span class="past">Past Show</span>
+                                    </div>
                                     <?php } } ?>
                                     
                                     
-                                </div>
+                        
                                 <img src="<?= base_url().'/images/'.$my->image; ?>" />
                                 <div class="events-inner">
                                     <div class="row">
@@ -101,7 +106,7 @@
                     <?php if(!empty($all_shows)) { ?>
                     <div class="owl-carousel owl-theme">
                         <?php foreach($all_shows as $my) { ?>
-                        <div class="item">
+                        <div class="item show">
                             <div class="events-details">
                                 <!-- <div class="ribbon ribbon-top-left">
                                     <span class="up">Upcoming Show</span>

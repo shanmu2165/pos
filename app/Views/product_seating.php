@@ -241,13 +241,15 @@ section.loading .overlay{
         var booked_arr = <?= json_encode(@$already_booked); ?>;
         var total_rows = <?= json_encode(@$total_rows); ?>;
         var total_seats_perrow = <?= json_encode(@$seats_prow); ?>;
-
-        let formattedBookedTicket = formatArrayToObj(booked_arr);
-        //let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
-        let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
-        console.log('total_rows', total_rows);
-        console.log('BookedTicket',formattedBookedTicket);
-        console.log('Seats Per',formattedSeatsPerRow);
+        if(booked_arr != null){
+          let formattedBookedTicket = formatArrayToObj(booked_arr);
+          //let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
+          let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
+          console.log('total_rows', total_rows);
+          console.log('BookedTicket',formattedBookedTicket);
+          console.log('Seats Per',formattedSeatsPerRow);
+        }
+        
         // Merge them recursively.
         var newJson = $.extend(true, {}, booked_arr, total_seats_perrow);
         //var reqData = {};

@@ -38,9 +38,9 @@
                         {
                             //data - response from server
                             if(data == 'success') {
-                                $('#qr-result').addClass("success");
+                                $('#qr-result').addClass("success").show().delay(5000).fadeOut();
                             } else {
-                                $('#qr-result').addClass("failure");
+                                $('#qr-result').addClass("failure").show().delay(5000).fadeOut();
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown)
