@@ -1105,14 +1105,14 @@ header {
   padding: 10px;
 }
 .owl-carousel .item:hover {
-  transform: scale(1.03);
-  position: relative;
-  z-index: 500;
+ /* transform: scale(1.03);  
   -webkit-transition-duration: 0.3s;
   -o-transition-duration: 0.3s;
   transition-duration: 0.3s;
   padding-top: 30px;
-  padding-bottom: 30px;
+  padding-bottom: 30px;*/
+  position: relative;
+  z-index: 500;  
   min-height: 350px;
 }
 .owl-carousel .item h2 {
