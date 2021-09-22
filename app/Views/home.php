@@ -106,7 +106,7 @@
                     <?php if(!empty($all_shows)) { ?>
                     <div class="owl-carousel owl-theme">
                         <?php foreach($all_shows as $my) { ?>
-                        <div class="item">
+                        <div class="item show">
                             <div class="events-details">
                                 <!-- <div class="ribbon ribbon-top-left">
                                     <span class="up">Upcoming Show</span>
