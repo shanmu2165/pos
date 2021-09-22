@@ -411,8 +411,8 @@ var x = setInterval(function() {
          $.confirm.show({
                 "message":"Are you sure you want to cancel this transaction?",
                 //"hideNo":true,// hide cancel button
-                "yesText":"OK",
-                "noText":"CANCEL",
+                "yesText":"Yes",
+                "noText":"No",
                 "yes":function (){
                     $.ajax({
                         url : '<?= base_url()."/cart/cancel_transaction"; ?>',
@@ -449,7 +449,7 @@ var x = setInterval(function() {
                 "message":"Your Transaction time limit exceeded!",
                 "hideNo":true,// hide cancel button
                 "yesText":"OK",
-                //"noText":"CANCEL",
+                "noText":"CANCEL",
                 "yes":function (){
                     $.ajax({
                         url : '<?= base_url()."/cart/cancel_transaction"; ?>',
