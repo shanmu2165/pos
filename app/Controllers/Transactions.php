@@ -89,7 +89,7 @@ class Transactions extends BaseController {
             $_SESSION['cart']['salestax'] = number_format(0,2);
             $_SESSION['cart']['processingfees'] = number_format(0,2);
         }
-        $pos_data['notes'] = json_encode($_SESSION['cart']);
+        $pos_data['booked_data'] = json_encode($_SESSION['cart']);
         $data1 = $_SESSION['cart'];
         //echo "<pre>"; print_r($data1); "</pre>"; die;
         $data1['pcount'] = count($data1['item']);
@@ -101,6 +101,7 @@ class Transactions extends BaseController {
             $pos_data['amount'] = number_format($data1['total'],2);
         }
         $pos_data['timestamp'] = date('Y-m-d h:i:a');
+        $pos_data['seat_status'] = 1;
        //echo "<pre>"; print_r($pos_data); "</pre>"; die;
         $success = $this->transaction_model->insert($pos_data);
         //print_r($success); die;
@@ -113,7 +114,7 @@ class Transactions extends BaseController {
          $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
 
          //Qrcode Path For Local
-        //  $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
+          //$filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
          //echo $filepath; die;
@@ -533,8 +534,9 @@ class Transactions extends BaseController {
             unset($_SESSION['ccodeinfo']);
             unset($_SESSION['ccode']);
             }
-
-            $this->session->setFlashdata('msg', "Ticket Booked Successfully! you will receive a mail shortly.");
+            //print_r($success); die;
+            $url = base_url().'/transactions/update_transaction/'.$success;
+            $this->session->setFlashdata('msg', "Ticket Booked Successfully! you will receive a mail shortly. <a href='".$url."'>Check-in</a>");
             return redirect()->to('/shows');
         }
         else
@@ -562,7 +564,7 @@ class Transactions extends BaseController {
   
           if($validate_qr) {
           $data['details'] = $validate_qr;
-          $data['json_details'] = json_decode($validate_qr[0]->notes, true);
+          $data['json_details'] = json_decode($validate_qr[0]->booked_data, true);
           $data['pcount'] = $data['json_details']['pcount'];
   
           
@@ -575,8 +577,18 @@ class Transactions extends BaseController {
         } else if(!empty($_POST['randid'])) {   
             $valid = 0;
             $validate_qr = $this->transaction_model->verify_qrcode($_POST['randid']);
-            if(!empty($validate_qr)) {
-                $valid = 'success';
+            
+            $notes = json_decode($validate_qr[0]->booked_data, true);
+            $date_data = date('d-m-Y',strtotime($notes['item'][1]['date']));
+            $data1 = [
+                'id' => $validate_qr[0]->id,
+                'name' => $validate_qr[0]->name,
+                'date' => $date_data,
+                   'time' => $notes['item'][1]['time']
+            ];
+            //print_r($data1); die;
+            if(!empty($data1)) {
+                $valid = json_encode($data1);
             } else {
                 $valid = 'failure';
             }
@@ -586,6 +598,14 @@ class Transactions extends BaseController {
 
         //return redirect()->to('/shows');
         }
+    }
+
+    function update_transaction($id) {
+        //echo $id; die;
+        if(!empty($id)) {
+           $update = $this->transaction_model->update_seat_status($id);
+        }
+        return redirect()->to('/shows');
     }
 
     // function lookup_transaction() {

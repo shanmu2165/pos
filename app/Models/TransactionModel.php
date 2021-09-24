@@ -9,7 +9,7 @@ class TransactionModel extends Model {
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
-    protected $allowedFields = ['type', 'site','status','name','email','phone','amount','randid','notes','content','timestamp'];
+    protected $allowedFields = ['type', 'site','status','seat_status','name','email','phone','amount','randid','notes','booked_data','content','timestamp'];
 
     function verify_qrcode($id,$email='') {
         
@@ -34,6 +34,44 @@ class TransactionModel extends Model {
         $query = $db->query("SELECT * FROM transactions WHERE id='".$id."' LIMIT 1");  
         $content = $query->getResult();
         return $content;
+    }
+
+    function update_seat_status($id) {
+        $db      = \Config\Database::connect(); 
+        $query = $db->query("UPDATE transactions SET seat_status='2' WHERE id='".$id."'");  
+        //$content = $query->getResult();
+
+        $query1 = $db->query("SELECT * FROM transactions WHERE id='".$id."' LIMIT 1");  
+        $content = $query1->getResult();
+        //print_r($content); die;
+        $seat_data = json_decode($content[0]->booked_data,true);
+        $seats = 0;
+        
+        $seats = implode(',',$seat_data['seats_selected']);
+        
+        
+        $msg1 = new \stdClass();
+            //required settings
+          $msg1->subject = "Tickets Booked"; //SUBJECT
+          //$mpdf = new \Mpdf\Mpdf();
+          $html_data = "Checked In! Proceed to your seats ".$seats.". Enjoy the show!";
+          //echo $html_data; die;
+          //$mpdf->WriteHTML($html);
+          $msg1->htmlbody = $html_data;
+          $msg1->to = $content[0]->email; //TO
+          $msg1->from = array(getenv('fromaddress'),getenv('fromname')); //FROM
+          $msg1->track_clicks = TRUE; //TRACK CLICKS, TRUE by default
+          $msg1->track_opens = TRUE; //TRACK OPENS, TRUE by default
+          $msg1->client_reference = NULL; //CLIENT ID (string)
+          $msg1->mime_headers = NULL; //ADDITIONAL MIME HEADERS (array)
+          $msg1->attachments = NULL; //ATTACHMENTS (array)
+          $msg1->inline_images = NULL; //INLINE IMAGES (array)
+          $tmail1 = new \Transmail\TransmailClient($msg1,getenv('transmailkey'),
+          getenv('transbounceaddr'), TRUE);
+  
+          //send the message
+          $response1 = $tmail1->send();
+        return $query;
     }
 
 }

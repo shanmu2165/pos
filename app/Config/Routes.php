@@ -59,6 +59,7 @@ $routes->group('',['filter'=>'isLoggedIn'],function($routes){
 	//$routes->add('/print', 'Shows::print_tickets');
 	$routes->add('/transactions', 'Transactions::index');
 	$routes->post('/shows/lookup', 'Transactions::lookup_transaction');
+	$routes->post('/transactions/update_transaction/(:num)', 'Transactions::update_transaction/$1');
 	$routes->add('/get_token','StripeController::connectionToken');
 	$routes->add('/create_intent','StripeController::createPaymentIntent');
 	$routes->add('/capture_pay','StripeController::capturePayment');

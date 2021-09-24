@@ -3,7 +3,11 @@
 <section class="content-part pb-4">
     <div id="qr-reader" style="width:500px"></div>
     <div id="qr-reader-results"></div>
-    <div style="color:#fff; font-weight:bold;text-align:center;padding:15px;"><span id="qr-result"></span></div>
+    <div style="color:#fff; font-weight:bold;text-align:center;padding:15px;">
+        <span id="qr-result">
+           
+        </span>
+    </div>
 </section>
 <script src="<?= base_url('js/html5-qrcode.min.js'); ?>"></script>
 <script>
@@ -35,13 +39,17 @@
                             randid : `${decodedText}`
                         },
                         success: function(data, textStatus, jqXHR)
-                        {
+                        {  //console.log("ewghew",JSON.stringify(data));
+                            var parsed = $.parseJSON(data);
+                            var url = '<?= base_url().'/transactions/update_transaction/' ?>';
+                            //console.log("valData",parsed.id);
                             //data - response from server
-                            if(data == 'success') {
-                                $('#qr-result').addClass("success").show().delay(5000).fadeOut();
-                            } else {
-                                $('#qr-result').addClass("failure").show().delay(5000).fadeOut();
-                            }
+                            // if(data == 'success') {
+                            //     $('#qr-result').addClass("success").show().delay(5000).fadeOut();
+                            // } else {
+                            //     $('#qr-result').addClass("failure").show().delay(5000).fadeOut();
+                            // }
+                            $('#qr-result').html("<p style='color:#fff;'>Name: "+ parsed.name+" <br/>Date: "+ parsed.date+"<br/>Time: "+ parsed.time+" <br/><a href="+url+parsed.id+" class='btn btn-success'>Check-in</a></p>");
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
