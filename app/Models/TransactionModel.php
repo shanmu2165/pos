@@ -52,7 +52,7 @@ class TransactionModel extends Model {
         
         $msg1 = new \stdClass();
             //required settings
-          $msg1->subject = "Tickets Booked"; //SUBJECT
+          $msg1->subject = "Checked-in"; //SUBJECT
           //$mpdf = new \Mpdf\Mpdf();
           $html_data = "Checked In! Proceed to your seats ".$seats.". Enjoy the show!";
           //echo $html_data; die;

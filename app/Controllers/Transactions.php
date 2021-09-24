@@ -111,10 +111,10 @@ class Transactions extends BaseController {
         
         //print_r($success); die;
          //Qrcode Path For Server
-         $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
+         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
 
          //Qrcode Path For Local
-          //$filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
+          $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
          //echo $filepath; die;
@@ -605,6 +605,7 @@ class Transactions extends BaseController {
         if(!empty($id)) {
            $update = $this->transaction_model->update_seat_status($id);
         }
+        $this->session->setFlashdata('msg', "Checked-in Successfully!");
         return redirect()->to('/shows');
     }
 
