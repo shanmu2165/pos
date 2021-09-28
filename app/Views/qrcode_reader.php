@@ -1,13 +1,23 @@
 <?= $this->extend('layouts/main'); ?>
 <?= $this->section('content'); ?>
 <section class="content-part pb-4">
+
     <div id="qr-reader" style="width:500px"></div>
     <div id="qr-reader-results"></div>
     <div style="color:#fff; font-weight:bold;text-align:center;padding:15px;">
-        <span id="qr-result">
-           
+        <span id="qr-result">     
         </span>
     </div>
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-lg-4 col-md-8"></div>
+            <div class="col-lg-4 col-md-4">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert" style="display:none; ">These seats have already been checked in.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+</div>
+</div>
+</div>
 </section>
 <script src="<?= base_url('js/html5-qrcode.min.js'); ?>"></script>
 <script>
@@ -41,6 +51,7 @@
                         success: function(data, textStatus, jqXHR)
                         {  //console.log("ewghew",JSON.stringify(data));
                             var parsed = $.parseJSON(data);
+                            // console.log('parsed', parsed);
                             var url = '<?= base_url().'/transactions/update_transaction/' ?>';
                             //console.log("valData",parsed.id);
                             //data - response from server
@@ -49,7 +60,12 @@
                             // } else {
                             //     $('#qr-result').addClass("failure").show().delay(5000).fadeOut();
                             // }
-                            $('#qr-result').html("<p style='color:#fff;'>Name: "+ parsed.name+" <br/>Date: "+ parsed.date+"<br/>Time: "+ parsed.time+" <br/><a href="+url+parsed.id+" class='btn btn-success'>Check-in</a></p>");
+                            if(parsed.seat_status == 1){
+                                $('#qr-result').html("<p style='color:#fff;'>Show Name: "+parsed.show_name+"<br/>  Name: "+ parsed.name+" <br/>Date: "+ parsed.date+"<br/>Time: "+ parsed.time+" <br/><a href="+url+parsed.id+" class='btn btn-success'>Check-in</a></p>");
+                            }else{
+                                $('#qr-result').html("<p style='color:#fff;'>Show Name: "+parsed.show_name+"<br/>   Name: "+ parsed.name+" <br/>Date: "+ parsed.date+"<br/>Time: "+ parsed.time+" <br/><a href="+url+parsed.id+" class='btn btn-success disabled'>Check-in</a></p>");
+                                $('#alert').show();
+                            }
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {

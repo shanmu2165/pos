@@ -12,7 +12,7 @@ class TransactionModel extends Model {
     protected $allowedFields = ['type', 'site','status','seat_status','name','email','phone','amount','randid','notes','booked_data','content','timestamp'];
 
     function verify_qrcode($id,$email='') {
-        
+   
         $db      = \Config\Database::connect();
         if(!empty($id) && !empty($email)) {
             $query = $db->query("SELECT * FROM transactions WHERE randid='".$id."' AND email='".$email."' LIMIT 1");  
@@ -37,8 +37,9 @@ class TransactionModel extends Model {
     }
 
     function update_seat_status($id) {
+        $date = date("Y-m-d h:i:s");
         $db      = \Config\Database::connect(); 
-        $query = $db->query("UPDATE transactions SET seat_status='2' WHERE id='".$id."'");  
+        $query = $db->query("UPDATE transactions SET seat_status='2', check_in_date='".$date."' WHERE id='".$id."'");  
         //$content = $query->getResult();
 
         $query1 = $db->query("SELECT * FROM transactions WHERE id='".$id."' LIMIT 1");  
@@ -48,14 +49,14 @@ class TransactionModel extends Model {
         $seats = 0;
         
         $seats = implode(',',$seat_data['seats_selected']);
-        
+        $name = $content[0]->name;
         
         $msg1 = new \stdClass();
             //required settings
           $msg1->subject = "Checked-in"; //SUBJECT
           //$mpdf = new \Mpdf\Mpdf();
-          $html_data = "Checked In! Proceed to your seats ".$seats.". Enjoy the show!";
-          //echo $html_data; die;
+          $html_data = "Hi " .ucfirst($name).", <br/>"."<p style='margin-left:20px;'>Checked In! Proceed to your seats ".$seats.". Enjoy the show!</p><br/><br/>"."Thanks,<br/>"."Admin";
+          // echo $html_data; die;
           //$mpdf->WriteHTML($html);
           $msg1->htmlbody = $html_data;
           $msg1->to = $content[0]->email; //TO

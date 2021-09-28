@@ -114,7 +114,7 @@ class Transactions extends BaseController {
          $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
 
          //Qrcode Path For Local
-          //$filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
+        //   $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
          //echo $filepath; die;
@@ -584,7 +584,9 @@ class Transactions extends BaseController {
                 'id' => $validate_qr[0]->id,
                 'name' => $validate_qr[0]->name,
                 'date' => $date_data,
-                   'time' => $notes['item'][1]['time']
+                'time' => $notes['item'][1]['time'],
+                'seat_status'=> $validate_qr[0]->seat_status,
+                'show_name' => $notes['content'][0]['title']
             ];
             //print_r($data1); die;
             if(!empty($data1)) {
@@ -602,11 +604,20 @@ class Transactions extends BaseController {
 
     function update_transaction($id) {
         //echo $id; die;
-        if(!empty($id)) {
-           $update = $this->transaction_model->update_seat_status($id);
+        $db      = \Config\Database::connect(); 
+        $seat_status = $db->query("SELECT seat_status FROM transactions WHERE id='".$id."'");
+        $content = $seat_status->getResult();
+        if($content[0]->seat_status==1){
+            if(!empty($id)) {
+                $update = $this->transaction_model->update_seat_status($id);
+             }
+             $this->session->setFlashdata('msg', "Checked-in Successfully!");
+             return redirect()->to('/shows');
+        }else{
+             $this->session->setFlashdata('msg', "These seats have already been checked in.");
+             return redirect()->to('/qrcode_reader');
         }
-        $this->session->setFlashdata('msg', "Checked-in Successfully!");
-        return redirect()->to('/shows');
+        
     }
 
     // function lookup_transaction() {
