@@ -201,7 +201,7 @@ section.loading .overlay{
                                           if( $seat->seattype == 'blocked')  {?>  
                                             <div class="seat empty">
                                         <?php } else { ?>
-                                          <div class="seat <?= $status; ?>" data-value="<?= $row_names[$i]."-".$seat->seat; ?>"><?= $seat->seat; ?>
+                                          <div class="seat <?= $status; ?>" id="<?= $row_names[$i]."-".$seat->seat; ?>" data-value="<?= $row_names[$i]."-".$seat->seat; ?>"><?= $seat->seat; ?>
                                         <?php }  ?>
                                       </div>
                                       <?php if($seat->space_right == 1) {?>
@@ -316,7 +316,8 @@ section.loading .overlay{
             }
              
           } else { 
-            //selectedSeatsArr.pop(seatValue);
+            //console.log("SeatVal",seatValue);
+            console.log("Seat removed", $("div#" + seatValue ).addClass('seat'));
             selectedSeatsArr = remove_array_element(selectedSeatsArr,seatValue);
           }
           
