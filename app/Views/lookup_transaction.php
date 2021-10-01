@@ -16,7 +16,7 @@
                     <div class="col-md-12 text-left">
                         <?php if($details[0]->type == 'Cash') { ?>
                             <h3>Status : Paid Cash</h3>
-                        <?php } else if($details[0]->randid == 'Free') { ?>
+                        <?php } else if($details[0]->type == 'Free') { ?>
                             <h3>Status : Comp</h3>
                         <?php } else { ?>
                             <h3>Status : Credit Card</h3>

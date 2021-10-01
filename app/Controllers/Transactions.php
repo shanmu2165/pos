@@ -536,7 +536,12 @@ class Transactions extends BaseController {
             }
             //print_r($success); die;
             $url = base_url().'/transactions/update_transaction/'.$success;
-            $this->session->setFlashdata('msg', "Ticket Booked Successfully! you will receive a mail shortly. <a href='".$url."'>Check-in</a>");
+            if($pos_data['type'] == 'Cash') {
+                $this->session->setFlashdata('msg', "Ticket Booked Successfully! you will receive a mail shortly. Total Price is $".$pos_data['amount']." <a href='".$url."'>Check-in</a>");
+            } else {
+                $this->session->setFlashdata('msg', "Ticket Booked Successfully! you will receive a mail shortly. <a href='".$url."'>Check-in</a>");
+            }
+            
             return redirect()->to('/shows');
         }
         else
@@ -614,7 +619,7 @@ class Transactions extends BaseController {
              $this->session->setFlashdata('msg', "Checked-in Successfully!");
              return redirect()->to('/shows');
         }else{
-             $this->session->setFlashdata('msg', "These seats have already been checked in.");
+             $this->session->setFlashdata('msg', "These seats have been checked in already.");
              if(!empty($page)) {
                 return redirect()->to('/shows');   
              } else {
