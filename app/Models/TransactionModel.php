@@ -47,15 +47,22 @@ class TransactionModel extends Model {
         //print_r($content); die;
         $seat_data = json_decode($content[0]->booked_data,true);
         $seats = 0;
+        if(isset($seat_data['seats_selected']) && !empty($seat_data['seats_selected'])) {
+            $seats = implode(',',@$seat_data['seats_selected']);
+        }
         
-        $seats = implode(',',$seat_data['seats_selected']);
         $name = $content[0]->name;
         
         $msg1 = new \stdClass();
             //required settings
           $msg1->subject = "Checked-in"; //SUBJECT
           //$mpdf = new \Mpdf\Mpdf();
-          $html_data = "Hi " .ucfirst($name).", <br/>"."<p style='margin-left:20px;'>Checked In! Proceed to your seats ".$seats.". Enjoy the show!</p><br/><br/>"."Thanks,<br/>"."Admin";
+          if($seats != 0) {
+            $html_data = "Hi " .ucfirst($name).", <br/>"."<p style='margin-left:20px;'>Checked In! Proceed to your seats ".$seats.". Enjoy the show!</p><br/><br/>"."Thanks,<br/>"."Admin"; 
+          } else {
+            $html_data = "Hi " .ucfirst($name).", <br/>"."<p style='margin-left:20px;'>Checked In! Proceed to your seats. Enjoy the show!</p><br/><br/>"."Thanks,<br/>"."Admin";
+          }
+          
           // echo $html_data; die;
           //$mpdf->WriteHTML($html);
           $msg1->htmlbody = $html_data;

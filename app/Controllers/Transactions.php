@@ -111,10 +111,10 @@ class Transactions extends BaseController {
         
         //print_r($success); die;
          //Qrcode Path For Server
-         $filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
+         //$filepath = $_SERVER['DOCUMENT_ROOT'].'/public/images/qrcode/';
 
          //Qrcode Path For Local
-        //   $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
+          $filepath = $_SERVER['DOCUMENT_ROOT'].'/pos/public/images/qrcode/';
          //Qrcode Image name
          $filename = "qrcode_".$random.".png";
          //echo $filepath; die;
@@ -131,7 +131,7 @@ class Transactions extends BaseController {
             ->margin(10)
             ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
             //->logoPath($_SERVER['DOCUMENT_ROOT'].'/pos/vendor/endroid/qr-code/tests/assets/symphony.png')
-            ->labelText('Scan This')
+            ->labelText('')
             ->labelFont(new NotoSans(20))
             ->labelAlignment(new LabelAlignmentCenter())
             ->build();
@@ -602,7 +602,7 @@ class Transactions extends BaseController {
         }
     }
 
-    function update_transaction($id) {
+    function update_transaction($id,$page='') {
         //echo $id; die;
         $db      = \Config\Database::connect(); 
         $seat_status = $db->query("SELECT seat_status FROM transactions WHERE id='".$id."'");
@@ -615,7 +615,12 @@ class Transactions extends BaseController {
              return redirect()->to('/shows');
         }else{
              $this->session->setFlashdata('msg', "These seats have already been checked in.");
-             return redirect()->to('/qrcode_reader');
+             if(!empty($page)) {
+                return redirect()->to('/shows');   
+             } else {
+                return redirect()->to('/qrcode_reader');
+             }
+             
         }
         
     }
