@@ -242,20 +242,21 @@ section.loading .overlay{
         var total_rows = <?= json_encode(@$total_rows); ?>;
         var total_seats_perrow = <?= json_encode(@$seats_prow); ?>;
           let formattedSeatsPerRow = formatArrayToObj(total_seats_perrow);
-          console.log('total_rows', total_rows);
+          // console.log('total_rows', total_rows);
           console.log('Seats Per',formattedSeatsPerRow);
-         var keys = Object.keys(formattedSeatsPerRow);
-         console.log('key', keys);
+          var RowNames = <?= json_encode(@$row_names); ?>;
+          // console.log('rowNames', RowNames);
+          var keys = Object.keys(RowNames);
+        //  console.log('key', keys);
           var json = {};
-          // For the seats with numbers as row names
-          if(keys[0]==1){
-            for(var i=1; i<=keys[total_rows-1]; i++){
-              var totalSeats = formattedSeatsPerRow[i][0];
-              if(booked_arr != null){
+          for(var i=0; i<=keys[total_rows-1]; i++){
+            var index = RowNames[i];
+            var totalSeats = formattedSeatsPerRow[index][0];
+            if(booked_arr != null){
                 let formattedBookedTicket = formatArrayToObj(booked_arr);
-                if(formattedBookedTicket[i]){
-                  var totalSeatsBooked = formattedBookedTicket[i].length;
-                  var seatsBooked = formattedBookedTicket[i]
+                if(formattedBookedTicket[index]){
+                  var totalSeatsBooked = formattedBookedTicket[index].length;
+                  var seatsBooked = formattedBookedTicket[index]
                 }else{
                   var totalSeatsBooked = 0;
                   var seatsBooked = [0];
@@ -264,36 +265,10 @@ section.loading .overlay{
                 var totalSeatsBooked = 0;
                 var seatsBooked = [0];
               }
-              json[i] = {totalSeats:parseInt(totalSeats), totalSeatsBooked:totalSeatsBooked , seatsBooked:seatsBooked};
-            }
-          }else{
-            // For the seats with letters as row names
-            var s = 'A';
-            var start = s.charCodeAt(0);
-            var l = keys[total_rows-1];
-            var last = l.charCodeAt(0);
-            console.log("A",start);
-            console.log("O",last);
-            for(var i=start; i<=last; i++){
-              j = String.fromCharCode(i);
-              var totalSeats = formattedSeatsPerRow[j][0];
-              if(booked_arr != null){
-                let formattedBookedTicket = formatArrayToObj(booked_arr);
-                if(formattedBookedTicket[j]){
-                  var totalSeatsBooked = formattedBookedTicket[j].length;
-                  var seatsBooked = formattedBookedTicket[j]
-                }else{
-                  var totalSeatsBooked = 0;
-                  var seatsBooked = [0];
-                }
-              }else{
-                var totalSeatsBooked = 0;
-                var seatsBooked = [0];
-              }
-              json['row_'+j] = {totalSeats:parseInt(totalSeats), totalSeatsBooked:totalSeatsBooked , seatsBooked:seatsBooked};
-            }
+              json[i] = {rowName:index, totalSeats:parseInt(totalSeats), totalSeatsBooked:totalSeatsBooked , seatsBooked:seatsBooked};
           }
           console.log('bestSeat', json);
+
 
 
         
@@ -380,50 +355,46 @@ section.loading .overlay{
         });
 
         //Assign Best seats
-          var mvar = [];
-          $("#assign_best").on("click", function(){  
-            if(keys[0]==1){
-              for(var i=keys[total_rows-1]; i>=1; i--){
-                var row = json[i];
-                // console.log('json', json[i]);
-                var availableSeatsPerRow = row['totalSeats'] - row['totalSeatsBooked'];
-                var selectedSeatsRowInt = [];
-                for (var j = 0; j < row['totalSeatsBooked']; j++){
-                  selectedSeatsRowInt.push(parseInt(row['seatsBooked'][j]));
-                }
-                if(totalSelectedSeats-1 <= availableSeatsPerRow){
-                  var unselectedSeats = [];
-                  for(var k=1; k<=row['totalSeats']; k++){
-                    if(selectedSeatsRowInt.indexOf(k)==-1){
-                      unselectedSeats.push(k);
-                    }
-                  }
-                  var bestSeats = [];
-                  var availableSeatLength = unselectedSeats.length-1;
-                  for(var l=0; l<=availableSeatLength; l++){
-                    if(unselectedSeats[l+1] - unselectedSeats[l]==1){
-                      bestSeats.push(unselectedSeats[l]);
-                    }else if(unselectedSeats[l] - unselectedSeats[l-1]==1){
-                      bestSeats.push(unselectedSeats[l]);
-                    }
-                    else if(l==availableSeatLength && unselectedSeats[availableSeatLength] -unselectedSeats[availableSeatLength-1] == 1){
-                      bestSeats.push(unselectedSeats[l]);
-                    }
-                    // else{
-                    //   // while(bestSeats.length>0){
-                    //   //   bestSeats.pop(l);
-                    //   // }
-                    // }
-                  }
-                  console.log('row', i);
-                  console.log('bestSeats', bestSeats);
-                  console.log('unselectedSeats', unselectedSeats);
+        var mvar = [];
+        $("#assign_best").on("click", function(){
+          for(var i=keys[total_rows-1]; i>=0; i--){
+            var row = json[i];
+            var rowName = row['rowName'];
+            var availableSeatsPerRow = row['totalSeats'] - row['totalSeatsBooked'];
+            if(totalSelectedSeats-1 <= availableSeatsPerRow){
+              var selectedSeatsRowInt = [];
+              for (var j = 0; j < row['totalSeatsBooked']; j++){
+                selectedSeatsRowInt.push(parseInt(row['seatsBooked'][j]));
               }
+              var seatsUnBooked = [];
+              for(var k=1; k<=row['totalSeats']; k++){
+                if(selectedSeatsRowInt.indexOf(k)==-1){
+                  seatsUnBooked.push(k);
+                }
+              }   
+              // var bestSeats = [];
+              // for(var l=seatsUnBooked.length-1; l>=0; l--){
+              //   console.log('l', l);
+              //   var indexValue = bestSeats.length;
+              //   if(l == seatsUnBooked.length-1){
+              //     bestSeats.splice(0, 0 ,[seatsUnBooked[l]]);
+              //   }else if(l<seatsUnBooked.length-1){
+              //     var chosenSeat = seatsUnBooked[l]-1;
+              //     if(seatsUnBooked.includes(chosenSeat)==true){
+              //       bestSeats.splice(indexValue, 0, seatsUnBooked[l]);
+              //     }else{
+              //       bestSeats.splice(indexValue+1, 0, [seatsUnBooked[l]]);
+              //     }
+              //   }
+              // }
+              // console.log('bestSeats', bestSeats);
+              // console.log('seatsUnBooked', seatsUnBooked);  
+              // console.log('row', rowName);
             }
           }
-          $(".seating  .seat.booked").each(function() {
-           mvar.push($(this).html);
-          });
+            $(".seating  .seat.booked").each(function() {
+              mvar.push($(this).html);
+            });
             //console.log("Html: ",$(".seating #1 .seat.booked").html());
             console.log("Array: ",mvar);
         });
