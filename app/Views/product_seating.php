@@ -272,6 +272,8 @@ section.loading .overlay{
             var start = s.charCodeAt(0);
             var l = keys[total_rows-1];
             var last = l.charCodeAt(0);
+            console.log("A",start);
+            console.log("O",last);
             for(var i=start; i<=last; i++){
               j = String.fromCharCode(i);
               var totalSeats = formattedSeatsPerRow[j][0];
@@ -378,46 +380,46 @@ section.loading .overlay{
         });
 
         //Assign Best seats
-        var mvar = [];
-        $("#assign_best").on("click", function(){  
-          if(keys[0]==1){
-            for(var i=keys[total_rows-1]; i>=1; i--){
-              var row = json[i];
-              // console.log('json', json[i]);
-              var availableSeatsPerRow = row['totalSeats'] - row['totalSeatsBooked'];
-              var selectedSeatsRowInt = [];
-              for (var j = 0; j < row['totalSeatsBooked']; j++){
-                selectedSeatsRowInt.push(parseInt(row['seatsBooked'][j]));
+          var mvar = [];
+          $("#assign_best").on("click", function(){  
+            if(keys[0]==1){
+              for(var i=keys[total_rows-1]; i>=1; i--){
+                var row = json[i];
+                // console.log('json', json[i]);
+                var availableSeatsPerRow = row['totalSeats'] - row['totalSeatsBooked'];
+                var selectedSeatsRowInt = [];
+                for (var j = 0; j < row['totalSeatsBooked']; j++){
+                  selectedSeatsRowInt.push(parseInt(row['seatsBooked'][j]));
+                }
+                if(totalSelectedSeats-1 <= availableSeatsPerRow){
+                  var unselectedSeats = [];
+                  for(var k=1; k<=row['totalSeats']; k++){
+                    if(selectedSeatsRowInt.indexOf(k)==-1){
+                      unselectedSeats.push(k);
+                    }
+                  }
+                  var bestSeats = [];
+                  var availableSeatLength = unselectedSeats.length-1;
+                  for(var l=0; l<=availableSeatLength; l++){
+                    if(unselectedSeats[l+1] - unselectedSeats[l]==1){
+                      bestSeats.push(unselectedSeats[l]);
+                    }else if(unselectedSeats[l] - unselectedSeats[l-1]==1){
+                      bestSeats.push(unselectedSeats[l]);
+                    }
+                    else if(l==availableSeatLength && unselectedSeats[availableSeatLength] -unselectedSeats[availableSeatLength-1] == 1){
+                      bestSeats.push(unselectedSeats[l]);
+                    }
+                    // else{
+                    //   // while(bestSeats.length>0){
+                    //   //   bestSeats.pop(l);
+                    //   // }
+                    // }
+                  }
+                  console.log('row', i);
+                  console.log('bestSeats', bestSeats);
+                  console.log('unselectedSeats', unselectedSeats);
               }
-              if(totalSelectedSeats-1 <= availableSeatsPerRow){
-                var unselectedSeats = [];
-                for(var k=1; k<=row['totalSeats']; k++){
-                  if(selectedSeatsRowInt.indexOf(k)==-1){
-                    unselectedSeats.push(k);
-                  }
-                }
-                var bestSeats = [];
-                var availableSeatLength = unselectedSeats.length-1;
-                for(var l=0; l<=availableSeatLength; l++){
-                  if(unselectedSeats[l+1] - unselectedSeats[l]==1){
-                    bestSeats.push(unselectedSeats[l]);
-                  }else if(unselectedSeats[l] - unselectedSeats[l-1]==1){
-                    bestSeats.push(unselectedSeats[l]);
-                  }
-                  else if(l==availableSeatLength && unselectedSeats[availableSeatLength] -unselectedSeats[availableSeatLength-1] == 1){
-                    bestSeats.push(unselectedSeats[l]);
-                  }
-                  // else{
-                  //   // while(bestSeats.length>0){
-                  //   //   bestSeats.pop(l);
-                  //   // }
-                  // }
-                }
-                console.log('row', i);
-                console.log('bestSeats', bestSeats);
-                console.log('unselectedSeats', unselectedSeats);
             }
-          }
           }
           $(".seating  .seat.booked").each(function() {
            mvar.push($(this).html);
