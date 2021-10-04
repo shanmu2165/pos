@@ -363,6 +363,9 @@ section.loading .overlay{
             let bestPickSeats = [];         
             const bookedSeatsCounts = bookedSeats.length;
             const nonBookedSeatsCount = allSeats - bookedSeatsCounts;
+            // console.log('allSeatsAsArray', allSeatsAsArray.length);
+            // console.log('seatsNeeded', seatsNeeded);
+            // console.log('nonBookedSeatsCount', nonBookedSeatsCount);
             if(seatsNeeded <= nonBookedSeatsCount){
                 // console.log("Possible To Have Best Seats In This Row");
                 nonBookedSeats = allSeatsAsArray.filter((seat) => {
@@ -377,6 +380,8 @@ section.loading .overlay{
                   //get seats - non consecutive seats in a row
                     return nonConsecutiveSeats(nonBookedSeats, seatsNeeded);
                 }			
+            }else if(seatsNeeded <= allSeatsAsArray.length){
+              return false;
             }else{
               $.confirm.show({
                 "message":"No best seats are available, please select the seats manually.",
@@ -384,7 +389,7 @@ section.loading .overlay{
                 "yesText":"OK",
                 "yes":function (){
                 },
-              })
+              });
                 return false;
             }
           }
@@ -450,7 +455,7 @@ section.loading .overlay{
                 }
                 return false;
               }
-          }
+            }
           }
             $(".seating  .seat.booked").each(function() {
               mvar.push($(this).html);
