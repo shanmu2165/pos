@@ -380,7 +380,7 @@ section.loading .overlay{
                   //get seats - non consecutive seats in a row
                     return nonConsecutiveSeats(nonBookedSeats, seatsNeeded);
                 }			
-            }else if(seatsNeeded <= allSeatsAsArray.length){
+            }else if(seatsNeeded >= allSeatsAsArray.length){
               return false;
             }else{
               $.confirm.show({
