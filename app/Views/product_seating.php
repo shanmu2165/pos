@@ -201,7 +201,7 @@ section.loading .overlay{
                                           if( $seat->seattype == 'blocked')  {?>  
                                             <div class="seat empty">
                                         <?php } else { ?>
-                                          <div class="seat <?= $status; ?>" data-value="<?= $row_names[$i]."-".$seat->seat; ?>"><?= $seat->seat; ?>
+                                          <div class="seat <?= $status; ?>" data-value="<?= $row_names[$i]."-".$seat->seat; ?>" id="<?= $row_names[$i]."-".$seat->seat; ?>"><?= $seat->seat; ?>
                                         <?php }  ?>
                                       </div>
                                       <?php if($seat->space_right == 1) {?>
@@ -355,40 +355,100 @@ section.loading .overlay{
         //Assign Best seats
         var mvar = [];
         $("#assign_best").on("click", function(){
-          for(var i=keys[total_rows-1]; i>=0; i--){
-            var row = json[i];
-            var rowName = row['rowName'];
-            var availableSeatsPerRow = row['totalSeats'] - row['totalSeatsBooked'];
-            if(totalSelectedSeats-1 <= availableSeatsPerRow){
+          function getBestSeats(seatsNeeded, allSeats, bookedSeats, type){
+            const allSeatsAsArray = Array.from({length: allSeats}, (x, i) => i + 1);
+            let nonBookedSeats = [];
+            let bestPickSeats = [];         
+            const bookedSeatsCounts = bookedSeats.length;
+            const nonBookedSeatsCount = allSeats - bookedSeatsCounts;
+            if(seatsNeeded <= nonBookedSeatsCount){
+                // console.log("Possible To Have Best Seats In This Row");
+                nonBookedSeats = allSeatsAsArray.filter((seat) => {
+                  return !bookedSeats.includes(seat);
+                });
+                if(type === "consecutive"){
+                      //get seats - non consecutive seat in a row
+                    return consecutiveSeats(nonBookedSeats, seatsNeeded);
+                }
+                            
+                if(type === "non-consecutive"){
+                  //get seats - non consecutive seats in a row
+                    return nonConsecutiveSeats(nonBookedSeats, seatsNeeded);
+                }			
+            }else{
+              $.confirm.show({
+                "message":"No best seats are available, please select the seats manually.",
+                "hideNo":true,// hide cancel button
+                "yesText":"OK",
+                "yes":function (){
+                },
+              })
+                return false;
+            }
+          }
+              
+          function consecutiveSeats(nonBookedSeats, seatsNeeded){
+            const temp_bestPickSeats = nonBookedSeats.reduce((seq, v, i, a) => {
+                if (i && a[i - 1] !== v - 1) {
+                    seq.push([]);
+                  }
+                  seq[seq.length - 1].push(v);
+                  return seq;
+              }, [[]]).filter(({length}) => length >= seatsNeeded)[0];
+                          
+              if(temp_bestPickSeats){
+                  return temp_bestPickSeats.slice(0, seatsNeeded);
+              }else{
+                  return false;
+              }
+          }
+              
+          function nonConsecutiveSeats(nonBookedSeats, seatsNeeded){
+            return nonBookedSeats.slice(0, seatsNeeded);
+          }
+          for(let i=keys[total_rows-1]; i>=0; i--){
+            let row = json[i];
+            let rowName = row['rowName'];
+            // console.log('rowName', rowName);
+            let availableSeatsPerRow = row['totalSeats'] - row['totalSeatsBooked'];
               var selectedSeatsRowInt = [];
-              for (var j = 0; j < row['totalSeatsBooked']; j++){
+              for (let j = 0; j < row['totalSeatsBooked']; j++){
                 selectedSeatsRowInt.push(parseInt(row['seatsBooked'][j]));
               }
-              var seatsUnBooked = [];
-              for(var k=1; k<=row['totalSeats']; k++){
-                if(selectedSeatsRowInt.indexOf(k)==-1){
-                  seatsUnBooked.push(k);
+              const seatsNeeded = totalSelectedSeats-1;
+              const allSeats = row['totalSeats'];
+              const bookedSeats = selectedSeatsRowInt;
+              var bestSeats1 = getBestSeats(seatsNeeded, allSeats, bookedSeats, "consecutive");
+              if(bestSeats1 != false){
+                for(let k=0; k<bestSeats1.length; k++){
+                  let id = rowName+'-'+bestSeats1[k];
+                  $("#"+id).addClass('selected');
                 }
-              }   
-              // var bestSeats = [];
-              // for(var l=seatsUnBooked.length-1; l>=0; l--){
-              //   console.log('l', l);
-              //   var indexValue = bestSeats.length;
-              //   if(l == seatsUnBooked.length-1){
-              //     bestSeats.splice(0, 0 ,[seatsUnBooked[l]]);
-              //   }else if(l<seatsUnBooked.length-1){
-              //     var chosenSeat = seatsUnBooked[l]-1;
-              //     if(seatsUnBooked.includes(chosenSeat)==true){
-              //       bestSeats.splice(indexValue, 0, seatsUnBooked[l]);
-              //     }else{
-              //       bestSeats.splice(indexValue+1, 0, [seatsUnBooked[l]]);
-              //     }
-              //   }
-              // }
-              // console.log('bestSeats', bestSeats);
-              // console.log('seatsUnBooked', seatsUnBooked);  
-              // console.log('row', rowName);
-            }
+                return false;
+              }
+          }
+          if(bestSeats1 == false){
+            for(let i=keys[total_rows-1]; i>=0; i--){
+            let row = json[i];
+            let rowName = row['rowName'];
+            // console.log('rowName1', rowName);
+            let availableSeatsPerRow = row['totalSeats'] - row['totalSeatsBooked'];
+              var selectedSeatsRowInt = [];
+              for (let j = 0; j < row['totalSeatsBooked']; j++){
+                selectedSeatsRowInt.push(parseInt(row['seatsBooked'][j]));
+              }
+              const seatsNeeded = totalSelectedSeats-1;
+              const allSeats = row['totalSeats'];
+              const bookedSeats = selectedSeatsRowInt;
+              var bestSeats2 = getBestSeats(seatsNeeded, allSeats, bookedSeats, "non-consecutive");
+              if(bestSeats2 != false){
+                for(let k=0; k<bestSeats2.length; k++){
+                  let id = rowName+'-'+bestSeats2[k];
+                  $("#"+id).addClass('selected');
+                }
+                return false;
+              }
+          }
           }
             $(".seating  .seat.booked").each(function() {
               mvar.push($(this).html);
@@ -396,6 +456,7 @@ section.loading .overlay{
             //console.log("Html: ",$(".seating #1 .seat.booked").html());
             console.log("Array: ",mvar);
         });
+        
 
 //Seat click event
 container.addEventListener('click', e => {
