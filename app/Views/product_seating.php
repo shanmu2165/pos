@@ -246,7 +246,7 @@ section.loading .overlay{
           console.log('Seats Per',formattedSeatsPerRow);
           var RowNames = <?= json_encode(@$row_names); ?>;
           // console.log('rowNames', RowNames);
-         var keys = Object.keys(RowNames);
+          var keys = Object.keys(RowNames);
         //  console.log('key', keys);
           var json = {};
           for(var i=0; i<=keys[total_rows-1]; i++){
@@ -268,6 +268,7 @@ section.loading .overlay{
               json[i] = {rowName:index, totalSeats:parseInt(totalSeats), totalSeatsBooked:totalSeatsBooked , seatsBooked:seatsBooked};
           }
           console.log('bestSeat', json);
+
 
 
         
@@ -337,7 +338,8 @@ section.loading .overlay{
             }
              
           } else { 
-            //selectedSeatsArr.pop(seatValue);
+            //console.log("SeatVal",seatValue);
+            console.log("Seat removed", $("div#" + seatValue ).addClass('seat'));
             selectedSeatsArr = remove_array_element(selectedSeatsArr,seatValue);
           }
           

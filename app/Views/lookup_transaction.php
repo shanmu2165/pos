@@ -13,7 +13,15 @@
             <div class="container pt-2 pb-2">
                 
                 <div class="row" id="GFG">
-                    <!-- <div class="col-md-12 text-center"></div> -->
+                    <div class="col-md-12 text-left">
+                        <?php if($details[0]->type == 'Cash') { ?>
+                            <h3>Status : Paid Cash</h3>
+                        <?php } else if($details[0]->type == 'Free') { ?>
+                            <h3>Status : Comp</h3>
+                        <?php } else { ?>
+                            <h3>Status : Credit Card</h3>
+                        <?php } ?>    
+                    </div>
                         <table style="width:500px;">
                             <tr>
                                 <td style="padding:5px;">Transaction Id #</td>
@@ -50,7 +58,7 @@
                             <th>Description</th>
                             <th class="text-right">Qty</th>
                             <th class="text-right">Each</th>
-                            <th class="text-right">Total</th>
+                            <th class="text-right" style="text-align:right;">Total</th>
                         </tr>
                         <?php $total_amt = 0; for($i=1; $i <= $pcount; $i++) { 
                             if($json_details["item"][$i]["qty"] > 0) { ?>
@@ -76,9 +84,9 @@
                                 <td class="text-right" title="Price">$0.00</td>
                             <?php } ?>
                             <?php if($json_details['itotal'] != number_format(0,2)){ ?>
-                                <td class="text-right" title="Total">$<?= number_format($total_val,2); ?></td>
+                                <td class="text-right" title="Total" style="text-align:right;">$<?= number_format($total_val,2); ?></td>
                             <?php }else{ ?>
-                                <td class="text-right" title="Total">$0.00</td>
+                                <td class="text-right" title="Total" style="text-align:right;">$0.00</td>
                             <?php } ?>
                         </tr>
                         <?php } } ?>
@@ -91,7 +99,7 @@
                         <tr class="total-row">
 
                             <td class="text-right" colspan="3"><strong>Tax</strong></td>
-                            <td class="text-right">
+                            <td class="text-right" style="text-align:right;">
                             <?php if($json_details['itotal'] != number_format(0,2)){ ?>
                                 <strong>$<?= getenv('salestax') ?></strong>
                                 <?php }else{ ?>
@@ -102,7 +110,7 @@
                         </tr>
                         <tr class="total-row">
                             <td class="text-right" colspan="3"><strong>Processing Fees</strong></td>
-                            <td class="text-right">
+                            <td class="text-right" style="text-align:right;">
                             <?php if($json_details['itotal'] != number_format(0,2)){ ?>
                                 <strong>$<?= getenv('processingfees') ?></strong>
                                 <?php }else{ ?>
@@ -116,7 +124,7 @@
 
                             <td class="text-right" colspan="3"><strong>Discount - <?=  @$json_details["code_name"];?>
                                     (<?=  @$json_details["ccode"];?>)</strong></td>
-                            <td class="text-right">
+                            <td class="text-right" style="text-align:right;">
                                 <strong>$<?=  number_format(@$json_details["discount_amt"],2); ?></strong>
                             </td>
                         </tr>
@@ -126,7 +134,7 @@
 
                             <td class="text-right" colspan="3"><strong>Total</strong></td>
                             <?php if($json_details['itotal'] != number_format(0,2)){ ?>
-                            <td class="text-right"><strong>$<?=  @$total_amt;?></strong></td>
+                            <td class="text-right" style="text-align:right;"><strong>$<?=  @$total_amt;?></strong></td>
                             <?php }else{ ?>
                                 <td class="text-right"><strong>$0.00</strong></td>
                             <?php } ?>
@@ -282,7 +290,7 @@ color: #000;"><?= $details[0]->randid ?></h2>
     </center>
                 </div>
                 <div class="row">
-                    <div class="col-md-5"></div>
+                    <div class="col-md-5"><a class="btn btn-primary" href="<?= base_url().'/transactions/update_transaction/'.$details[0]->id.'/lookup'; ?>">Check In</a></div>
                     <div class="col-md-7">
                         <div class="row">
                             <div class="col-md-6"><a class="btn btn-success" onclick="printDiv()">Print Ticket</a>

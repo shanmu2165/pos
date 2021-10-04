@@ -12,7 +12,7 @@
     <div class="row">
     <div class="col-lg-4 col-md-8"></div>
             <div class="col-lg-4 col-md-4">
-    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert" style="display:none; ">These seats have already been checked in.
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert" style="display:none; ">These seats have been checked in already.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 </div>
