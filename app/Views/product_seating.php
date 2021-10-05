@@ -140,8 +140,7 @@ section.loading .overlay{
                             <?php if(!empty($seats)) { ?>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 mb-3">
-                                    <!--<button type="button" class="btn btn-primary" id="assign_best">Assign Best Available</button>-->
-                                    <button type="button" class="btn btn-primary">Assign Best Available</button>
+                                    <button type="button" class="btn btn-primary" id="assign_best">Assign Best Available</button>
                                 </div>
                                 <div class="col-lg-6 col-md-6 mb-3">
                                     <button type="button" class="btn btn-primary" id="clear_seat">Clear Seat Selections</button>
@@ -352,9 +351,7 @@ section.loading .overlay{
           console.log("woowww")
           $('.seating div.seat').removeClass('selected');
           selectedSeatsArr.length = 0;
-          if(selectedSeatsArr == ''){
-            $('#assign_best').prop('disabled', false);
-          }
+          $('#assign_best').prop('disabled', false);
           console.log('ARR',selectedSeatsArr);
         });
 
