@@ -454,16 +454,17 @@ section.loading .overlay{
                   $('#assign_best').prop('disabled', true);
                 }
                 return false;
-              }else{
-                $.confirm.show({
+              }
+            }
+          }
+          if(bestSeats1 == false && bestSeats2==false){
+              $.confirm.show({
                 "message":"No best seats are available, please select the seats manually.",
                 "hideNo":true,// hide cancel button
                 "yesText":"OK",
                 "yes":function (){
                 },
               });
-              }
-            }
           }
             $(".seating  .seat.booked").each(function() {
               mvar.push($(this).html);
