@@ -351,6 +351,9 @@ section.loading .overlay{
           console.log("woowww")
           $('.seating div.seat').removeClass('selected');
           selectedSeatsArr.length = 0;
+          if(selectedSeatsArr == ''){
+            $('#assign_best').prop('disabled', false);
+          }
           console.log('ARR',selectedSeatsArr);
         });
 
@@ -380,17 +383,8 @@ section.loading .overlay{
                   //get seats - non consecutive seats in a row
                     return nonConsecutiveSeats(nonBookedSeats, seatsNeeded);
                 }			
-            }else if(seatsNeeded >= allSeatsAsArray.length){
-              return false;
             }else{
-              $.confirm.show({
-                "message":"No best seats are available, please select the seats manually.",
-                "hideNo":true,// hide cancel button
-                "yesText":"OK",
-                "yes":function (){
-                },
-              });
-                return false;
+              return false;
             }
           }
               
@@ -430,6 +424,10 @@ section.loading .overlay{
                 for(let k=0; k<bestSeats1.length; k++){
                   let id = rowName+'-'+bestSeats1[k];
                   $("#"+id).addClass('selected');
+                  selectedSeatsArr.push(id);
+                }
+                if(selectedSeatsArr != ''){
+                  $('#assign_best').prop('disabled', true);
                 }
                 return false;
               }
@@ -452,8 +450,20 @@ section.loading .overlay{
                 for(let k=0; k<bestSeats2.length; k++){
                   let id = rowName+'-'+bestSeats2[k];
                   $("#"+id).addClass('selected');
+                  selectedSeatsArr.push(id);
+                }
+                if(selectedSeatsArr != ''){
+                  $('#assign_best').prop('disabled', true);
                 }
                 return false;
+              }else{
+                $.confirm.show({
+                "message":"No best seats are available, please select the seats manually.",
+                "hideNo":true,// hide cancel button
+                "yesText":"OK",
+                "yes":function (){
+                },
+              });
               }
             }
           }
