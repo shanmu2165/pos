@@ -140,8 +140,7 @@ section.loading .overlay{
                             <?php if(!empty($seats)) { ?>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 mb-3">
-                                    <!--<button type="button" class="btn btn-primary" id="assign_best">Assign Best Available</button>-->
-                                    <button type="button" class="btn btn-primary">Assign Best Available</button>
+                                    <button type="button" class="btn btn-primary" id="assign_best">Assign Best Available</button>
                                 </div>
                                 <div class="col-lg-6 col-md-6 mb-3">
                                     <button type="button" class="btn btn-primary" id="clear_seat">Clear Seat Selections</button>
@@ -352,6 +351,7 @@ section.loading .overlay{
           console.log("woowww")
           $('.seating div.seat').removeClass('selected');
           selectedSeatsArr.length = 0;
+          $('#assign_best').prop('disabled', false);
           console.log('ARR',selectedSeatsArr);
         });
 
@@ -381,17 +381,8 @@ section.loading .overlay{
                   //get seats - non consecutive seats in a row
                     return nonConsecutiveSeats(nonBookedSeats, seatsNeeded);
                 }			
-            }else if(seatsNeeded >= allSeatsAsArray.length){
-              return false;
             }else{
-              $.confirm.show({
-                "message":"No best seats are available, please select the seats manually.",
-                "hideNo":true,// hide cancel button
-                "yesText":"OK",
-                "yes":function (){
-                },
-              });
-                return false;
+              return false;
             }
           }
               
@@ -431,6 +422,10 @@ section.loading .overlay{
                 for(let k=0; k<bestSeats1.length; k++){
                   let id = rowName+'-'+bestSeats1[k];
                   $("#"+id).addClass('selected');
+                  selectedSeatsArr.push(id);
+                }
+                if(selectedSeatsArr != ''){
+                  $('#assign_best').prop('disabled', true);
                 }
                 return false;
               }
@@ -453,10 +448,23 @@ section.loading .overlay{
                 for(let k=0; k<bestSeats2.length; k++){
                   let id = rowName+'-'+bestSeats2[k];
                   $("#"+id).addClass('selected');
+                  selectedSeatsArr.push(id);
+                }
+                if(selectedSeatsArr != ''){
+                  $('#assign_best').prop('disabled', true);
                 }
                 return false;
               }
             }
+          }
+          if(bestSeats1 == false && bestSeats2==false){
+              $.confirm.show({
+                "message":"No best seats are available, please select the seats manually.",
+                "hideNo":true,// hide cancel button
+                "yesText":"OK",
+                "yes":function (){
+                },
+              });
           }
             $(".seating  .seat.booked").each(function() {
               mvar.push($(this).html);

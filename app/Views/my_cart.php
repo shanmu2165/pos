@@ -164,7 +164,7 @@ if (!empty($_SESSION['cart']['item'])) {
                                         </div>
                                     </div>
                                 </td>-->
-                                <td class="text-right" title="Total" id="total_val">
+                                <td class="text-right" title="Total" id="total_val" style="text-align:end;">
                                     <strong>$<?= number_format($total, 2); ?></strong>
                                 </td>
                             </tr>
@@ -245,7 +245,7 @@ if (!empty($_SESSION['ccode'])) {
 if (!empty($_SESSION['cart']['salestax']) && $_SESSION['cart']['salestax'] > 0) {
 ?>
                         <td class="text-right" colspan="3"><strong>Sales Tax</strong></td>
-                        <td class="text-right" id="total">
+                        <td class="text-right" id="total" style="text-align:end;">
                             <strong>$<?= $_SESSION['cart']['salestax']; ?></strong>
                         </td>
                         <?php
@@ -257,7 +257,7 @@ if (!empty($_SESSION['cart']['salestax']) && $_SESSION['cart']['salestax'] > 0) 
 if (!empty($_SESSION['cart']['processingfees']) && $_SESSION['cart']['processingfees'] > 0) {
 ?>
                         <td class="text-right" colspan="3"><strong>Processing Fees</strong></td>
-                        <td class="text-right" id="total">
+                        <td class="text-right" id="total" style="text-align:end;">
                             <strong>$<?= $_SESSION['cart']['processingfees']; ?></strong>
                         </td>
                         <?php
@@ -268,7 +268,7 @@ if (!empty($_SESSION['cart']['processingfees']) && $_SESSION['cart']['processing
 
 
                         <td class="text-right" colspan="3"><strong>Total</strong></td>
-                        <td class="text-right" id="total">
+                        <td class="text-right" id="total" style="text-align:end;">
                             <strong>$<?= number_format(@$_SESSION['cart']['total'], 2); ?></strong>
                         </td>
 
