@@ -293,8 +293,10 @@ color: #000;"><?= $details[0]->randid ?></h2>
                     <div class="col-md-5"><a class="btn btn-primary" href="<?= base_url().'/transactions/update_transaction/'.$details[0]->id.'/lookup'; ?>">Check In</a></div>
                     <div class="col-md-7">
                         <div class="row">
+                            <?php if(isset($json_details['seats_selected'])){ ?>
                             <div class="col-md-6"><a class="btn btn-success" onclick="printDiv()">Print Ticket</a>
                             </div>
+                            <?php } ?>
                             <div class="col-md-6"> <a class="btn btn-danger" href="<?= base_url().'/shows/' ?>">Back
                                     To Home</a></div>
 
