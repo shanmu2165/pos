@@ -136,7 +136,7 @@
                             <?php if($json_details['itotal'] != number_format(0,2)){ ?>
                             <td class="text-right" style="text-align:right;"><strong>$<?=  @$total_amt;?></strong></td>
                             <?php }else{ ?>
-                                <td class="text-right"><strong>$0.00</strong></td>
+                                <td class="text-right" style="text-align:right;"><strong>$0.00</strong></td>
                             <?php } ?>
                         </tr>
                     </table>
