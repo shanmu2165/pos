@@ -83,8 +83,8 @@
                                              <input type="text" id="seats<?= $x; ?>" class="seat_val"
                                                 name="seats<?= $x; ?>" />
                                              <?php } else { ?>
-                                                <input type="text" id="seats25" class="seat_val"
-                                                name="seats25" style="display:none;"/>
+                                                <input type="text" id="seats<?= $x; ?>"
+                                                name="seats<?= $x; ?>" style="display:none;"/>
                                              <?php }   ?>
                                              <span id="errorMsg" style="display:none; color:red;">Select atleast one ticket</span>
                                           </div>
@@ -137,67 +137,21 @@ var totalQty =0;
  var family_seat = 0;
  var totQty = 0;
  var k=0;
-function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
-    const qtyMin = $("#" + ticketQtyReferer).attr("min");
-    const qtyMax = $("#" + ticketQtyReferer).attr("max");
-    //alert('helo');
-    //console.log(qtyMax, "qtyMax");
-    //console.log(ticketPrice, "ticketPrice");
-   // console.log(ticketQtyReferer, "ticketQtyReferer");
-    //console.log(type, "type");
+ var parId = 0;
+ var seatRowVal = 0;
+ var getId = 0;
 
-    const prevTotal = $("#total_price").val();
-    const formattedPrevTotal = parseFloat(prevTotal);
-    const formattedTicketPrice = parseFloat(ticketPrice);
+ $(document).ready(function() {
+   parId = $(".seat_val").prop("id");
+   getId = parId.slice(-1);
 
-    const currentQty = $("#" + ticketQtyReferer).val();
-    const formattedCurrentQty = parseFloat(currentQty);
-   // console.log(currentQty, "currentQty");
-
-    let newQty = 0;
-    let total = 0;
-    if (type === "add") {
-        newQty = formattedCurrentQty + 1; k++;
-        total = formattedPrevTotal + formattedTicketPrice;
-        totalQty = totalQty + 1; 
-        console.log(newQty + "Max - " + qtyMax);
-        //Check max limit
-        if (newQty > qtyMax) { 
-            $("#add{id}").attr("disabled", true);
-        }
-    }
-    if (type === "sub") { k--;
-        if (currentQty <= 0) {
-            return
-        }
-        totalQty = totalQty - 1;
-        if (currentQty <= qtyMax) {
-            $("#add" + id).attr("disabled", false);
-        }
-
-        newQty = formattedCurrentQty - 1;
-        total = formattedPrevTotal - formattedTicketPrice;
-    }
-    
-    
-    
-    $("#" + ticketQtyReferer).val(newQty)
-    console.log("Total Seats1", totalQty);
-    $("#total_qty").val(totalQty);
-    if($("#seats").val() > 0) {
-        var seats_value = parseInt($("#seats").val());
-        var tot = parseInt(totalQty) + parseInt(seats_value);
-        $("#tot_qty").val(parseInt(tot));
-    } else {
-        $("#tot_qty").val(totalQty);
-    }
-    
-    
-    $("#total_price").val(total.toFixed(2));
-    $("#td_total").html(total.toFixed(2));
-}
-
-$(document).ready(function() {
+   if(($("#qty"+getId).val()) == 0) {
+      
+      $(".seat_val").prop("disabled", true);
+   } else { 
+      $(".seat_val").prop("disabled", false); 
+   }
+   
     $(".seat_val").on("keyup change", function(e) {
         const seat = $(this).val();
         const max = parseFloat($(this).attr('max'));
@@ -242,5 +196,77 @@ $(document).ready(function() {
    });
 });
 
+function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
+    const qtyMin = $("#" + ticketQtyReferer).attr("min");
+    const qtyMax = $("#" + ticketQtyReferer).attr("max");
+    //alert('helo');
+    //console.log(qtyMax, "qtyMax");
+    //console.log(ticketPrice, "ticketPrice");
+   // console.log(ticketQtyReferer, "ticketQtyReferer");
+    //console.log(type, "type");
+
+    const prevTotal = $("#total_price").val();
+    const formattedPrevTotal = parseFloat(prevTotal);
+    const formattedTicketPrice = parseFloat(ticketPrice);
+
+    const currentQty = $("#" + ticketQtyReferer).val();
+    const formattedCurrentQty = parseFloat(currentQty);
+   // console.log(currentQty, "currentQty");
+
+    let newQty = 0;
+    let total = 0;
+    if (type === "add") {
+        newQty = formattedCurrentQty + 1; k++;
+        total = formattedPrevTotal + formattedTicketPrice;
+        totalQty = totalQty + 1; 
+        console.log(newQty + "Max - " + qtyMax);
+        //Check max limit
+        if (newQty > qtyMax) { 
+            $("#add{id}").attr("disabled", true);
+            
+        }
+        
+    }
+    if (type === "sub") { k--;
+        if (currentQty <= 0) {
+            return
+        }
+        totalQty = totalQty - 1;
+        if (currentQty <= qtyMax) {
+            $("#add" + id).attr("disabled", false);
+        }
+      //   if($("#qty"+getId).val() == 0) {
+      //    $(".seat_val").prop("disabled", true);
+      //   } else {
+      //    $(".seat_val").prop("disabled", false);
+      //   }
+
+        newQty = formattedCurrentQty - 1;
+        total = formattedPrevTotal - formattedTicketPrice;
+    }
+    
+    
+    
+    $("#" + ticketQtyReferer).val(newQty)
+    console.log("Total Seats1", totalQty);
+   if($("#qty"+getId).val() == 0) {
+      $(".seat_val").prop("disabled", true);
+   } else {
+      $(".seat_val").prop("disabled", false);
+   }
+    $("#total_qty").val(totalQty);
+    if($("#seats").val() > 0) {
+        var seats_value = parseInt($("#seats").val());
+        var tot = parseInt(totalQty) + parseInt(seats_value);
+        $("#tot_qty").val(parseInt(tot));
+    } else {
+        $("#tot_qty").val(totalQty);
+    }
+    
+    
+    $("#total_price").val(total.toFixed(2));
+    $("#td_total").html(total.toFixed(2));
+    
+}
 </script>
 <?= $this->endSection(); ?>
