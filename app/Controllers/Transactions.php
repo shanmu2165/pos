@@ -271,7 +271,7 @@ class Transactions extends BaseController {
                                               </p>
                                           </td>
                                           <td
-                                              style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>
+                                              style='text-align:right; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>
                                               <p
                                                   style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
                                                   $".number_format($data1['item'][$i]['price'],2)."
@@ -287,7 +287,7 @@ class Transactions extends BaseController {
                                                 </p>
                                             </td>
                                             <td
-                                                style='text-align:left; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>
+                                                style='text-align:right; padding:10px;background-color: #eee;border-bottom:1px solid #ccc;'>
                                                 <p
                                                     style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
                                                     $".number_format(0,2)."
@@ -318,7 +318,7 @@ class Transactions extends BaseController {
                                               </p>
                                           </td>
                                           <td
-                                              style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
+                                              style='text-align:right; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
                                               <p
                                                   style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
                                                   <i>$".getenv('salestax')."</i>
@@ -341,7 +341,7 @@ class Transactions extends BaseController {
                                               </p>
                                           </td>
                                           <td
-                                              style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
+                                              style='text-align:right; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
                                               <p
                                                   style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
                                                   <i>$".getenv('processingfees')."</i>
@@ -367,7 +367,7 @@ class Transactions extends BaseController {
                                                   </p>
                                               </td>
                                               <td
-                                                  style='text-align:left; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
+                                                  style='text-align:right; padding:10px;background-color: #fff;border-bottom:1px solid #ccc;'>
                                                   <p
                                                       style='color: #333; font-size:16px !important; line-height:18px; margin:0;font-weight:normal;'>
                                                       <i>$".number_format(@$data1['ptotal'],2)."</i>
@@ -391,7 +391,7 @@ class Transactions extends BaseController {
                                                   &nbsp
                                               </p>
                                           </td>
-                                          <td style='text-align:left; padding:10px;background-color: #fff;'>
+                                          <td style='text-align:right; padding:10px;background-color: #fff;'>
                                               <p
                                                   style='color: #333; font-size:16px !important; line-height:18px; margin:0;'>
                                                   <b>$".number_format($data1['total'],2)."</b>
@@ -412,7 +412,7 @@ class Transactions extends BaseController {
                                                 &nbsp
                                             </p>
                                         </td>
-                                        <td style='text-align:left; padding:10px;background-color: #fff;'>
+                                        <td style='text-align:right; padding:10px;background-color: #fff;'>
                                             <p
                                                 style='color: #333; font-size:16px !important; line-height:18px; margin:0;'>
                                                 <b>$".number_format(0,2)."</b>

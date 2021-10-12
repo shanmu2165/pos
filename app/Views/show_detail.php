@@ -17,7 +17,7 @@
             <div class="container table-head">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 pb-4">
-                        <a href="<?= $go_back; ?>" class="btn btn-primary">Go back</a>
+                        <a href="<?= $go_back; ?>" class="btn btn-primary">Go Back</a>
                     </div>
                     <div class="col-md-12 pb-4">
                         <h2>Click a date to select your tickets

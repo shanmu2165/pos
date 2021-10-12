@@ -33,7 +33,7 @@
             <div class="row">
                <div class="col-lg-6 col-md-12">
                   <div class="col-lg-4 col-md-6 pb-4">
-                     <a href="<?= $go_back; ?>" class="btn btn-primary">Go back</a>
+                     <a href="<?= $go_back; ?>" class="btn btn-primary">Go Back</a>
                   </div>
                   <div class="ticket-details">
                      <h4>Purchase Tickets for

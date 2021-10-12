@@ -70,7 +70,7 @@
                         <form class="pt-5" action="<?= base_url().'/payment_success'; ?>" method="POST" name="pay_form">
                         <?= csrf_field() ?>
                         <div class="col-lg-4 col-md-6 pb-4">
-                          <a href="<?= $cart_url; ?>" class="btn btn-primary">Go back</a>
+                          <a href="<?= $cart_url; ?>" class="btn btn-primary">Go Back</a>
                         </div>
                             <div class="row mb-3">
                                 <div class="col-lg-6 col-md-6">

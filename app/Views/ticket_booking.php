@@ -36,7 +36,7 @@
             <input type="hidden" name="referrer" value="<?= $go_back; ?>">
             <div class="row">
                <div class="col-lg-4 col-md-6 pb-4">
-                  <a href="<?= $go_back; ?>" class="btn btn-primary">Go back</a>
+                  <a href="<?= $go_back; ?>" class="btn btn-primary">Go Back</a>
                </div>
                <div class="col-lg-12">
                   <h2>Step 2: Select Number of Tickets</h2>
@@ -72,12 +72,12 @@
                                           <div class="qty-input" id="<?= $x; ?>">
                                              
                                              <button type="button" id="sub<?= $x; ?>" class="sub"
-                                                onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "sub")'
+                                                onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "sub", <?= $x; ?>)'
                                                 ;>-</button>
                                              <input type="number" id="qty<?= $x; ?>" 
                                                 min="1" max="10" name="qty<?= $x; ?>" value="0" readonly />
                                              <button type="button" id="add<?= $x; ?>" class="add"
-                                                onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "add")'
+                                                onclick='calculateTicketPriceTotal(<?= $regex[$x]; ?>, "qty<?= $x; ?>", "add", <?= $x; ?>)'
                                                 ;>+</button>
                                              <?php if(isset($no_of_seats[$x])) { ?>
                                              <input type="text" id="seats<?= $x; ?>" class="seat_val"
@@ -162,7 +162,7 @@ var totalQty =0;
             family_seat = $("#seats").val();
         }
         if(family_seat > 0) {
-            totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat) - 1);
+            totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat));
         } else {
             totQty = (parseInt($("#total_qty").val()) + parseInt(family_seat)); 
         }
@@ -199,7 +199,7 @@ var totalQty =0;
 function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
     const qtyMin = $("#" + ticketQtyReferer).attr("min");
     const qtyMax = $("#" + ticketQtyReferer).attr("max");
-    //alert('helo');
+   //alert(getId);
     //console.log(qtyMax, "qtyMax");
     //console.log(ticketPrice, "ticketPrice");
    // console.log(ticketQtyReferer, "ticketQtyReferer");
@@ -218,7 +218,10 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
     if (type === "add") {
         newQty = formattedCurrentQty + 1; k++;
         total = formattedPrevTotal + formattedTicketPrice;
-        totalQty = totalQty + 1; 
+        if(id != getId) {
+         totalQty = totalQty + 1;
+        }
+         
         console.log(newQty + "Max - " + qtyMax);
         //Check max limit
         if (newQty > qtyMax) { 
@@ -231,7 +234,9 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
         if (currentQty <= 0) {
             return
         }
+        if(id != getId) {
         totalQty = totalQty - 1;
+        }
         if (currentQty <= qtyMax) {
             $("#add" + id).attr("disabled", false);
         }
