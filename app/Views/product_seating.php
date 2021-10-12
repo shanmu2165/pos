@@ -220,7 +220,7 @@ section.loading .overlay{
                                        <div style="text-align:center;"><p style="color:red !important;" class="blink_me">No Seats Assigned Yet!</p></div>
                             <?php } ?>
                              <?php if(empty($seats) || count($row_names) != $venue_sec[0]->total_rows) { ?>
-                              <button type="button" id="tick_submit" class="btn btn-primary"><a href="<?= $_SESSION['ccancel_url']; ?>">Go back</a></button>
+                              <button type="button" id="tick_submit" class="btn btn-primary"><a href="<?= $_SESSION['ccancel_url']; ?>">Go Back</a></button>
                               <?php } else { ?>
                             <button type="button" id="tick_submit" class="btn btn-primary">Proceed</button>
                             <?php } ?>  
@@ -613,5 +613,8 @@ $("#tick_submit").click(function(){
       });  
     }    
 });
+  $(document).ready(function(){
+    $('.confirm h4.title').text('Ticket Alert');
+  });
     </script>
 <?= $this->endSection(); ?>
