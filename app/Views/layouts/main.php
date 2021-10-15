@@ -181,7 +181,7 @@
     <?= $this->renderSection('content'); 
     //var_dump($forsrc); die; ?>
 </body>
-<script type="text/javascript">
+<script>
 // This depends on jquery 
 //Search
 $(document).ready(function() {

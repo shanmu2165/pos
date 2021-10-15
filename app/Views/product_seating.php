@@ -232,7 +232,7 @@ section.loading .overlay{
         </div>
         <div class="overlay"></div>
     </section>
-    <script type="text/javascript">
+    <script>
         const container = document.querySelector('.seating');
         const seats = document.querySelectorAll('.row .seat:not(.booked)');
         let count = document.getElementById('count');
