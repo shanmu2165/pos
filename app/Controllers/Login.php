@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use CodeIgniter\Controller;
 
 class Login extends BaseController {
 
@@ -11,37 +12,56 @@ class Login extends BaseController {
     }
 
     function index() { 
+        
         $data = [];
        
         $data['page_title'] = 'POS - Login';
         $data['form_action'] = base_url()."/login/verify_login";
-        //print_r($data); die;
+        
         if($this->session->has('user_logged_in')) {
             return redirect()->to(base_url().'/shows');
         } else {
-            return view('login',$data);
+           
+            return view('login', ['data' => $data]);
         }
            
     }
 
     function verify_login() {
         //print_r($_POST); die;
+        helper(['form', 'url']);
+        $isValidated = $this->validate([
+            'email' => 'required|valid_email',
+            'password' => 'required|min_length[12]'
+        ]);
+        $ldata = [];
+       
+        $ldata['page_title'] = 'POS - Login';
+        $ldata['form_action'] = base_url()."/login/verify_login";
         $model = new \App\Models\UserModel();
-        $email = $this->request->getVar('email');
-        $pass = $this->request->getVar('password');
-        $data = $model->where('email', $email)->first();
-        $model1 = $this->db->table('users');
-        if($data) { 
-            $password = $data['password'];
-            $verifyPass = password_verify($pass,$password);
-            if($verifyPass) {
-               $session_data = [
+
+        if(!$isValidated) { 
+            echo view('login', [
+                'validation' => $this->validator,
+                'data' => $ldata
+            ]);
+        } else { 
+            $email = $this->request->getVar('email', FILTER_SANITIZE_EMAIL);
+            $pass = $this->request->getVar('password');
+            $data = $model->where('email', $email)->first();
+            $model1 = $this->db->table('users');
+
+            $password = @$data['password'];
+            $verifyPass = password_verify($pass,$password); 
+            if(!empty($verifyPass)) {
+                
+                $session_data = [
                  'user_id' => $data['id'],
                  'user_name' => $data['name'],
                  'user_email' => $data['email'],
                  'user_logged_in' => TRUE,
                  'user_permission' => $data['perms'],
-               ];
+                ];
                $data1 = array('lastlogin' => strtotime(date('Y-m-d H:i:s')));
                
                $this->session->set($session_data);
@@ -49,12 +69,9 @@ class Login extends BaseController {
                $model1->update($data1);
                return redirect()->to(base_url().'/shows');
             } else {
-                $this->session->setFlashdata('msg', 'Wrong Password!');
+                $this->session->setFlashdata('msg','User Not Found!');
                 return redirect()->to('/login');
             }
-        } else {
-            $this->session->setFlashdata('msg','User Not Found!');
-            return redirect()->to('/login');
         }
     }
 

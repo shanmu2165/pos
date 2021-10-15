@@ -13,8 +13,6 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url('css/style.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?= base_url('css/table-date.css'); ?>">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick-theme.min.css" />
 
     <link rel="stylesheet" href="<?= base_url('css/owl.carousel.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('css/owl.theme.default.min.css'); ?>">
