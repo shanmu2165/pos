@@ -32,7 +32,7 @@ class Login extends BaseController {
         helper(['form', 'url']);
         $isValidated = $this->validate([
             'email' => 'required|valid_email',
-            'password' => 'required|min_length[12]'
+            'password' => 'required|min_length[5]'
         ]);
         $ldata = [];
        
