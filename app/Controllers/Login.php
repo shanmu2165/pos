@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use CodeIgniter\Controller;
+use CodeIgniter\Database\Query;
 
 class Login extends BaseController {
 
@@ -48,24 +49,26 @@ class Login extends BaseController {
         } else { 
             $email = $this->request->getVar('email', FILTER_SANITIZE_EMAIL);
             $pass = $this->request->getVar('password');
-            $data = $model->where('email', $email)->first();
+            $sql = "SELECT * FROM users WHERE email = ?";
+            $data = $this->db->query($sql,$email)->getResult('array');
             $model1 = $this->db->table('users');
 
-            $password = @$data['password'];
+            $password = @$data[0]['password'];
             $verifyPass = password_verify($pass,$password); 
+            
             if(!empty($verifyPass)) {
                 
                 $session_data = [
-                 'user_id' => $data['id'],
-                 'user_name' => $data['name'],
-                 'user_email' => $data['email'],
+                 'user_id' => $data[0]['id'],
+                 'user_name' => $data[0]['name'],
+                 'user_email' => $data[0]['email'],
                  'user_logged_in' => TRUE,
-                 'user_permission' => $data['perms'],
+                 'user_permission' => $data[0]['perms'],
                 ];
                $data1 = array('lastlogin' => strtotime(date('Y-m-d H:i:s')));
                
                $this->session->set($session_data);
-               $model1->where('id',$data['id']);
+               $model1->where('id',$data[0]['id']);
                $model1->update($data1);
                return redirect()->to(base_url().'/shows');
             } else {
