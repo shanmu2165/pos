@@ -13,7 +13,7 @@
                         <?php
 if (!empty($content_detail[0])) {
 ?>
-                        <img src="<?= base_url() . "/images/" . $content_detail[0]->image3; ?>" alt="" />
+                        <img src="<?= base_url() . "/images/" . $content_detail[0]->image3; ?>" alt="cart-image" />
                         <?php
 }
 ?>

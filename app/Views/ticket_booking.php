@@ -8,7 +8,7 @@
          <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                <div class="carousel-item active"> <img
-                  src="<?= base_url()."/images/".$content_detail[0]->image3; ?>" alt="" /> </div>
+                  src="<?= base_url()."/images/".$content_detail[0]->image3; ?>" alt="booking-img" /> </div>
             </div>
          </div>
       </div>

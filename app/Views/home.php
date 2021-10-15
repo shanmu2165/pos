@@ -50,7 +50,7 @@
                                     
                                     
                         
-                                <img src="<?= base_url().'/images/'.$my->image; ?>" />
+                                <img src="<?= base_url().'/images/'.$my->image; ?>" alt="show-img"/>
                                 <div class="events-inner">
                                     <div class="row">
                                         <div class="col-12 text-center">
@@ -111,7 +111,7 @@
                                 <!-- <div class="ribbon ribbon-top-left">
                                     <span class="up">Upcoming Show</span>
                                 </div> -->
-                                <img src="<?= base_url().'/images/'.$my->image; ?>" />
+                                <img src="<?= base_url().'/images/'.$my->image; ?>" alt="all-show-img"/>
                                 <div class="events-inner">
                                     <div class="row">
                                         <div class="col-12 text-center">

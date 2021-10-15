@@ -26,7 +26,7 @@
                     <div class="carousel">
                         <?php foreach($my_shows as $my) {  ?>
                         <div>
-                            <div class="events-details"> <img src="<?= base_url().'/images/'.$my->image; ?>" />
+                            <div class="events-details"> <img src="<?= base_url().'/images/'.$my->image; ?>" alt="my-show"/>
                                 <div class="events-inner">
                                     <div class="ribbon ribbon-top-left">
                                         <?php if(!empty($cal_data[$my->id][$today])) { 
@@ -95,7 +95,7 @@
                     <div class="carousel">
                         <?php foreach($all_shows as $my) { ?>
                         <div>
-                            <div class="events-details"> <img src="<?= base_url().'/images/'.$my->image; ?>" />
+                            <div class="events-details"> <img src="<?= base_url().'/images/'.$my->image; ?>" alt="all-show"/>
                                 <div class="events-inner">
                                     <div class="row">
                                         <div class="col-12 text-center">

@@ -125,7 +125,7 @@ section.loading .overlay{
             <div class="container-fluid">
                 <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item active"> <img src="images/banner.jpg" alt="" /> </div>
+                        <div class="carousel-item active"> <img src="images/banner.jpg" alt="ban-img" /> </div>
                     </div>
                 </div>
             </div>
@@ -241,7 +241,7 @@ section.loading .overlay{
         </div>
         <div class="overlay"></div>
     </section>
-    <script type="text/javascript">
+    <script>
         const container = document.querySelector('.seating');
         const seats = document.querySelectorAll('.row .seat:not(.booked)');
         let count = document.getElementById('count');
