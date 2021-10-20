@@ -349,7 +349,7 @@ class ShowsModel extends Model {
 
     function get_location() {
         $db      = \Config\Database::connect();
-        $query = $db->query("SELECT location_id FROM locations WHERE id='1' LIMIT 1");
+        $query = $db->query("SELECT location_id FROM locations LIMIT 1");
         $content = $query->getResult();
         return $content; 
     }

@@ -263,7 +263,7 @@ var connectTerminal = null;
 // Handler for a "Connect Reader" button
 function connectReaderHandler(discoveredReaders) {
   // Just select the first reader here.
-  var selectedReader = discoveredReaders[0];
+  var selectedReader = discoveredReaders[1];
   terminal.connectReader(selectedReader, {fail_if_in_use: true}).then(function (connectResult) {
     connectTerminal = connectResult;
     console.log('terminal-confirm', connectTerminal);
