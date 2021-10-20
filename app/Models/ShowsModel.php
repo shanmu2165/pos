@@ -346,4 +346,11 @@ class ShowsModel extends Model {
         $content = $query->getResult();
         return $content; 
     }
+
+    function get_location() {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT location_id FROM locations WHERE id='1' LIMIT 1");
+        $content = $query->getResult();
+        return $content; 
+    }
 }

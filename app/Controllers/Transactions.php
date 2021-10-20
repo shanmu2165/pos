@@ -36,8 +36,9 @@ class Transactions extends BaseController {
         $data['delete_url'] = base_url().'/delete_cart';
         $data['cart_url'] = $this->request->getUserAgent()->getReferrer();
         $data['categories'] = $this->model->get_categories();
+        $data['location'] = $this->model->get_location();
         $data['current'] = 'pay_option';
-        //echo "<pre>"; print_r($_SESSION);"</pre>"; die; 
+        //echo "<pre>"; print_r($data['location_id']);"</pre>"; die; 
         return view('payment_options',$data);
     }
     

@@ -16,7 +16,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h2>Step 4: Checkout</h2>
+                        <h2>Step 4: Checkout </h2>
                     </div>
                 </div>
             </div>
@@ -242,7 +242,8 @@ function fetchConnectionToken() {
 
 // Handler for a "Discover readers" button
 function discoverReaderHandler() {
-  const config = { simulated: false, location: 'tml_EQW9HwMPA2Etmm' };
+  const location_id = "<?= $location[0]->location_id; ?>";
+  const config = { simulated: false, location: location_id };
   terminal.discoverReaders(config).then(function (discoverResult) {
     
     if (discoverResult.error) {
@@ -263,7 +264,7 @@ var connectTerminal = null;
 function connectReaderHandler(discoveredReaders) {
   // Just select the first reader here.
   var selectedReader = discoveredReaders[0];
-  terminal.connectReader(selectedReader).then(function (connectResult) {
+  terminal.connectReader(selectedReader, {fail_if_in_use: true}).then(function (connectResult) {
     connectTerminal = connectResult;
     console.log('terminal-confirm', connectTerminal);
     if (connectResult.error) {
