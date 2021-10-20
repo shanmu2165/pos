@@ -487,8 +487,10 @@ class Shows extends BaseController {
       $_SESSION['chart_type'] = @$data['venue_details'][0]->chart_type;
       if($_SESSION['chart_type'] == 'seats') {
         $data['form_action'] = base_url().'/seatings';
+        $data['sectype'] = 1;
       } else {
         $data['form_action'] = base_url().'/cart';
+        $data['sectype'] = 2;
       }
       
       $data['current'] = 'ticket';

@@ -34,6 +34,7 @@
             <input type="hidden" name="venue" value="<?= $venueid; ?>">
             <input type="hidden" name="pcount" id="pcount" value="<?= $pcount; ?>">
             <input type="hidden" name="referrer" value="<?= $go_back; ?>">
+            <input type="hidden" name="sec_type" id="sec_type" value="<?= $sectype; ?>"/>
             <div class="row">
                <div class="col-lg-4 col-md-6 pb-4">
                   <a href="<?= $go_back; ?>" class="btn btn-primary">Go Back</a>
@@ -82,9 +83,11 @@
                                              <?php if(isset($no_of_seats[$x])) { ?>
                                              <input type="text" id="seats<?= $x; ?>" class="seat_val"
                                                 name="seats<?= $x; ?>" />
+                                            
                                              <?php } else { ?>
                                                 <input type="text" id="seats<?= $x; ?>"
                                                 name="seats<?= $x; ?>" style="display:none;"/>
+                                                
                                              <?php }   ?>
                                              <span id="errorMsg" style="display:none; color:red;">Select atleast one ticket</span>
                                           </div>
@@ -142,15 +145,19 @@ var totalQty =0;
  var getId = 0;
 
  $(document).ready(function() {
-   parId = $(".seat_val").prop("id");
-   getId = parId.slice(-1);
-
-   if(($("#qty"+getId).val()) == 0) {
-      
-      $(".seat_val").prop("disabled", true);
-   } else { 
-      $(".seat_val").prop("disabled", false); 
-   }
+   if($("#sec_type").val() == 1) {
+      parId = $(".seat_val").prop("id");
+      getId = parId.slice(-1);
+   
+      if(($("#qty"+getId).val()) == 0) {
+        $(".seat_val").prop("disabled", true);
+      } else { 
+        $(".seat_val").prop("disabled", false); 
+      }
+   } 
+   
+   
+   
    
     $(".seat_val").on("keyup change", function(e) {
         const seat = $(this).val();
@@ -219,6 +226,8 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
         newQty = formattedCurrentQty + 1; k++;
         total = formattedPrevTotal + formattedTicketPrice;
         if(id != getId) {
+           //console.log('Id',id);
+           //console.log('getId',getId);
          totalQty = totalQty + 1;
         }
          
@@ -240,12 +249,7 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
         if (currentQty <= qtyMax) {
             $("#add" + id).attr("disabled", false);
         }
-      //   if($("#qty"+getId).val() == 0) {
-      //    $(".seat_val").prop("disabled", true);
-      //   } else {
-      //    $(".seat_val").prop("disabled", false);
-      //   }
-
+      
         newQty = formattedCurrentQty - 1;
         total = formattedPrevTotal - formattedTicketPrice;
     }
@@ -254,11 +258,13 @@ function calculateTicketPriceTotal(ticketPrice, ticketQtyReferer, type, id) {
     
     $("#" + ticketQtyReferer).val(newQty)
     console.log("Total Seats1", totalQty);
-   if($("#qty"+getId).val() == 0) {
-      $(".seat_val").prop("disabled", true);
-   } else {
-      $(".seat_val").prop("disabled", false);
-   }
+    if($("#sec_type").val() == 1) { 
+      if($("#qty"+getId).val() == 0) {
+         $(".seat_val").prop("disabled", true);
+      } else {
+         $(".seat_val").prop("disabled", false);
+      }
+    }
     $("#total_qty").val(totalQty);
     if($("#seats").val() > 0) {
         var seats_value = parseInt($("#seats").val());
